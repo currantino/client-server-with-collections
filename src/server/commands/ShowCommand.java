@@ -11,9 +11,11 @@ public class ShowCommand extends Command {
 
     public String execute() {
         if (!Data.getRoutes().isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder(result);
             for (Route route : Data.getRoutes()) {
-                result = result.concat(route.toString());
+                stringBuilder.append(route.toString() + '\n');
             }
+            return stringBuilder.toString();
         } else {
             result = "collection is empty";
         }

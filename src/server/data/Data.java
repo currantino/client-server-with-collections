@@ -32,20 +32,20 @@ public class Data {
         commands.put("show", new ShowCommand());
         commands.put("add", new AddCommand());
         commands.put("average_of_distance", new AvgDistanceCommand());
-//        commands.put("info", new InfoCommand());
+        commands.put("info", new InfoCommand());
         commands.put("clear", new ClearCommand());
         commands.put("sort", new SortByDistanceCommand());
-//        commands.put("min_by_creation_date", new MinByCreationDateCommand());
+        commands.put("min_by_creation_date", new MinByCreationDateCommand());
 //        commands.put("print_unique_distance", new PrintUniqueDistanceCommand());
 //        commands.put("execute_script", new ExecuteScriptCommand());
 //        commands.put("remove_by_id", new RemoveByIDCommand());
 //        commands.put("update", new UpdateCommand());
 //        commands.put("read", new JsonReadCommand());
 //        commands.put("save", new SaveCommand());
-//        commands.put("sort_by_creation_date", new SortByDateTimeCommand());
+        commands.put("sort_by_creation_date", new SortByDateTimeCommand());
         commands.put("head", new HeadCommand());
-//        commands.put("remove_greater", new RemoveGreaterCommand());
-//        commands.put("remove_lower", new RemoveLowerCommand());
+        commands.put("remove_greater", new RemoveGreaterCommand());
+        commands.put("remove_lower", new RemoveLowerCommand());
     }
 
     public static LinkedList<Route> getRoutes() {

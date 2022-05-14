@@ -2,7 +2,9 @@ package server.commands;
 
 import server.data.Data;
 
-/**Команда для вывода основной информации о коллекуии*/
+/**
+ * Команда для вывода основной информации о коллекуии
+ */
 
 public class InfoCommand extends Command {
     public InfoCommand() {
@@ -13,13 +15,13 @@ public class InfoCommand extends Command {
     @Override
     public String execute() {
         if (!Data.getRoutes().isEmpty()) {
-            System.out.println("type: " + Data.getRoutes().getClass().getName());
+            result += "type: " + Data.getRoutes().getClass().getSimpleName() + '\n';
             new SortByDateTimeCommand().execute();
-            System.out.println("creation date: " + (Data.routes.getFirst()).getCreationDate());
+            result += "creation date: " + (Data.routes.getFirst()).getCreationDate() + '\n';
             new SortByDistanceCommand().execute();
-            System.out.println("collection's size: " + Data.getRoutes().size());
-        } else {
-            System.out.println("collection is empty");
+            result += "collection's size: " + Data.getRoutes().size() + '\n';
+            return result;
         }
+        return "collection is empty";
     }
 }
