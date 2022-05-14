@@ -13,56 +13,65 @@ import java.util.logging.Logger;
 
 public class Server {
 
+    private static String serverName = "localhost";
+    private static int serverPort = 1234;
+    private static DatagramChannel channel;
+    private static SocketAddress clientAdd;
+    private static InetSocketAddress serverAdd = new InetSocketAddress(serverName, serverPort);
+    private static String[] requestArr;
+    public static String command;
+    public static String argument;
+    private static String result;
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         Logger logger = Logger.getLogger("server logger");
         Data.setCommands();
+
+        //Открытие канала, который слушает на заданном адресе serverAdd
+        channel = DatagramChannel.open();
+        channel.bind(serverAdd);
+        logger.fine("channel server started at: " + serverAdd);
+
         while (true) {
-            try {
-                DatagramChannel channel;
-                SocketAddress remoteAdd;
-                String result;
-
-                //Открываем канал, который слушает на локалхосте в порте 1234
-                InetSocketAddress iAdd = new InetSocketAddress("localhost", 1234);
-                channel = DatagramChannel.open();
-                channel.bind(iAdd);
-                logger.fine("server started at: " + iAdd);
-                //System.out.println("Channel Server.Server started: " + iAdd);
-
-                //Создаем байтбуфер для приема запроса от клиента
-                ByteBuffer buffer = ByteBuffer.allocate(1024);
-
-                //Ждем получения буфера и сохраняем адрес клиента в remoteAdd
-                remoteAdd = channel.receive(buffer);
-                byte[] arr = buffer.array();
-
-                //Создаем поток ввода для считывания запроса
-                ByteArrayInputStream bais = new ByteArrayInputStream(arr);
-                ObjectInputStream ois = new ObjectInputStream(bais);
-
-                String request = (String) ois.readObject();
-                System.out.println(request + " received from client at: " + remoteAdd);
-
-                if (Data.getCommands().containsKey(request)) {
-                    result = Data.getCommands().get(request).execute();
-                } else {
-                    result = "unknown command, use 'help' ";
-                }
-                buffer.flip();
-                buffer.clear();
-                buffer = ByteBuffer.wrap(result.getBytes());
-                channel.send(buffer, remoteAdd);
-                System.out.println("'" + result + "'" + " sent to client at: " + remoteAdd);
-                channel.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                break;
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            getRequest();
+            sendResult();
         }
     }
+
+    private static void getRequest() throws IOException, ClassNotFoundException {
+
+        //Созданик байтбуффера для приема запроса от клиента
+        ByteBuffer requestBuffer = ByteBuffer.allocate(4096);
+
+        //Получение датаграммы в байтбуффер и сохраняем адрес клиента в remoteAdd
+        clientAdd = channel.receive(requestBuffer);
+        byte[] arr = requestBuffer.array();
+
+        //Создаем поток ввода для считывания запроса
+        ByteArrayInputStream bais = new ByteArrayInputStream(arr);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+
+        requestArr = (String[]) ois.readObject();
+        System.out.println(requestArr + " received from client at: " + clientAdd);
+
+        command = requestArr[0];
+        if (requestArr.length > 1) {
+            argument = requestArr[1];
+        }
+
+    }
+
+    private static void sendResult() throws IOException {
+        if (Data.getCommands().containsKey(command)) {
+            result = Data.getCommands().get(command).execute();
+        } else {
+            result = "unknown command, use 'help' ";
+        }
+        ByteBuffer resultBuffer = ByteBuffer.wrap(result.getBytes());
+        channel.send(resultBuffer, clientAdd);
+        System.out.println("'" + result + "'" + " sent to client at: " + clientAdd);
+    }
+
 }
 

@@ -9,15 +9,22 @@ import java.util.Scanner;
 
 public class Client {
 
-    static Scanner scanner = new Scanner(System.in);
-    static DatagramSocket ds;
-    static InetAddress serverAddress;
-    static String[] inputArr;
-    static String command;
-    static String argument;
+    private static Scanner scanner = new Scanner(System.in);
+    private static DatagramSocket ds;
+    private static InetAddress serverAddress;
+    private static String clientName =  "localhost";
+    private static int clientPort = 4321;
+    private static String[] inputArr;
+    private static String command;
+    private static String argument;
+
 
 
     public static void main(String[] args) throws Exception {
+        serverAddress = InetAddress.getByName(clientName);
+        //Создание сокета для отправки команд
+        ds = new DatagramSocket(clientPort);
+
         while (true) {
 
             //Обработка пользовательского ввода
@@ -46,17 +53,14 @@ public class Client {
             ds.close();
             System.exit(0);
         }
-        ds.close();
     }
 
     static void sendRequest() throws Exception {
 
-        serverAddress = InetAddress.getByName("localhost");
-        byte[] buffer;
+        byte[] requestArr;
 
 
-        //Создание сокета для отправки команд
-        ds = new DatagramSocket();
+
 
         //Создание потока вывода
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -64,14 +68,14 @@ public class Client {
         baos.flush();
         oos.flush();
 
-        //Запись команды в этот поток
-        oos.writeObject(command);
+        //Запись команды и аргумента в этот поток
+        oos.writeObject(inputArr);
         oos.flush();
         oos.close();
-        buffer = baos.toByteArray();
+        requestArr = baos.toByteArray();
 
         //Упаковка команды в датаграмму
-        DatagramPacket dp = new DatagramPacket(buffer, buffer.length, serverAddress, 1234);
+        DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, 1234);
         //Отправка на сервер в порт 1234
         ds.send(dp);
         System.out.println(Arrays.toString(inputArr) + " sent to server at: " + serverAddress);
