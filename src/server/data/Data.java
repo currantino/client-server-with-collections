@@ -31,7 +31,7 @@ public class Data {
         commands.put("help", new HelpCommand());
         commands.put("show", new ShowCommand());
         commands.put("add", new AddCommand());
-//        commands.put("average_of_distance", new AvgDistanceCommand());
+        commands.put("average_of_distance", new AvgDistanceCommand());
 //        commands.put("info", new InfoCommand());
         commands.put("clear", new ClearCommand());
 //        commands.put("sort", new SortByDistanceCommand());
