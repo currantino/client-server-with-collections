@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class Server {
@@ -53,7 +54,7 @@ public class Server {
         ObjectInputStream ois = new ObjectInputStream(bais);
 
         requestArr = (String[]) ois.readObject();
-        System.out.println(requestArr + " received from client at: " + clientAdd);
+        System.out.println(Arrays.toString(requestArr) + " received from client at: " + clientAdd);
 
         command = requestArr[0];
         if (requestArr.length > 1) {

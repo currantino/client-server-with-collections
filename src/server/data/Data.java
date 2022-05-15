@@ -36,7 +36,7 @@ public class Data {
         commands.put("clear", new ClearCommand());
         commands.put("sort", new SortByDistanceCommand());
         commands.put("min_by_creation_date", new MinByCreationDateCommand());
-//        commands.put("print_unique_distance", new PrintUniqueDistanceCommand());
+        commands.put("print_unique_distance", new PrintUniqueDistanceCommand());
 //        commands.put("execute_script", new ExecuteScriptCommand());
 //        commands.put("remove_by_id", new RemoveByIDCommand());
 //        commands.put("update", new UpdateCommand());
