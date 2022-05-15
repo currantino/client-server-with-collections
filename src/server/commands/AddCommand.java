@@ -11,14 +11,13 @@ import java.util.InputMismatchException;
 
 public class AddCommand extends Command {
     public AddCommand() {
-        this.name = "add";
-        this.desc = "adds an element to the collection of routes";
+        super("add", "adds an element to the collection of routes");
     }
 
     public String execute() {
         try {
             Route newRoute = new Route();
-            Data.routes.add(newRoute);
+            Data.getRoutes().add(newRoute);
             //new SortByDistanceCommand().execute();
         } catch (InputMismatchException e) {
             this.execute();

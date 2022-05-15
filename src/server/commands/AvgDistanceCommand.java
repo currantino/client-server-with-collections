@@ -6,8 +6,7 @@ import server.data.Data;
 public class AvgDistanceCommand extends Command {
 
     public AvgDistanceCommand() {
-        this.name = "average_of_distance";
-        this.desc = "returns average of distance of all routes included in the collection";
+        super("average_of_distance", "returns average of distance of all routes included in the collection");
     }
 
     @Override

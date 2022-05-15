@@ -5,14 +5,13 @@ import server.data.Data;
 public class SortByDistanceCommand extends Command {
 
     public SortByDistanceCommand() {
-        this.name = "sort";
-        this.desc = "sorts the collection by distance";
+        super("sort", "sorts the collection by distance");
     }
 
     @Override
     public String execute() {
-        if (!Data.routes.isEmpty()) {
-            Data.routes.sort(new DistanceComparator());
+        if (!Data.getRoutes().isEmpty()) {
+            Data.getRoutes().sort(new DistanceComparator());
         }
         return "collection is empty";
     }

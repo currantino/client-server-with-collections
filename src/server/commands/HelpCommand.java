@@ -4,8 +4,7 @@ import server.data.Data;
 
 public class HelpCommand extends Command {
     public HelpCommand() {
-        this.name = "help";
-        this.desc = "prints out a list of valid commands with descriptions";
+        super("help", "prints out a list of valid commands with descriptions");
     }
 
     public String execute() {

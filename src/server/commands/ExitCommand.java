@@ -6,8 +6,7 @@ package server.commands;
 public class ExitCommand extends Command {
 
     public ExitCommand() {
-        this.name = "exit";
-        this.desc = "exits program";
+        super("exit", "exits application");
     }
 
     public String execute() {
@@ -15,7 +14,7 @@ public class ExitCommand extends Command {
 //            System.exit(1);
 //        } else{
 //            new TempSaveCommand().execute();
-            return "exit";
+        return "exit";
 //        }
     }
 }

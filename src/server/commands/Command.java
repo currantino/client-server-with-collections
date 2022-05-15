@@ -5,15 +5,19 @@ package server.commands;
  */
 
 public abstract class Command {
-    String name;
     /**
      * Название команды
      */
-    String desc;
+    protected String name;
     /**
      * Описание команды
      */
-    String result = "";
+    protected String desc;
+    public Command(String name, String desc){
+        this.name = name;
+        this.desc = desc;
+    }
+    protected String result = "";
 
     /**
      * Строка, которая вернется клиенту после исполнения команды

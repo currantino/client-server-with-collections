@@ -7,8 +7,7 @@ import java.util.LinkedList;
 
 public class MinByCreationDateCommand extends Command {
     public MinByCreationDateCommand() {
-        this.name = "min_by_creation_date";
-        this.desc = "get the first element by creation date";
+        super("min_by_creation_date", "get the first element by creation date");
     }
 
     @Override

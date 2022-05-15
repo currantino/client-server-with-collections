@@ -5,8 +5,7 @@ import server.data.Data;
 
 public class ShowCommand extends Command {
     public ShowCommand() {
-        this.name = "show";
-        this.desc = "shows contents of the collection of routes";
+        super("show", "shows contents of the collection of routes");
     }
 
     public String execute() {

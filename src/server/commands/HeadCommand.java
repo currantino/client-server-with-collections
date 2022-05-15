@@ -5,8 +5,7 @@ import server.data.Data;
 public class HeadCommand extends Command {
 
     public HeadCommand() {
-        name = "head";
-        desc = "print out the first element in the collection";
+        super("head", "print out the first element in the collection");
     }
 
     @Override

@@ -13,8 +13,10 @@ import java.util.TreeMap;
 
 public class Data {
 
+    private static int idForNewRoutes;
+
     private static TreeMap<String, Command> commands = new TreeMap();
-    public static LinkedList<Route> routes = new LinkedList();
+    private static LinkedList<Route> routes = new LinkedList();
     public static HashSet<String> executedScripts = new HashSet<>();
     public static boolean saved = false;
 
@@ -38,7 +40,7 @@ public class Data {
         commands.put("min_by_creation_date", new MinByCreationDateCommand());
         commands.put("print_unique_distance", new PrintUniqueDistanceCommand());
 //        commands.put("execute_script", new ExecuteScriptCommand());
-//        commands.put("remove_by_id", new RemoveByIDCommand());
+        commands.put("remove_by_id", new RemoveByIdCommand());
 //        commands.put("update", new UpdateCommand());
 //        commands.put("read", new JsonReadCommand());
 //        commands.put("save", new SaveCommand());
@@ -48,7 +50,16 @@ public class Data {
 //        commands.put("remove_lower", new RemoveLowerCommand());
     }
 
+    public static void generateAndSetId(Route route){
+        route.setId(idForNewRoutes);
+        idForNewRoutes++;
+    }
+
     public static LinkedList<Route> getRoutes() {
         return routes;
+    }
+
+    public static void setRoutes(LinkedList<Route> routes) {
+        Data.routes = routes;
     }
 }
