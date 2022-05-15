@@ -36,7 +36,6 @@ public class Route implements Serializable {
         this.from = new Location();
         this.to = new Location();
         this.creationDate = LocalDateTime.now().withNano(0);
-        Data.generateAndSetId(this);
     }
 
     /**
@@ -52,6 +51,7 @@ public class Route implements Serializable {
         this.id = id;
         this.coordinates = new Coordinates(xCoordinate, yCoordinate);
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -80,8 +80,22 @@ public class Route implements Serializable {
         this.distance = distance;
     }
 
+    @Override
     public String toString() {
         return "Server.route.Route" + "(" + this.id + ")" + " from " + this.from + " to " + this.to + " created: " + this.creationDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return id == route.id && name.equals(route.name) && coordinates.equals(route.coordinates) && Objects.equals(creationDate, route.creationDate) && from.equals(route.from) && to.equals(route.to) && distance.equals(route.distance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, coordinates, creationDate, from, to, distance);
     }
 
     public Float getDistance() {
@@ -115,16 +129,4 @@ public class Route implements Serializable {
         return to;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Route route = (Route) o;
-        return id == route.id && name.equals(route.name) && coordinates.equals(route.coordinates) && Objects.equals(creationDate, route.creationDate) && from.equals(route.from) && to.equals(route.to) && distance.equals(route.distance);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, coordinates, creationDate, from, to, distance);
-    }
 }

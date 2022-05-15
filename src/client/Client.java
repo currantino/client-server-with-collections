@@ -2,7 +2,8 @@ package client;
 
 import route.Route;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -14,12 +15,11 @@ public class Client {
     private static Scanner scanner = new Scanner(System.in);
     private static DatagramSocket ds;
     private static InetAddress serverAddress;
-    private static String clientName =  "localhost";
+    private static String clientName = "localhost";
     private static int clientPort = 4321;
     private static Object[] inputArr;
     private static Object command;
     private static Object argument;
-
 
 
     public static void main(String[] args) throws Exception {
@@ -34,8 +34,13 @@ public class Client {
             command = inputArr[0];
             if (inputArr.length > 1) {
                 argument = inputArr[1];
+                if (command.equals("update")) {
+                    Route routeForUpdating = new Route();
+                    routeForUpdating.setId(Integer.parseInt((String) inputArr[1]));
+                    argument = routeForUpdating;
+                }
             }
-            if (command.equals("add")){
+            if (command.equals("add")) {
                 argument = new Route();
             }
             sendRequest();
@@ -52,7 +57,7 @@ public class Client {
 
         //Распаковка полученного ответа от сервера из датаграммы
         String resultString = new String(resultPacket.getData(), 0, resultPacket.getLength());
-        System.out.println("result from server " + serverAddress + ":\n" + resultString);
+        System.out.println(resultString);
 
         if (resultString.equals("exit")) {
             ds.close();

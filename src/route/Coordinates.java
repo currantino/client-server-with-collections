@@ -1,6 +1,7 @@
 package route;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Coordinates implements Serializable {
@@ -22,6 +23,19 @@ public class Coordinates implements Serializable {
     public Coordinates(int x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Coordinates that = (Coordinates) obj;
+        return x == that.x && Float.compare(that.y, y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
     public int getX() {

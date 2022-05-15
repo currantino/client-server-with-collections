@@ -41,7 +41,7 @@ public class Data {
         commands.put("print_unique_distance", new PrintUniqueDistanceCommand());
 //        commands.put("execute_script", new ExecuteScriptCommand());
         commands.put("remove_by_id", new RemoveByIdCommand());
-//        commands.put("update", new UpdateCommand());
+        commands.put("update", new UpdateCommand());
 //        commands.put("read", new JsonReadCommand());
 //        commands.put("save", new SaveCommand());
         commands.put("sort_by_creation_date", new SortByDateTimeCommand());
@@ -50,9 +50,10 @@ public class Data {
         commands.put("remove_lower", new RemoveLowerCommand());
     }
 
-    public static void generateAndSetId(Route route){
+    public static Route generateAndSetId(Route route){
         route.setId(idForNewRoutes);
         idForNewRoutes++;
+        return route;
     }
 
     public static LinkedList<Route> getRoutes() {

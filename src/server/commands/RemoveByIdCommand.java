@@ -3,9 +3,6 @@ package server.commands;
 import server.Server;
 import server.data.Data;
 
-import java.util.LinkedList;
-import java.util.stream.Collectors;
-
 public class RemoveByIdCommand extends Command {
 
     public RemoveByIdCommand() {
@@ -17,10 +14,7 @@ public class RemoveByIdCommand extends Command {
         try {
             int id = Integer.parseInt((String) Server.argument);
             if (!Data.getRoutes().isEmpty()) {
-                if (Data.getRoutes().stream().anyMatch(route -> route.getId() == id)) {
-                    Data.setRoutes(Data.getRoutes().stream()
-                            .filter(route -> route.getId() != id)
-                            .collect(Collectors.toCollection(LinkedList::new)));
+                if (Data.getRoutes().removeIf(route -> route.getId() == id)) {
                     return "route with id = " + id + " removed";
                 } else {
                     return "route not found";
