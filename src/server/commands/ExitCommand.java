@@ -10,11 +10,7 @@ public class ExitCommand extends Command {
     }
 
     public String execute() {
-//        if (Data.saved == true) {
-//            System.exit(1);
-//        } else{
-//            new TempSaveCommand().execute();
+        new AutoSaveCommand().execute();
         return "exit";
-//        }
     }
 }

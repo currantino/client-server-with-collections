@@ -9,7 +9,7 @@ public class ClearCommand extends Command {
 
     public String execute() {
         Data.getRoutes().clear();
-        Data.saved = false;
+        Data.isSaved = false;
         return "collection was cleared";
     }
 }

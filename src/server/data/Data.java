@@ -18,7 +18,7 @@ public class Data {
     private static TreeMap<String, Command> commands = new TreeMap();
     private static LinkedList<Route> routes = new LinkedList();
     public static HashSet<String> executedScripts = new HashSet<>();
-    public static boolean saved = false;
+    public static boolean isSaved = false;
 
 //    public static HashSet<String> getExecutedScripts() {
 //        return executedScripts;

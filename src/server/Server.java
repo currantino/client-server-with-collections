@@ -1,5 +1,6 @@
 package server;
 
+import server.commands.AutoSaveCommand;
 import server.data.Data;
 
 import java.io.ByteArrayInputStream;
