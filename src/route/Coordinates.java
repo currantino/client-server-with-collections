@@ -6,8 +6,9 @@ import java.util.Scanner;
 public class Coordinates implements Serializable {
     private int x;
     private float y;
+    transient Scanner sc;
     public Coordinates() {
-        Scanner sc = new Scanner(System.in);
+        sc = new Scanner(System.in);
         System.out.println("x coordinate: ");
         this.x = sc.nextInt();
         while(this.x <= -181){

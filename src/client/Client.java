@@ -1,5 +1,7 @@
 package client;
 
+import route.Route;
+
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -14,9 +16,9 @@ public class Client {
     private static InetAddress serverAddress;
     private static String clientName =  "localhost";
     private static int clientPort = 4321;
-    private static String[] inputArr;
-    private static String command;
-    private static String argument;
+    private static Object[] inputArr;
+    private static Object command;
+    private static Object argument;
 
 
 
@@ -32,6 +34,9 @@ public class Client {
             command = inputArr[0];
             if (inputArr.length > 1) {
                 argument = inputArr[1];
+            }
+            if (command.equals("add")){
+                argument = new Route();
             }
             sendRequest();
             getResult();
@@ -59,9 +64,6 @@ public class Client {
 
         byte[] requestArr;
 
-
-
-
         //Создание потока вывода
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -69,7 +71,7 @@ public class Client {
         oos.flush();
 
         //Запись команды и аргумента в этот поток
-        oos.writeObject(inputArr);
+        oos.writeObject(new Object[]{command, argument});
         oos.flush();
         oos.close();
         requestArr = baos.toByteArray();

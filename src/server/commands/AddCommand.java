@@ -1,9 +1,8 @@
 package server.commands;
 
 import route.Route;
+import server.Server;
 import server.data.Data;
-
-import java.util.InputMismatchException;
 
 /**
  * Команда для добавления нового элемента в коллекцию через комндную строку
@@ -16,12 +15,12 @@ public class AddCommand extends Command {
 
     public String execute() {
         try {
-            Route newRoute = new Route();
+            Route newRoute = (Route) Server.argument;
             Data.getRoutes().add(newRoute);
-            //new SortByDistanceCommand().execute();
-        } catch (InputMismatchException e) {
-            this.execute();
+            Data.getCommands().get("sort_by_distance").execute();
+            return "new element added to the collection";
+        } catch (ClassCastException ex) {
+            return "invalid argument";
         }
-        return "new element added to the collection";
     }
 }

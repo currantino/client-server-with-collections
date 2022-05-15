@@ -15,7 +15,7 @@ public class RemoveByIdCommand extends Command {
     @Override
     public String execute() {
         try {
-            int id = Integer.parseInt(Server.argument);
+            int id = Integer.parseInt((String) Server.argument);
             if (!Data.getRoutes().isEmpty()) {
                 if (Data.getRoutes().stream().anyMatch(route -> route.getId() == id)) {
                     Data.setRoutes(Data.getRoutes().stream()

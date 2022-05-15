@@ -4,16 +4,17 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class Location implements Serializable {
-    Scanner sc;
     private int x;
     private int y;
     private int z;
     private String name;
+    transient Scanner sc;
+
 
     public Location() {
-        this.sc = new Scanner(System.in);
+        sc = new Scanner(System.in);
         System.out.println("enter new location name:");
-        while (this.name == null || this.name.length() > 830){
+        while (name == null || name.length() > 830 || name.length() < 1){
             this.name = sc.next();
         }
         System.out.println("x coordinate:");

@@ -15,7 +15,7 @@ public class RemoveLowerCommand extends Command {
     @Override
     public String execute() {
         try{
-            double dist = Double.parseDouble(Server.argument);
+            double dist = Double.parseDouble((String) Server.argument);
             if (!Data.getRoutes().isEmpty()){
                 Data.setRoutes(Data.getRoutes().stream().filter(route -> route.getDistance() >= dist).collect(Collectors.toCollection(LinkedList::new)));
                 return "routes with distance lower than " + dist + " removed";

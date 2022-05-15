@@ -19,9 +19,9 @@ public class Server {
     private static DatagramChannel channel;
     private static SocketAddress clientAdd;
     private static InetSocketAddress serverAdd = new InetSocketAddress(serverName, serverPort);
-    private static String[] requestArr;
+    private static Object[] requestArr;
     public static String command;
-    public static String argument;
+    public static Object argument;
     private static String result;
 
 
@@ -53,10 +53,10 @@ public class Server {
         ByteArrayInputStream bais = new ByteArrayInputStream(arr);
         ObjectInputStream ois = new ObjectInputStream(bais);
 
-        requestArr = (String[]) ois.readObject();
+        requestArr = (Object[]) ois.readObject();
         System.out.println(Arrays.toString(requestArr) + " received from client at: " + clientAdd);
 
-        command = requestArr[0];
+        command = (String) requestArr[0];
         if (requestArr.length > 1) {
             argument = requestArr[1];
         }

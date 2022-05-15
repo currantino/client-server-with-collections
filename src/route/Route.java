@@ -16,12 +16,14 @@ public class Route implements Serializable {
     private Location from;
     private Location to;
     private Float distance;
+    transient Scanner sc;
+
 
     /**
      * конструктор, используемый при добавлении нового элемента в коллекцию через командную строку
      */
     public Route() {
-        Scanner sc = new Scanner(System.in);
+        sc = new Scanner(System.in);
         while (this.name == null || this.name.equals("")) {
             System.out.println("enter new route name: ");
             this.name = sc.next();

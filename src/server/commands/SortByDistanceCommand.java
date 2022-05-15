@@ -5,7 +5,7 @@ import server.data.Data;
 public class SortByDistanceCommand extends Command {
 
     public SortByDistanceCommand() {
-        super("sort", "sorts the collection by distance");
+        super("sort_by_distance", "sorts the collection by distance");
     }
 
     @Override
