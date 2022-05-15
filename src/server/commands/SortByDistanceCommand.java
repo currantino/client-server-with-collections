@@ -11,8 +11,8 @@ public class SortByDistanceCommand extends Command {
 
     @Override
     public String execute() {
-        if (!Data.getRoutes().isEmpty()) {
-            Data.getRoutes().sort(new DistanceComparator());
+        if (!Data.routes.isEmpty()) {
+            Data.routes.sort(new DistanceComparator());
         }
         return "collection is empty";
     }

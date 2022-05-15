@@ -1,7 +1,5 @@
 package route;
 
-import server.data.Data;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -31,7 +29,7 @@ public class Route implements Serializable {
         this.from = new Location();
         this.to = new Location();
         this.creationDate = LocalDateTime.now().withNano(0);
-        this.id = Data.getRoutes().size();
+        //this.id = Data.getRoutes().size();
     }
 
     /**Конструктор, используемый при добавлении нового элемента в коллекцию из файла*/
@@ -42,7 +40,7 @@ public class Route implements Serializable {
         this.from = new Location(fromName, fromX, fromY, fromZ);
         this.to = new Location(toName, toX, toY, toZ);
         this.creationDate = LocalDateTime.now().withNano(0);
-        this.id = Data.getRoutes().size();
+        //this.id = Data.getRoutes().size();
         this.coordinates = new Coordinates(xCoordinate, yCoordinate);
     }
 

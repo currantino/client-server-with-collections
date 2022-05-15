@@ -42,7 +42,7 @@ public class Server {
 
     private static void getRequest() throws IOException, ClassNotFoundException {
 
-        //Создание байтбуффера для приема запроса от клиента
+        //Созданик байтбуффера для приема запроса от клиента
         ByteBuffer requestBuffer = ByteBuffer.allocate(4096);
 
         //Получение датаграммы в байтбуффер и сохраняем адрес клиента в remoteAdd
