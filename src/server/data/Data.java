@@ -46,8 +46,8 @@ public class Data {
 //        commands.put("save", new SaveCommand());
         commands.put("sort_by_creation_date", new SortByDateTimeCommand());
         commands.put("head", new HeadCommand());
-//        commands.put("remove_greater", new RemoveGreaterCommand());
-//        commands.put("remove_lower", new RemoveLowerCommand());
+        commands.put("remove_greater", new RemoveGreaterCommand());
+        commands.put("remove_lower", new RemoveLowerCommand());
     }
 
     public static void generateAndSetId(Route route){

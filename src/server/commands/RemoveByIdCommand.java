@@ -14,17 +14,21 @@ public class RemoveByIdCommand extends Command {
 
     @Override
     public String execute() {
-        int id = Integer.parseInt(Server.argument);
-        if (!Data.getRoutes().isEmpty()) {
-            if (Data.getRoutes().stream().anyMatch(route -> route.getId() == id)) {
-                Data.setRoutes(Data.getRoutes().stream()
-                        .filter(route -> route.getId() != id)
-                        .collect(Collectors.toCollection(LinkedList::new)));
-                return "route with id = " + id + " removed";
-            } else {
-                return "route not found";
+        try {
+            int id = Integer.parseInt(Server.argument);
+            if (!Data.getRoutes().isEmpty()) {
+                if (Data.getRoutes().stream().anyMatch(route -> route.getId() == id)) {
+                    Data.setRoutes(Data.getRoutes().stream()
+                            .filter(route -> route.getId() != id)
+                            .collect(Collectors.toCollection(LinkedList::new)));
+                    return "route with id = " + id + " removed";
+                } else {
+                    return "route not found";
+                }
             }
+            return "collection is empty";
+        } catch (NumberFormatException e) {
+            return "invalid id";
         }
-        return "collection is empty";
     }
 }
