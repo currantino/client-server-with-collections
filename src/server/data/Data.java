@@ -1,8 +1,17 @@
 package server.data;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import route.Route;
 import server.commands.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -14,6 +23,7 @@ import java.util.TreeMap;
 public class Data {
 
     private static int idForNewRoutes;
+    private static String autoSavePath = "/Users/boi/Desktop/client-server-with-collections/resources/autoSave.json";
 
     private static TreeMap<String, Command> commands = new TreeMap();
     private static LinkedList<Route> routes = new LinkedList();
@@ -50,11 +60,67 @@ public class Data {
         commands.put("remove_lower", new RemoveLowerCommand());
     }
 
-    public static Route generateAndSetId(Route route){
+    public static Route generateAndSetId(Route route) {
         route.setId(idForNewRoutes);
         idForNewRoutes++;
         return route;
     }
+
+    public static boolean autoSave() {
+        if (!getRoutes().isEmpty()) {
+            JSONArray jsonArray = new JSONArray(getRoutes());
+            try {
+                PrintWriter printWriter = new PrintWriter(autoSavePath);
+                printWriter.write(jsonArray.toString());
+                printWriter.close();
+                Data.isSaved = true;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return isSaved;
+    }
+
+    public static boolean readAutoSave() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+        try {
+            String myJson = Files.readString(Path.of(autoSavePath));
+            JSONArray jsonArray = new JSONArray(myJson);
+
+            for (Object element : jsonArray) {
+                JSONObject jo = (JSONObject) element;
+                JSONObject coordinates = jo.getJSONObject("coordinates");
+                JSONObject from = jo.getJSONObject("from");
+                JSONObject to = jo.getJSONObject("to");
+                String routeName = jo.getString("name");
+                Float routeDistance = jo.getFloat("distance");
+                int xCoordinate = coordinates.getInt("x");
+                Float yCoordinate = coordinates.getFloat("y");
+                String fromName = from.getString("name");
+                int fromX = from.getInt("x");
+                int fromY = from.getInt("y");
+                int fromZ = from.getInt("z");
+                String toName = to.getString("name");
+                int toX = to.getInt("x");
+                int toY = to.getInt("y");
+                int toZ = to.getInt("z");
+                String strCreationDate = jo.getString("creationDate");
+                LocalDateTime creationDate = LocalDateTime.parse(strCreationDate, formatter);
+                Route newRoute = new Route(routeName, routeDistance, xCoordinate, yCoordinate, fromName, fromX, fromY, fromZ, toName, toX, toY, toZ, creationDate);
+                Data.routes.add(newRoute);
+                new SortByDistanceCommand().execute();
+                Data.isSaved = true;
+            }
+            System.out.println("routes from the input file were added to the collection");
+            return true;
+        } catch (IOException e) {
+            System.out.println("autoSave file does not exist");
+        }
+        return false;
+    }
+
 
     public static LinkedList<Route> getRoutes() {
         return routes;
@@ -63,4 +129,6 @@ public class Data {
     public static void setRoutes(LinkedList<Route> routes) {
         Data.routes = routes;
     }
+
+
 }

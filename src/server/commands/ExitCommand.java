@@ -1,5 +1,8 @@
 package server.commands;
 
+import server.Server;
+import server.data.Data;
+
 /**
  * Команда для завершения работы приложения
  */
@@ -10,7 +13,7 @@ public class ExitCommand extends Command {
     }
 
     public String execute() {
-        new AutoSaveCommand().execute();
+        Data.autoSave();
         return "exit";
     }
 }

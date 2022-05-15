@@ -1,7 +1,5 @@
 package route;
 
-import server.data.Data;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -42,14 +40,23 @@ public class Route implements Serializable {
      * Конструктор, используемый при добавлении нового элемента в коллекцию из файла
      */
 
-    public Route(int id, String name, Float distance, int xCoordinate, Float yCoordinate, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ) {
+    public Route(String name, Float distance, int xCoordinate, Float yCoordinate, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ) {
         this.name = name;
         this.distance = distance;
         this.from = new Location(fromName, fromX, fromY, fromZ);
         this.to = new Location(toName, toX, toY, toZ);
         this.creationDate = LocalDateTime.now().withNano(0);
-        this.id = id;
         this.coordinates = new Coordinates(xCoordinate, yCoordinate);
+    }
+
+    public Route(String name, Float distance, int xCoordinate, Float yCoordinate, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ, LocalDateTime creationDate) {
+        this.name = name;
+        this.distance = distance;
+        this.from = new Location(fromName, fromX, fromY, fromZ);
+        this.to = new Location(toName, toX, toY, toZ);
+        this.creationDate = LocalDateTime.now().withNano(0);
+        this.coordinates = new Coordinates(xCoordinate, yCoordinate);
+        this.creationDate = creationDate;
     }
 
     public void setId(int id) {
