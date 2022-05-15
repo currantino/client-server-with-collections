@@ -14,9 +14,34 @@ import java.util.TreeMap;
 public class Data {
 
     private static TreeMap<String, Command> commands = new TreeMap();
-    public static LinkedList<Route> routes = new LinkedList();
-    public static HashSet<String> executedScripts = new HashSet<>();
-    public static boolean saved = false;
+    private static LinkedList<Route> routes = new LinkedList();
+
+    public static void setCommands(TreeMap<String, Command> commands) {
+        Data.commands = commands;
+    }
+
+    public static void setRoutes(LinkedList<Route> routes) {
+        Data.routes = routes;
+    }
+
+    public static HashSet<String> getExecutedScripts() {
+        return executedScripts;
+    }
+
+    public static void setExecutedScripts(HashSet<String> executedScripts) {
+        Data.executedScripts = executedScripts;
+    }
+
+    public static boolean isSaved() {
+        return saved;
+    }
+
+    public static void setSaved(boolean saved) {
+        Data.saved = saved;
+    }
+
+    private static HashSet<String> executedScripts = new HashSet<>();
+    private static boolean saved = false;
 
 //    public static HashSet<String> getExecutedScripts() {
 //        return executedScripts;
@@ -38,7 +63,7 @@ public class Data {
         commands.put("min_by_creation_date", new MinByCreationDateCommand());
         commands.put("print_unique_distance", new PrintUniqueDistanceCommand());
 //        commands.put("execute_script", new ExecuteScriptCommand());
-//        commands.put("remove_by_id", new RemoveByIDCommand());
+        commands.put("remove_by_id", new RemoveByIdCommand());
 //        commands.put("update", new UpdateCommand());
 //        commands.put("read", new JsonReadCommand());
 //        commands.put("save", new SaveCommand());

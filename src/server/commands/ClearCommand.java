@@ -9,8 +9,8 @@ public class ClearCommand extends Command {
     }
 
     public String execute() {
-        Data.routes.clear();
-        Data.saved = false;
+        Data.getRoutes().clear();
+        Data.setSaved(false);
         return "collection was cleared";
     }
 }

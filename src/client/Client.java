@@ -30,8 +30,8 @@ public class Client {
             //Обработка пользовательского ввода
             inputArr = scanner.nextLine().split(" ");
             command = inputArr[0];
-            if (inputArr.length == 2) {
-                argument = inputArr[2];
+            if (inputArr.length > 1) {
+                argument = inputArr[1];
             }
             sendRequest();
             getResult();

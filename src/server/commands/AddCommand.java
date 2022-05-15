@@ -18,7 +18,7 @@ public class AddCommand extends Command {
     public String execute() {
         try {
             Route newRoute = new Route();
-            Data.routes.add(newRoute);
+            Data.getRoutes().add(newRoute);
             //new SortByDistanceCommand().execute();
         } catch (InputMismatchException e) {
             this.execute();

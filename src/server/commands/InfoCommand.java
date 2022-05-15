@@ -17,7 +17,7 @@ public class InfoCommand extends Command {
         if (!Data.getRoutes().isEmpty()) {
             result += "type: " + Data.getRoutes().getClass().getSimpleName() + '\n';
             new SortByDateTimeCommand().execute();
-            result += "creation date: " + (Data.routes.getFirst()).getCreationDate() + '\n';
+            result += "creation date: " + (Data.getRoutes().getFirst()).getCreationDate() + '\n';
             new SortByDistanceCommand().execute();
             result += "collection's size: " + Data.getRoutes().size() + '\n';
             return result;
