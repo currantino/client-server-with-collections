@@ -35,9 +35,6 @@ public class Server {
         channel.bind(serverAdd);
         logger.fine("channel server started at: " + serverAdd);
 
-        loadAutoSave();
-        sendResult();
-
         while (true) {
             getRequest();
             sendResult();
@@ -79,24 +76,4 @@ public class Server {
         lastClientAddress = clientAddress;
     }
 
-    private static void loadAutoSave() throws IOException, ClassNotFoundException {
-        //Создание байтбуффера для приема запроса от клиента
-        ByteBuffer requestBuffer = ByteBuffer.allocate(4096);
-
-        //Получение датаграммы в байтбуффер и сохраняем адрес клиента в remoteAdd
-        clientAddress = channel.receive(requestBuffer);
-        byte[] arr = requestBuffer.array();
-
-        //Создаем поток ввода для считывания запроса
-        ByteArrayInputStream bais = new ByteArrayInputStream(arr);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-
-        requestArr = (Object[]) ois.readObject();
-        System.out.println(Arrays.toString(requestArr) + " received from client at: " + clientAddress);
-
-        if ((command = (String) requestArr[0]).equals("load")) {
-            Data.readAutoSave();
-        }
-    }
 }
-

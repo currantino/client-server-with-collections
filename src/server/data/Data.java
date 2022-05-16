@@ -23,6 +23,15 @@ import java.util.TreeMap;
 public class Data {
 
     private static int idForNewRoutes;
+
+    public static String getAutoSavePath() {
+        return autoSavePath;
+    }
+
+    public static void setAutoSavePath(String autoSavePath) {
+        Data.autoSavePath = autoSavePath;
+    }
+
     private static String autoSavePath = "/Users/boi/Desktop/client-server-with-collections/resources/autoSave.json";
 
     private static TreeMap<String, Command> commands = new TreeMap();
@@ -58,6 +67,7 @@ public class Data {
         commands.put("head", new HeadCommand());
         commands.put("remove_greater", new RemoveGreaterCommand());
         commands.put("remove_lower", new RemoveLowerCommand());
+        commands.put("load_auto_save", new LoadAutoSaveCommand());
     }
 
     public static Route generateAndSetId(Route route) {
