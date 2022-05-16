@@ -32,7 +32,7 @@ public class Data {
         Data.autoSavePath = autoSavePath;
     }
 
-    private static String autoSavePath = "/Users/boi/Desktop/client-server-with-collections/resources/autoSave.json";
+    private static String autoSavePath = "resources/autoSave.json";
 
     private static TreeMap<String, Command> commands = new TreeMap();
     private static LinkedList<Route> routes = new LinkedList();
