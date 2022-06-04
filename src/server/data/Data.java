@@ -55,11 +55,11 @@ public class Data {
         commands.put("load_auto_save", new LoadAutoSaveCommand());
     }
 
-    public static Route generateAndSetId(Route route) {
-        route.setId(idForNewRoutes);
-        idForNewRoutes++;
-        return route;
-    }
+//    public static Route generateAndSetId(Route route) {
+//        route.setId(idForNewRoutes);
+//        idForNewRoutes++;
+//        return route;
+//    }
 
     public static boolean autoSave() {
         if (!getRoutes().isEmpty()) {
