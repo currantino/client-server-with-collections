@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 
 public class Server {
 
+    public static String command;
+    public static Object argument;
     private static String serverName = "localhost";
     private static int serverPort = 1234;
     private static DatagramChannel channel;
@@ -21,8 +23,6 @@ public class Server {
     private static SocketAddress lastClientAddress;
     private static InetSocketAddress serverAdd = new InetSocketAddress(serverName, serverPort);
     private static Object[] requestArr;
-    public static String command;
-    public static Object argument;
     private static String result;
 
 

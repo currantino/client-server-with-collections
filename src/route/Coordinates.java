@@ -5,14 +5,15 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Coordinates implements Serializable {
+    transient Scanner sc;
     private int x;
     private float y;
-    transient Scanner sc;
+
     public Coordinates() {
         sc = new Scanner(System.in);
         System.out.println("x coordinate: ");
         this.x = sc.nextInt();
-        while(this.x <= -181){
+        while (this.x <= -181) {
             System.out.println("incorrect\nx coordinate: ");
             this.x = sc.nextInt();
         }
@@ -23,6 +24,14 @@ public class Coordinates implements Serializable {
     public Coordinates(int x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 
     @Override
@@ -38,11 +47,5 @@ public class Coordinates implements Serializable {
         return Objects.hash(x, y);
     }
 
-    public int getX() {
-        return x;
-    }
 
-    public float getY() {
-        return y;
-    }
 }

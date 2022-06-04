@@ -13,7 +13,7 @@ public class ShowCommand extends Command {
         if (!Data.getRoutes().isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder(result);
             for (Route route : Data.getRoutes()) {
-                stringBuilder.append(route.toString()).append('\n');
+                stringBuilder.append(route.show()).append('\n');
             }
             result = stringBuilder.toString();
         } else {

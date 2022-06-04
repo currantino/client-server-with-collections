@@ -20,7 +20,7 @@ public class MinByCreationDateCommand extends Command {
                     return o1.getCreationDate().compareTo(o2.getCreationDate());
                 }
             });
-            return sortedByDate.getFirst().toString();
+            return sortedByDate.getFirst().show();
         }
         return "collection is empty";
     }

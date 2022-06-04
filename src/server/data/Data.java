@@ -7,6 +7,7 @@ import server.commands.*;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -34,7 +35,6 @@ public class Data {
     public static TreeMap<String, Command> getCommands() {
         return commands;
     }
-
     public static void setCommands() {
         commands.put("exit", new ExitCommand());
         commands.put("help", new HelpCommand());

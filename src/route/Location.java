@@ -5,11 +5,11 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Location implements Serializable {
+    transient Scanner sc;
+    private String name;
     private int x;
     private int y;
     private int z;
-    private String name;
-    transient Scanner sc;
 
 
     public Location() {
@@ -33,9 +33,22 @@ public class Location implements Serializable {
         this.z = z;
     }
 
+    public String show() {
+        return name + '(' +
+                x + ", " +
+                y + ", " +
+                z +
+                ')';
+    }
+
     @Override
     public String toString() {
-        return this.name + "(" + this.x + ", " + this.y + ", " + this.z + ")";
+        return "Location{" +
+                "name='" + name + '\'' +
+                ", x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
     }
 
     @Override
@@ -51,17 +64,6 @@ public class Location implements Serializable {
         return Objects.hash(x, y, z, name);
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getZ() {
-        return z;
-    }
 
     public String getName() {
         return name;

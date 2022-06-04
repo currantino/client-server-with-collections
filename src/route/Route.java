@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Route implements Serializable {
 
+    transient Scanner sc;
     private int id;
     private String name;
     private Coordinates coordinates;
@@ -14,7 +15,6 @@ public class Route implements Serializable {
     private Location from;
     private Location to;
     private Float distance;
-    transient Scanner sc;
 
 
     /**
@@ -59,37 +59,18 @@ public class Route implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public void setFrom(Location from) {
-        this.from = from;
-    }
-
-    public void setTo(Location to) {
-        this.to = to;
-    }
-
-    public void setDistance(Float distance) {
-        this.distance = distance;
-    }
 
     @Override
     public String toString() {
-        return "Server.route.Route" + "(" + this.id + ")" + " from " + this.from + " to " + this.to + " created: " + this.creationDate;
+        return "Route{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", coordinates=" + coordinates +
+                ", creationDate=" + creationDate +
+                ", from=" + from +
+                ", to=" + to +
+                ", distance=" + distance +
+                '}';
     }
 
     @Override
@@ -105,35 +86,65 @@ public class Route implements Serializable {
         return Objects.hash(id, name, coordinates, creationDate, from, to, distance);
     }
 
+    public String show() {
+        return "Route" + "(" + id + ")" + " from " + from.show() + " to " + to.show() + " created: " + this.creationDate;
+    }
+
+
     public Float getDistance() {
         return this.distance;
+    }
+
+    public void setDistance(Float distance) {
+        this.distance = distance;
     }
 
     public LocalDateTime getCreationDate() {
         return this.creationDate;
     }
 
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Coordinates getCoordinates() {
         return coordinates;
     }
 
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
     public Location getFrom() {
         return from;
     }
 
+    public void setFrom(Location from) {
+        this.from = from;
+    }
 
     public Location getTo() {
         return to;
+    }
+
+    public void setTo(Location to) {
+        this.to = to;
     }
 
 }
