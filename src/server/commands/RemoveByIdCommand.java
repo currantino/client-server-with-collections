@@ -15,9 +15,9 @@ public class RemoveByIdCommand extends Command {
             int id = Integer.parseInt((String) jdbcServer.argument);
             if (!Data.getRoutes().isEmpty()) {
                 if (Data.getRoutes().removeIf(route -> route.getId() == id)) {
-                    return "route with id = " + id + " removed";
+                    return "mid.route with id = " + id + " removed";
                 } else {
-                    return "route not found";
+                    return "mid.route not found";
                 }
             }
             return "collection is empty";

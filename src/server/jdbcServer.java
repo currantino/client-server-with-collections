@@ -1,5 +1,6 @@
 package server;
 
+import mid.ServerRequest;
 import server.commands.Command;
 import server.data.Data;
 
@@ -11,7 +12,6 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.sql.Connection;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -28,9 +28,11 @@ public class jdbcServer {
     private static int serverPort = 1234;
     private static DatagramChannel channel;
     private static SocketAddress clientAddress;
+    public static String login;
+    public static String password;
     private static SocketAddress lastClientAddress;
     private static InetSocketAddress serverAdd = new InetSocketAddress(serverName, serverPort);
-    private static Object[] requestArr;
+    private static ServerRequest request;
     private static String result;
     private static String dbURL;
     private static Properties info;
@@ -69,15 +71,10 @@ public class jdbcServer {
         ByteArrayInputStream bais = new ByteArrayInputStream(arr);
         ObjectInputStream ois = new ObjectInputStream(bais);
 
-        requestArr = (Object[]) ois.readObject();
-        LOGGER.info(Arrays.toString(requestArr) + " received from client at: " + clientAddress);
+        request = (ServerRequest) ois.readObject();
+        readRequestData(request);
 
-        command = (String) requestArr[0];
-        System.out.println(command);
-        if (requestArr.length > 1) {
-            argument = requestArr[1];
-        }
-
+        LOGGER.info(request + " received from client at: " + login);
     }
 
     private static void sendResult() throws IOException {
@@ -95,5 +92,12 @@ public class jdbcServer {
 
     private static String processCommand(Command command) {
         return command.execute();
+    }
+
+    private static void readRequestData(ServerRequest request) {
+        command = request.getCommand();
+        argument = request.getArgument();
+        login = request.getLogin();
+        password = request.getPassword();
     }
 }

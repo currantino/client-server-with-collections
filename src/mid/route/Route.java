@@ -24,7 +24,7 @@ public class Route implements Serializable {
         sc = new Scanner(System.in);
         while (this.name == null || this.name.equals("")) {
             System.out.println("enter new route name: ");
-            this.name = sc.next();
+            this.name = sc.nextLine();
         }
         while (this.distance == null || this.distance <= 0) {
             System.out.println("enter new route distance:");

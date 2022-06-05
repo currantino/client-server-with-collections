@@ -1,6 +1,6 @@
 package server.commands;
 
-import route.Route;
+import mid.route.Route;
 import server.data.Data;
 import server.jdbcServer;
 
@@ -10,7 +10,7 @@ import static server.data.Data.pdb;
  * Команда для добавления нового элемента в коллекцию через командную строку
  */
 
-public class AddCommand extends SqlCommand {
+public class AddCommand extends Command {
 
     public AddCommand() {
         super("add", "adds an element to the collection of routes");
@@ -22,9 +22,9 @@ public class AddCommand extends SqlCommand {
             if (pdb.add(newRoute)) {
                 Data.getRoutes().add(newRoute);
                 Data.getCommands().get("sort_by_distance").execute();
-                return "new route added successfully";
+                return "new mid.route added successfully";
             }
-        } else return "route is null";
+        } else return "mid.route is null";
         return ":(";
     }
 }

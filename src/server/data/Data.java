@@ -1,14 +1,13 @@
 package server.data;
 
 import org.json.JSONArray;
-import route.Route;
+import mid.route.Route;
 import server.commands.*;
 import server.database.PostgresSqlDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -32,7 +31,7 @@ public class Data {
     private static TreeMap<String, Command> commands = new TreeMap();
     private static LinkedList<Route> routes = new LinkedList();
     public static boolean isSaved = false;
-    public static PostgresSqlDatabase pdb = new PostgresSqlDatabase();
+    public static PostgresSqlDatabase pdb = new PostgresSqlDatabase("jdbc:postgresql://localhost:5432/studs");
 
     public static TreeMap<String, Command> getCommands() {
         return commands;
@@ -49,12 +48,13 @@ public class Data {
         commands.put("min_by_creation_date", new MinByCreationDateCommand());
         commands.put("print_unique_distance", new PrintUniqueDistanceCommand());
         commands.put("remove_by_id", new RemoveByIdCommand());
-        commands.put("update", new UpdateCommand());
+//        commands.put("update", new UpdateCommand());
         commands.put("sort_by_creation_date", new SortByDateTimeCommand());
         commands.put("head", new HeadCommand());
         commands.put("remove_greater", new RemoveGreaterCommand());
         commands.put("remove_lower", new RemoveLowerCommand());
         commands.put("load_auto_save", new LoadAutoSaveCommand());
+        commands.put("register", new RegisterCommand());
     }
 
     public static Route generateAndSetId(Route route) {

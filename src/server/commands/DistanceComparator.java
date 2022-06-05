@@ -1,6 +1,6 @@
 package server.commands;
 
-import route.Route;
+import mid.route.Route;
 
 import java.util.Comparator;
 

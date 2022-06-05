@@ -2,7 +2,7 @@ package server.commands;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import route.Route;
+import mid.route.Route;
 import server.data.Data;
 
 import java.io.IOException;
@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-import java.util.List;
 
 public class LoadAutoSaveCommand extends Command {
 
