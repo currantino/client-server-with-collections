@@ -3,6 +3,7 @@ package server.data;
 import org.json.JSONArray;
 import route.Route;
 import server.commands.*;
+import server.database.PostgresSqlDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -31,6 +32,7 @@ public class Data {
     private static TreeMap<String, Command> commands = new TreeMap();
     private static LinkedList<Route> routes = new LinkedList();
     public static boolean isSaved = false;
+    public static PostgresSqlDatabase pdb = new PostgresSqlDatabase();
 
     public static TreeMap<String, Command> getCommands() {
         return commands;

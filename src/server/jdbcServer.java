@@ -1,11 +1,9 @@
 package server;
 
 import server.commands.Command;
-import server.commands.SqlCommand;
 import server.data.Data;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
@@ -13,8 +11,6 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
@@ -24,6 +20,7 @@ import java.util.logging.Logger;
 
 public class jdbcServer {
 
+    private static final Logger LOGGER = Logger.getLogger("jdbcSever");
     public static String command;
     public static Object argument;
     public static Connection conn;
@@ -37,13 +34,8 @@ public class jdbcServer {
     private static String result;
     private static String dbURL;
     private static Properties info;
-    private static final Logger LOGGER = Logger.getLogger("jdbcSever");
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        dbURL = "jdbc:postgresql://localhost:5432/studs";
-        info = new Properties();
-        info.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/db.cfg"));
-
 
 
         Handler handlerObj = new ConsoleHandler();
@@ -90,7 +82,7 @@ public class jdbcServer {
 
     private static void sendResult() throws IOException {
         if (Data.getCommands().containsKey(command)) {
-            processCommand(Data.getCommands().get(command));
+            result = processCommand(Data.getCommands().get(command));
         } else {
             result = "unknown command, use 'help' ";
             LOGGER.info("unknown command received");
@@ -101,17 +93,7 @@ public class jdbcServer {
         lastClientAddress = clientAddress;
     }
 
-    private static void processCommand(Command command) {
-        if (command instanceof SqlCommand) {
-            try {
-                conn = DriverManager.getConnection(dbURL, info);
-                result = command.execute();
-                conn.close();
-            } catch (SQLException e) {
-                LOGGER.warning("connection to db failed");
-            }
-        } else {
-            result = command.execute();
-        }
+    private static String processCommand(Command command) {
+        return command.execute();
     }
 }
