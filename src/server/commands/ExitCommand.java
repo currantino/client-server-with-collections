@@ -1,6 +1,5 @@
 package server.commands;
 
-import server.Server;
 import server.data.Data;
 
 /**

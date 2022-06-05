@@ -1,21 +1,21 @@
 package server.commands;
 
 import route.Route;
-import server.Server;
 import server.data.Data;
+import server.jdbcServer;
 
 public class UpdateCommand extends Command {
+
+    boolean found = false;
 
     public UpdateCommand() {
         super("update", "updates the route with required id");
     }
 
-    boolean found = false;
-
     @Override
     public String execute() {
         try {
-            Route updatedRoute = (Route) Server.argument;
+            Route updatedRoute = (Route) jdbcServer.argument;
             int idForUpdating = updatedRoute.getId();
             if (!Data.getRoutes().isEmpty()) {
                 if (Data.getRoutes().removeIf(route -> route.getId() == idForUpdating)) {

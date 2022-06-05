@@ -1,6 +1,6 @@
 package server.commands;
 
-import server.Server;
+import server.jdbcServer;
 import server.data.Data;
 
 public class RemoveByIdCommand extends Command {
@@ -12,7 +12,7 @@ public class RemoveByIdCommand extends Command {
     @Override
     public String execute() {
         try {
-            int id = Integer.parseInt((String) Server.argument);
+            int id = Integer.parseInt((String) jdbcServer.argument);
             if (!Data.getRoutes().isEmpty()) {
                 if (Data.getRoutes().removeIf(route -> route.getId() == id)) {
                     return "route with id = " + id + " removed";

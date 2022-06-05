@@ -1,6 +1,7 @@
 package server;
 
-import server.commands.SQLCommand;
+import server.commands.Command;
+import server.commands.SqlCommand;
 import server.data.Data;
 
 import java.io.ByteArrayInputStream;
@@ -11,16 +12,21 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class jdbcServer {
 
     public static String command;
     public static Object argument;
-    public static PreparedStatement statement;
+    public static Connection conn;
     private static String serverName = "localhost";
     private static int serverPort = 1234;
     private static DatagramChannel channel;
@@ -30,21 +36,27 @@ public class jdbcServer {
     private static Object[] requestArr;
     private static String result;
     private static String dbURL;
-    public static Connection conn;
+    private static Properties info;
+    private static final Logger LOGGER = Logger.getLogger("jdbcSever");
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         dbURL = "jdbc:postgresql://localhost:5432/studs";
+        info = new Properties();
+        info.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/db.cfg"));
 
 
-        Logger logger = Logger.getLogger("server logger");
+
+        Handler handlerObj = new ConsoleHandler();
+        handlerObj.setLevel(Level.ALL);
+        LOGGER.addHandler(handlerObj);
+        LOGGER.setLevel(Level.ALL);
+        LOGGER.setUseParentHandlers(false);
         Data.setCommands();
 
         //Открытие канала, который слушает на заданном адресе serverAdd
         channel = DatagramChannel.open();
         channel.bind(serverAdd);
-        logger.fine("channel server started at: " + serverAdd);
-
-        System.out.println("sql connection established");
+        LOGGER.fine("channel server started at: " + serverAdd);
 
         while (true) {
             getRequest();
@@ -66,7 +78,7 @@ public class jdbcServer {
         ObjectInputStream ois = new ObjectInputStream(bais);
 
         requestArr = (Object[]) ois.readObject();
-        System.out.println(Arrays.toString(requestArr) + " received from client at: " + clientAddress);
+        LOGGER.info(Arrays.toString(requestArr) + " received from client at: " + clientAddress);
 
         command = (String) requestArr[0];
         System.out.println(command);
@@ -76,24 +88,30 @@ public class jdbcServer {
 
     }
 
-    private static void sendResult() throws IOException, SQLException {
+    private static void sendResult() throws IOException {
         if (Data.getCommands().containsKey(command)) {
-//            if (Data.getCommands().get(command) instanceof SQLCommand) {
-                Properties info = new Properties();
-                info.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/db.cfg"));
-                conn = DriverManager.getConnection(dbURL, info);
-                String sqlRequest = Data.getCommands().get(command).execute();
-                Statement s = conn.createStatement();
-                s.executeUpdate(sqlRequest);
-                conn.close();
-//            }
-            result = Data.getCommands().get(command).execute();
+            processCommand(Data.getCommands().get(command));
         } else {
             result = "unknown command, use 'help' ";
+            LOGGER.info("unknown command received");
         }
         ByteBuffer resultBuffer = ByteBuffer.wrap(result.getBytes());
         channel.send(resultBuffer, clientAddress);
-        System.out.println("'" + result + "'" + " sent to client at: " + clientAddress);
+        LOGGER.fine("result sent to client at " + clientAddress);
         lastClientAddress = clientAddress;
+    }
+
+    private static void processCommand(Command command) {
+        if (command instanceof SqlCommand) {
+            try {
+                conn = DriverManager.getConnection(dbURL, info);
+                result = command.execute();
+                conn.close();
+            } catch (SQLException e) {
+                LOGGER.warning("connection to db failed");
+            }
+        } else {
+            result = command.execute();
+        }
     }
 }
