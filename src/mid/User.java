@@ -1,4 +1,4 @@
-package server;
+package mid;
 
 public class User {
     private int id;

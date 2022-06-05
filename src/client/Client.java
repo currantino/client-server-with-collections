@@ -1,6 +1,7 @@
 package client;
 
-import route.Route;
+import mid.ServerRequest;
+import mid.route.Route;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,8 +20,10 @@ public class Client {
     private static String clientName = "localhost";
     private static int clientPort = 4321;
     private static Object[] inputArr;
-    private static Object command;
+    private static String command;
     private static Object argument;
+    private static String login;
+    private static String password;
 
 
     public static void main(String[] args) throws Exception {
@@ -28,7 +31,7 @@ public class Client {
         //Создание сокета для отправки команд
         ds = new DatagramSocket(clientPort);
 
-        loadAutoSave();
+        login();
 
         while (true) {
             processInput();
@@ -37,40 +40,11 @@ public class Client {
         }
     }
 
-    private static void loadAutoSave() throws IOException {
-        System.out.println("do you want to recover last data?[y/n]");
-        String command = scanner.nextLine();
 
-        if (command.equalsIgnoreCase("y")) {
-            command = "load_auto_save";
-
-
-            byte[] requestArr;
-
-            //Создание потока вывода
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            baos.flush();
-            oos.flush();
-
-            //Запись команды и аргумента в этот поток
-            oos.writeObject(new Object[]{command});
-            oos.flush();
-            oos.close();
-            requestArr = baos.toByteArray();
-
-            //Упаковка команды в датаграмму
-            DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, 1234);
-
-            //Отправка на сервер в порт 1234
-            ds.send(dp);
-            getResult();
-        }
-    }
 
     private static void processInput() {
         inputArr = scanner.nextLine().split(" ");
-        command = inputArr[0];
+        command = (String)inputArr[0];
         if (inputArr.length > 1) {
             argument = inputArr[1];
             if (command.equals("update")) {
@@ -94,8 +68,9 @@ public class Client {
         baos.flush();
         oos.flush();
 
-        //Запись команды и аргумента в этот поток
-        oos.writeObject(new Object[]{command, argument});
+        //Запись команды, аргумента и данных о пользователе в этот поток
+        ServerRequest request = new ServerRequest(command, argument, login, password);
+        oos.writeObject(request);
         oos.flush();
         oos.close();
         requestArr = baos.toByteArray();
@@ -104,7 +79,7 @@ public class Client {
         DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, 1234);
         //Отправка на сервер в порт 1234
         ds.send(dp);
-        System.out.println(Arrays.toString(inputArr) + " sent to server at: " + serverAddress);
+        System.out.println(request + " sent to server at: " + serverAddress);
 
     }
 
@@ -124,5 +99,12 @@ public class Client {
             System.exit(0);
         }
     }
-
+    private static void login(){
+        System.out.println("login: ");
+        login = scanner.next();
+        System.out.println("password: ");
+        password = scanner.next();
+        System.out.println("login is " + login);
+        System.out.println("password is " + password);
+    }
 }

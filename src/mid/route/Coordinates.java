@@ -1,4 +1,4 @@
-package route;
+package mid.route;
 
 import java.io.Serializable;
 import java.util.Objects;
