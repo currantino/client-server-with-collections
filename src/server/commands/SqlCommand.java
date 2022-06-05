@@ -4,9 +4,8 @@ public abstract class SqlCommand extends Command {
 
     private String statement;
 
-    public SqlCommand(String name, String desc, String statement) {
+    public SqlCommand(String name, String desc) {
         super(name, desc);
-        this.statement = statement;
     }
 
     public String getStatement() {

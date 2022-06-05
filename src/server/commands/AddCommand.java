@@ -14,13 +14,12 @@ import java.sql.SQLException;
 public class AddCommand extends SqlCommand {
 
     public AddCommand() {
-        super("add", "adds an element to the collection of routes", "INSERT INTO routes VALUES(nextval('routes_id_seq'), ?, ?, ?, ?, ?, ?, ?, ?, ?");
+        super("add", "adds an element to the collection of routes");
     }
 
     public String execute() {
         try {
             if (jdbcServer.argument != null) {
-
                 Route newRoute = (Route) jdbcServer.argument;
                 Location newFrom = newRoute.getFrom();
                 Location newTo = newRoute.getTo();
