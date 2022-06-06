@@ -39,10 +39,11 @@ public class jdbcServer {
     private static ServerRequest request;
     private static String result;
     private static String dbURL = "jdbc:postgresql://localhost:5432/studs";
+    private static String propertiesPath = "/Users/boi/Desktop/client-server-with-collections/config/db.cfg";
     private static Properties info = new Properties();
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        info.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/db.cfg"));
+        info.load(new FileInputStream(propertiesPath));
         pdb = new RoutePostgresSqlDatabase(dbURL, info);
         Data.setRoutes(pdb.getElements());
         Handler handlerObj = new ConsoleHandler();

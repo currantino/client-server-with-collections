@@ -12,7 +12,6 @@ public class ExitCommand extends Command implements NotCheckable {
     }
 
     public String execute() {
-        Data.autoSave();
         return "exit";
     }
 }

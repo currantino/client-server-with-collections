@@ -15,7 +15,6 @@ import java.util.Properties;
 public class RoutePostgresSqlDatabase implements Database<Route> {
     private final String SALT = "pepper";
     private String dbURL;
-    private String propertiesPath = "/Users/boi/Desktop/client-server-with-collections/config/db.cfg";
     private Properties info;
 
     public RoutePostgresSqlDatabase(String dbURL, Properties info) {
@@ -23,7 +22,6 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
         this.info = info;
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
 
-            //users table
             PreparedStatement usersStatement = connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS routes_users(" +
                             "user_id BIGSERIAL PRIMARY KEY, " +
@@ -32,7 +30,6 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
             usersStatement.executeUpdate();
             usersStatement.close();
 
-            //routes table
             PreparedStatement routesStatement = connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS routes(" +
                             "id BIGSERIAL PRIMARY KEY, " +
@@ -62,8 +59,7 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO routes " +
                     "(name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z, creation_datetime, user_id)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            )) {
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
                 setParams(newRoute, statement);
                 statement.setObject(11, newRoute.getCreationDate());
                 statement.setInt(12, getUserId(jdbcServer.login, jdbcServer.password));
@@ -79,30 +75,11 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
     public boolean registerUser(String login, String password) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             String hashedPassword = getHash(password);
-
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO routes_users(login, password) " +
                             "VALUES(?, ?)")) {
                 statement.setString(1, login);
                 statement.setString(2, hashedPassword);
-                return statement.executeUpdate() > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean removeUser(String login, String password) {
-        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "DELETE  FROM routes_users " +
-                            "WHERE login = ? " +
-                            "AND " +
-                            "password = ?")) {
-                statement.setString(1, login);
-                statement.setString(2, getHash(password));
                 return statement.executeUpdate() > 0;
             }
         } catch (SQLException e) {
@@ -124,6 +101,61 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
             statement.setString(2, getHash(password));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean removeUser(String login, String password) {
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE  FROM routes_users " +
+                            "WHERE login = ? " +
+                            "AND " +
+                            "password = ?")) {
+                statement.setString(1, login);
+                statement.setString(2, getHash(password));
+                return statement.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkLogin(String login) {
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement("" +
+                    "SELECT * FROM routes_users " +
+                    "WHERE login = ?")) {
+                statement.setString(1, login);
+                return statement.executeQuery().next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkCreator(int routeId, String email, String password) {
+        return getCreatorId(routeId) == getUserId(email, password);
+    }
+
+    public int getCreatorId(int routeId) {
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT user_id FROM routes " +
+                            "WHERE id = ?")) {
+                statement.setInt(1, routeId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("user_id");
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -245,43 +277,20 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
         return false;
     }
 
+
     @Override
-    public boolean checkLogin(String login) {
+    public boolean removeAllElements(int executorId) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
-            try (PreparedStatement statement = connection.prepareStatement("" +
-                    "SELECT * FROM routes_users " +
-                    "WHERE login = ?")) {
-                statement.setString(1, login);
-                return statement.executeQuery().next();
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM routes " +
+                            "WHERE user_id = ?")) {
+                statement.setInt(1, executorId);
+                return statement.executeUpdate() > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public boolean checkCreator(int routeId, String email, String password) {
-        System.out.println("userId is " + getUserId(email, password));
-        System.out.println("creatorId of routeId " + routeId + " is " + getCreatorId(routeId));
-        return getCreatorId(routeId) == getUserId(email, password);
-    }
-
-    public int getCreatorId(int routeId) {
-        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT user_id FROM routes " +
-                            "WHERE id = ?")) {
-                statement.setInt(1, routeId);
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        return resultSet.getInt("user_id");
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
     }
 
     public String getHash(String sequence) {

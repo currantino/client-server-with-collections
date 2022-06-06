@@ -1,11 +1,8 @@
 package server.data;
 
 import mid.route.Route;
-import org.json.JSONArray;
 import server.commands.*;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -18,18 +15,7 @@ import java.util.TreeMap;
 public class Data {
 
     private static final Map<String, Command> commands = new TreeMap<>();
-    public static boolean isSaved = false;
-    private static int idForNewRoutes;
-    private static String autoSavePath = "resources/autoSave.json";
     private static List<Route> routes = new LinkedList<>();
-
-    public static String getAutoSavePath() {
-        return autoSavePath;
-    }
-
-    public static void setAutoSavePath(String autoSavePath) {
-        Data.autoSavePath = autoSavePath;
-    }
 
     public static Map<String, Command> getCommands() {
         return commands;
@@ -52,30 +38,8 @@ public class Data {
         commands.put("head", new HeadCommand());
         commands.put("remove_greater", new RemoveGreaterCommand());
         commands.put("remove_lower", new RemoveLowerCommand());
-        commands.put("load_auto_save", new LoadAutoSaveCommand());
         commands.put("register", new RegisterCommand());
         commands.put("suicide", new RemoveUserCommand());
-    }
-
-    public static Route generateAndSetId(Route route) {
-        route.setId(idForNewRoutes);
-        idForNewRoutes++;
-        return route;
-    }
-
-    public static boolean autoSave() {
-        if (!getRoutes().isEmpty()) {
-            JSONArray jsonArray = new JSONArray(getRoutes());
-            try {
-                PrintWriter printWriter = new PrintWriter(autoSavePath);
-                printWriter.write(jsonArray.toString());
-                printWriter.close();
-                Data.isSaved = true;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return isSaved;
     }
 
     public static List<Route> getRoutes() {

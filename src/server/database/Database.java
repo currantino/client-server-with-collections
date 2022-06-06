@@ -23,4 +23,5 @@ public interface Database<T> {
     boolean checkPassword(String login, String password);
 
     List<T> getElements();
+    boolean removeAllElements(int executorId);
 }
