@@ -68,16 +68,7 @@ public class PostgresSqlDatabase implements Database {
                     "(name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z, creation_datetime, user_id)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
-            statement.setString(1, newRoute.getName());
-            statement.setFloat(2, newRoute.getDistance());
-            statement.setString(3, newRoute.getFrom().getName());
-            statement.setInt(4, newRoute.getFrom().getX());
-            statement.setInt(5, newRoute.getFrom().getY());
-            statement.setInt(6, newRoute.getFrom().getZ());
-            statement.setString(7, newRoute.getTo().getName());
-            statement.setInt(8, newRoute.getTo().getX());
-            statement.setInt(9, newRoute.getTo().getY());
-            statement.setInt(10, newRoute.getTo().getZ());
+            setParams(newRoute, statement);
             statement.setObject(11, newRoute.getCreationDate());
             statement.setInt(12, getUserId(jdbcServer.login, jdbcServer.password));
             if (statement.executeUpdate() > 0) result = true;
@@ -131,7 +122,7 @@ public class PostgresSqlDatabase implements Database {
     }
 
     @Override
-    public boolean updateElement(Route routeToUpdate) {
+    public boolean updateElement(Route routeToUpdate, String login, String password) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "UPDATE routes " +
@@ -139,16 +130,7 @@ public class PostgresSqlDatabase implements Database {
                             " = " +
                             "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
                             "WHERE id = ?")) {
-                statement.setString(1, routeToUpdate.getName());
-                statement.setFloat(2, routeToUpdate.getDistance());
-                statement.setString(3, routeToUpdate.getFrom().getName());
-                statement.setInt(4, routeToUpdate.getFrom().getX());
-                statement.setInt(5, routeToUpdate.getFrom().getY());
-                statement.setInt(6, routeToUpdate.getFrom().getZ());
-                statement.setString(7, routeToUpdate.getTo().getName());
-                statement.setInt(8, routeToUpdate.getTo().getX());
-                statement.setInt(9, routeToUpdate.getTo().getY());
-                statement.setInt(10, routeToUpdate.getTo().getZ());
+                setParams(routeToUpdate, statement);
                 statement.setInt(11, routeToUpdate.getId());
                 return statement.executeUpdate() > 0;
             }
@@ -156,6 +138,19 @@ public class PostgresSqlDatabase implements Database {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private void setParams(Route routeToUpdate, PreparedStatement statement) throws SQLException {
+        statement.setString(1, routeToUpdate.getName());
+        statement.setFloat(2, routeToUpdate.getDistance());
+        statement.setString(3, routeToUpdate.getFrom().getName());
+        statement.setInt(4, routeToUpdate.getFrom().getX());
+        statement.setInt(5, routeToUpdate.getFrom().getY());
+        statement.setInt(6, routeToUpdate.getFrom().getZ());
+        statement.setString(7, routeToUpdate.getTo().getName());
+        statement.setInt(8, routeToUpdate.getTo().getX());
+        statement.setInt(9, routeToUpdate.getTo().getY());
+        statement.setInt(10, routeToUpdate.getTo().getZ());
     }
 
     @Override
@@ -175,7 +170,7 @@ public class PostgresSqlDatabase implements Database {
     }
 
     @Override
-    public boolean checkLogin(String login){
+    public boolean checkLogin(String login) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement("" +
                     "SELECT * FROM routes_users " +
@@ -189,17 +184,28 @@ public class PostgresSqlDatabase implements Database {
         return false;
     }
 
-    public boolean checkCreator(int userId, Route route){
-        try (Connection connection = DriverManager.getConnection(dbURL, info)){
-            try(PreparedStatement statement = connection.prepareStatement(
-                    ""
-            )){
+    public boolean checkCreator(int routeId, String email, String password) {
+        System.out.println("userId is " + getUserId(email, password));
+        System.out.println("creatorId of routeId " + routeId + " is " + getCreatorId(routeId));
+        return getCreatorId(routeId) == getUserId(email, password);
+    }
 
+    public int getCreatorId(int routeId) {
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT user_id FROM routes " +
+                            "WHERE id = ?")) {
+                statement.setInt(1, routeId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("user_id");
+                    }
+                }
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     public String getHash(String sequence) {
