@@ -22,9 +22,9 @@ public class AddCommand extends Command {
             if (pdb.addElement(newRoute)) {
                 Data.getRoutes().add(newRoute);
                 Data.getCommands().get("sort_by_distance").execute();
-                return "new mid.route added successfully";
+                return "new route added successfully";
             }
-        } else return "mid.route is null";
+        } else return "route is null";
         return ":(";
     }
 }

@@ -30,7 +30,7 @@ public class Route implements Serializable {
             System.out.println("enter new route distance:");
             this.distance = sc.nextFloat();
         }
-        this.coordinates = new Coordinates();
+//        this.coordinates = new Coordinates();
         this.from = new Location();
         this.to = new Location();
         this.creationDate = LocalDateTime.now().withNano(0);
@@ -40,13 +40,15 @@ public class Route implements Serializable {
      * Конструктор, используемый при добавлении нового элемента в коллекцию из файла
      */
 
-    public Route(String name, Float distance, int xCoordinate, Float yCoordinate, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ) {
+    public Route(int id, String name, Float distance, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ, LocalDateTime creationDate) {
+        this.id = id;
         this.name = name;
         this.distance = distance;
         this.from = new Location(fromName, fromX, fromY, fromZ);
         this.to = new Location(toName, toX, toY, toZ);
-        this.creationDate = LocalDateTime.now().withNano(0);
-        this.coordinates = new Coordinates(xCoordinate, yCoordinate);
+//        this.creationDate = LocalDateTime.now().withNano(0);
+        this.creationDate = creationDate;
+//        this.coordinates = new Coordinates(xCoordinate, yCoordinate);
     }
 
     public Route(String name, Float distance, int xCoordinate, Float yCoordinate, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ, LocalDateTime creationDate) {

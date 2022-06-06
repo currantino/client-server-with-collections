@@ -7,6 +7,8 @@ import server.commands.*;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -15,11 +17,11 @@ import java.util.TreeMap;
 
 public class Data {
 
+    private static final Map<String, Command> commands = new TreeMap<>();
     public static boolean isSaved = false;
     private static int idForNewRoutes;
     private static String autoSavePath = "resources/autoSave.json";
-    private static TreeMap<String, Command> commands = new TreeMap();
-    private static LinkedList<Route> routes = new LinkedList();
+    private static List<Route> routes = new LinkedList<>();
 
     public static String getAutoSavePath() {
         return autoSavePath;
@@ -29,7 +31,7 @@ public class Data {
         Data.autoSavePath = autoSavePath;
     }
 
-    public static TreeMap<String, Command> getCommands() {
+    public static Map<String, Command> getCommands() {
         return commands;
     }
 
@@ -75,11 +77,11 @@ public class Data {
         return isSaved;
     }
 
-    public static LinkedList<Route> getRoutes() {
+    public static List<Route> getRoutes() {
         return routes;
     }
 
-    public static void setRoutes(LinkedList<Route> routes) {
+    public static void setRoutes(List<Route> routes) {
         Data.routes = routes;
     }
 }

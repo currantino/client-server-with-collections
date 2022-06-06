@@ -18,7 +18,7 @@ public class RemoveLowerCommand extends Command {
             double dist = Double.parseDouble((String) jdbcServer.argument);
             if (!Data.getRoutes().isEmpty()) {
                 Data.setRoutes(Data.getRoutes().stream().filter(route -> route.getDistance() >= dist).collect(Collectors.toCollection(LinkedList::new)));
-                return "routes with distance lower than " + dist + " removed";
+                return "routes with distance lower than " + dist + " have been removed";
             }
             return "collections is empty";
         } catch (NumberFormatException e) {

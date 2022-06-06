@@ -1,7 +1,9 @@
 package server.commands;
 
-import server.jdbcServer;
 import server.data.Data;
+import server.jdbcServer;
+
+import static server.jdbcServer.pdb;
 
 public class RemoveByIdCommand extends Command {
 
@@ -11,18 +13,19 @@ public class RemoveByIdCommand extends Command {
 
     @Override
     public String execute() {
-        try {
-            int id = Integer.parseInt((String) jdbcServer.argument);
-            if (!Data.getRoutes().isEmpty()) {
-                if (Data.getRoutes().removeIf(route -> route.getId() == id)) {
-                    return "mid.route with id = " + id + " removed";
-                } else {
-                    return "mid.route not found";
-                }
+        if (!Data.getRoutes().isEmpty()) {
+            try {
+                int id = Integer.parseInt((String) jdbcServer.argument);
+                if (pdb.checkExistence(id)) {
+                    if (pdb.removeElementById(id)) {
+                        if (Data.getRoutes().removeIf(route -> route.getId() == id))
+                            return "route with id = " + id + " has been removed";
+                    }
+                } else return "route with id = " + id + " does not exist";
+            } catch (NumberFormatException e) {
+                return "invalid id";
             }
-            return "collection is empty";
-        } catch (NumberFormatException e) {
-            return "invalid id";
         }
+        return "collection is empty";
     }
 }

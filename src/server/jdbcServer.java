@@ -4,7 +4,7 @@ import mid.ServerRequest;
 import server.commands.Command;
 import server.commands.NotCheckable;
 import server.data.Data;
-import server.database.PostgresSqlDatabase;
+import server.database.RoutePostgresSqlDatabase;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class jdbcServer {
     public static Connection conn;
     public static String login;
     public static String password;
-    public static PostgresSqlDatabase pdb;
+    public static RoutePostgresSqlDatabase pdb;
     private static String serverName = "localhost";
     private static int serverPort = 1234;
     private static DatagramChannel channel;
@@ -42,8 +42,8 @@ public class jdbcServer {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        pdb = new PostgresSqlDatabase("jdbc:postgresql://localhost:5432/studs");
-
+        pdb = new RoutePostgresSqlDatabase("jdbc:postgresql://localhost:5432/studs");
+        Data.setRoutes(pdb.getData());
         Handler handlerObj = new ConsoleHandler();
         handlerObj.setLevel(Level.ALL);
         LOGGER.addHandler(handlerObj);

@@ -12,7 +12,7 @@ public class SortByDateTimeCommand extends Command {
     public String execute() {
         if (!Data.getRoutes().isEmpty()) {
             Data.getRoutes().sort(new DateTimeComparator());
-            return "collection was sorted by creation date";
+            return "collection has been sorted by creation date";
         }
         return "collection is empty";
     }

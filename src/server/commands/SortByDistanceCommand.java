@@ -12,6 +12,7 @@ public class SortByDistanceCommand extends Command {
     public String execute() {
         if (!Data.getRoutes().isEmpty()) {
             Data.getRoutes().sort(new DistanceComparator());
+            return "collection has been sorted by distance";
         }
         return "collection is empty";
     }

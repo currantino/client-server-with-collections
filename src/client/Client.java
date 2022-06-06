@@ -54,7 +54,9 @@ public class Client {
         if (command.equals("login")) {
             login();
         }
-        System.out.println("command is " + command);
+        if (command.equals("register")) {
+            register();
+        }
     }
 
     private static void sendRequest() throws IOException {
@@ -105,21 +107,19 @@ public class Client {
         login = loginScanner.next();
         System.out.println("password: ");
         password = loginScanner.next();
-        System.out.println("login is " + login);
-        System.out.println("password is " + password);
         go();
     }
 
     private static boolean register() {
         System.out.println("login: ");
-        login = scanner.next();
+        login = loginScanner.next();
         System.out.println("password: ");
-        password = scanner.next();
+        password = loginScanner.next();
         System.out.println("repeat password: ");
-        String passwordRepeated = scanner.next();
+        String passwordRepeated = loginScanner.next();
         while (!password.equals(passwordRepeated)) {
             System.out.println("passwords don't match");
-            passwordRepeated = scanner.next();
+            passwordRepeated = loginScanner.next();
             if (passwordRepeated.equals("exit"))
                 return false;
         }

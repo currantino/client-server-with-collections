@@ -9,17 +9,21 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
-public class PostgresSqlDatabase implements Database {
+public class RoutePostgresSqlDatabase<T extends Route> implements Database<T> {
     private final String SALT = "pepper";
     private String dbURL;
+    private String propertiesPath = "/Users/boi/Desktop/client-server-with-collections/config/db.cfg";
     private Properties info = new Properties();
 
-    public PostgresSqlDatabase(String dbURL) {
+    public RoutePostgresSqlDatabase(String dbURL) {
         this.dbURL = dbURL;
         try {
-            info.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/db.cfg"));
+            info.load(new FileInputStream(propertiesPath));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -62,22 +66,19 @@ public class PostgresSqlDatabase implements Database {
 
     @Override
     public boolean addElement(Route newRoute) {
-        boolean result = false;
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO routes " +
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO routes " +
                     "(name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z, creation_datetime, user_id)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            );
-            setParams(newRoute, statement);
-            statement.setObject(11, newRoute.getCreationDate());
-            statement.setInt(12, getUserId(jdbcServer.login, jdbcServer.password));
-            if (statement.executeUpdate() > 0) result = true;
-            statement.close();
+            )) {
+                setParams(newRoute, statement);
+                statement.setObject(11, newRoute.getCreationDate());
+                statement.setInt(12, getUserId(jdbcServer.login, jdbcServer.password));
+                return statement.executeUpdate() > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("db connection failed");
-        } finally {
-            return result;
+            return false;
         }
     }
 
@@ -89,7 +90,6 @@ public class PostgresSqlDatabase implements Database {
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO routes_users(login, password) " +
                             "VALUES(?, ?)")) {
-                ;
                 statement.setString(1, email);
                 statement.setString(2, hashedPassword);
                 return statement.executeUpdate() > 0;
@@ -112,17 +112,33 @@ public class PostgresSqlDatabase implements Database {
             statement.setString(1, email);
             statement.setString(2, getHash(password));
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
+            if (resultSet.next()) return resultSet.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
     }
 
+
     @Override
-    public boolean updateElement(Route routeToUpdate, String login, String password) {
+    public boolean checkExistence(int id) {
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement("" +
+                    "SELECT count(id) FROM routes " +
+                    "WHERE id = ?")) {
+                statement.setInt(1, id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) return resultSet.getInt("count") == 1;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateElement(Route routeToUpdate) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "UPDATE routes " +
@@ -162,6 +178,54 @@ public class PostgresSqlDatabase implements Database {
                 statement.setString(1, login);
                 statement.setString(2, getHash(password));
                 return statement.executeQuery().next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //вызывать при подключении нового клиента
+    @Override
+    public List<Route> getData() {
+        List<Route> data = new LinkedList<>();
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM routes"
+            )) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int id = resultSet.getInt("id");
+                        String name = resultSet.getString("name");
+                        Float distance = resultSet.getFloat("distance");
+                        String fromName = resultSet.getString("from_name");
+                        int fromX = resultSet.getInt("from_x");
+                        int fromY = resultSet.getInt("from_y");
+                        int fromZ = resultSet.getInt("from_z");
+                        String toName = resultSet.getString("to_name");
+                        int toX = resultSet.getInt("to_x");
+                        int toY = resultSet.getInt("to_y");
+                        int toZ = resultSet.getInt("to_z");
+                        LocalDateTime creationDateTime = resultSet.getObject("creation_datetime", LocalDateTime.class);
+                        data.add(new Route(id, name, distance, fromName, fromX, fromY, fromZ, toName, toX, toY, toZ, creationDateTime));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    @Override
+    public boolean removeElementById(int id) {
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM routes " +
+                            "WHERE id = ?")
+            ) {
+                statement.setInt(1, id);
+                return statement.executeUpdate() > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();

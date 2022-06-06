@@ -15,15 +15,17 @@ public class UpdateCommand extends Command {
     public String execute() {
         if (argument != null) {
             Route routeToUpdate = (Route) argument;
-            if (pdb.checkCreator(routeToUpdate.getId(), login, password)) {
-                System.out.println("userId is " + routeToUpdate.getId());
-                System.out.println("creatorId");
-                if (pdb.updateElement(routeToUpdate, login, password)) {
-                    Data.getRoutes().add(routeToUpdate);
-                    return "route with id = " + routeToUpdate.getId() + " updated successfully";
-                } else return "route with id = " + routeToUpdate.getId() + " not found";
-            } else return "you cannot change elements created by other users";
+            if (pdb.checkExistence(routeToUpdate.getId())) {
+                if (pdb.checkCreator(routeToUpdate.getId(), login, password)) {
+                    if (pdb.updateElement(routeToUpdate)) {
+                        Data.getRoutes().removeIf(route -> route.getId() == routeToUpdate.getId());
+                        Data.getRoutes().add(routeToUpdate);
+                        return "route with id = " + routeToUpdate.getId() + " updated successfully";
+                    }else return "updating failed";
+                } else return "you cannot change elements created by other users";
+            }
+            else return "route with id = " + routeToUpdate.getId() + " not found";
         }
-        return "route provided for updating is null";
+        else return "route provided for updating is null";
     }
 }

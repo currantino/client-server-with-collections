@@ -10,8 +10,7 @@ public class HeadCommand extends Command {
     @Override
     public String execute() {
         if (!Data.getRoutes().isEmpty()) {
-            new SortByDistanceCommand().execute();
-            return Data.getRoutes().getFirst().show();
+            return Data.getRoutes().get(0).show();
         }
         return "collection is empty";
     }
