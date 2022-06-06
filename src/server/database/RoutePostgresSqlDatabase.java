@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-public class RoutePostgresSqlDatabase<T extends Route> implements Database<T> {
+public class RoutePostgresSqlDatabase implements Database<Route> {
     private final String SALT = "pepper";
     private String dbURL;
     private String propertiesPath = "/Users/boi/Desktop/client-server-with-collections/config/db.cfg";
@@ -93,6 +93,20 @@ public class RoutePostgresSqlDatabase<T extends Route> implements Database<T> {
                 statement.setString(1, email);
                 statement.setString(2, hashedPassword);
                 return statement.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeUser(String email, String password) {
+//        for
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    ""
+            )) {
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -187,7 +201,7 @@ public class RoutePostgresSqlDatabase<T extends Route> implements Database<T> {
 
     //вызывать при подключении нового клиента
     @Override
-    public List<Route> getData() {
+    public List<Route> getElements() {
         List<Route> data = new LinkedList<>();
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement(
@@ -225,7 +239,8 @@ public class RoutePostgresSqlDatabase<T extends Route> implements Database<T> {
                             "WHERE id = ?")
             ) {
                 statement.setInt(1, id);
-                return statement.executeUpdate() > 0;
+                statement.executeUpdate();
+                return statement.executeUpdate() == 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();

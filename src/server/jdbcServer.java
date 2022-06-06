@@ -37,13 +37,13 @@ public class jdbcServer {
     private static InetSocketAddress serverAdd = new InetSocketAddress(serverName, serverPort);
     private static ServerRequest request;
     private static String result;
-    private static String dbURL;
+    private static String dbURL = "jdbc:postgresql://localhost:5432/studs";
     private static Properties info;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        pdb = new RoutePostgresSqlDatabase("jdbc:postgresql://localhost:5432/studs");
-        Data.setRoutes(pdb.getData());
+        pdb = new RoutePostgresSqlDatabase(dbURL);
+        Data.setRoutes(pdb.getElements());
         Handler handlerObj = new ConsoleHandler();
         handlerObj.setLevel(Level.ALL);
         LOGGER.addHandler(handlerObj);
@@ -82,6 +82,8 @@ public class jdbcServer {
     }
 
     private static void sendResult() throws IOException {
+        System.out.println(login);
+        System.out.println(password);
         if (Data.getCommands().containsKey(command)) {
             Command commandToExecute = Data.getCommands().get(command);
             if (commandToExecute instanceof NotCheckable) {

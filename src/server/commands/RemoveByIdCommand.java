@@ -3,7 +3,7 @@ package server.commands;
 import server.data.Data;
 import server.jdbcServer;
 
-import static server.jdbcServer.pdb;
+import static server.jdbcServer.*;
 
 public class RemoveByIdCommand extends Command {
 
@@ -17,10 +17,12 @@ public class RemoveByIdCommand extends Command {
             try {
                 int id = Integer.parseInt((String) jdbcServer.argument);
                 if (pdb.checkExistence(id)) {
-                    if (pdb.removeElementById(id)) {
-                        if (Data.getRoutes().removeIf(route -> route.getId() == id))
+                    if (pdb.checkCreator(id, login, password)) {
+                        if (pdb.removeElementById(id)) {
+                            Data.setRoutes(pdb.getElements());
                             return "route with id = " + id + " has been removed";
-                    }
+                        }
+                    } else return "you can not remove elements created by other users";
                 } else return "route with id = " + id + " does not exist";
             } catch (NumberFormatException e) {
                 return "invalid id";

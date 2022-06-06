@@ -5,9 +5,12 @@ import java.util.List;
 public interface Database<T> {
     boolean addElement(T newElement);
 
+    boolean removeElementById(int id);
+
+
     boolean registerUser(String email, String password);
 
-    boolean removeElementById(int id);
+    boolean removeUser(String email, String password);
 
     int getUserId(String email, String password);
 
@@ -19,5 +22,5 @@ public interface Database<T> {
 
     boolean checkPassword(String login, String password);
 
-    List getData();
+    List<T> getElements();
 }
