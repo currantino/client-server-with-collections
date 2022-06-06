@@ -2,7 +2,7 @@ package server.commands;
 
 import server.data.Data;
 
-public class HelpCommand extends Command {
+public class HelpCommand extends Command implements NotCheckable{
     public HelpCommand() {
         super("help", "prints out a list of valid commands with descriptions");
     }

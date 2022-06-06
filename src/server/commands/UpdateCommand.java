@@ -3,12 +3,10 @@ package server.commands;
 import mid.route.Route;
 import server.data.Data;
 
-import static server.data.Data.pdb;
 import static server.jdbcServer.argument;
+import static server.jdbcServer.pdb;
 
 public class UpdateCommand extends Command {
-
-    boolean found = false;
 
     public UpdateCommand() {
         super("update", "updates the route with required id");
@@ -25,6 +23,5 @@ public class UpdateCommand extends Command {
                 return "route with id = " + routeToUpdate.getId() + " not found";
 
         } else return "route provided for updating is null";
-
     }
 }

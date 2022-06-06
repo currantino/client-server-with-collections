@@ -2,7 +2,9 @@ package server;
 
 import mid.ServerRequest;
 import server.commands.Command;
+import server.commands.NotCheckable;
 import server.data.Data;
+import server.database.PostgresSqlDatabase;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,12 +26,13 @@ public class jdbcServer {
     public static String command;
     public static Object argument;
     public static Connection conn;
+    public static String login;
+    public static String password;
+    public static PostgresSqlDatabase pdb;
     private static String serverName = "localhost";
     private static int serverPort = 1234;
     private static DatagramChannel channel;
     private static SocketAddress clientAddress;
-    public static String login;
-    public static String password;
     private static SocketAddress lastClientAddress;
     private static InetSocketAddress serverAdd = new InetSocketAddress(serverName, serverPort);
     private static ServerRequest request;
@@ -39,6 +42,7 @@ public class jdbcServer {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
+        pdb = new PostgresSqlDatabase("jdbc:postgresql://localhost:5432/studs");
 
         Handler handlerObj = new ConsoleHandler();
         handlerObj.setLevel(Level.ALL);
@@ -74,20 +78,32 @@ public class jdbcServer {
         request = (ServerRequest) ois.readObject();
         readRequestData(request);
 
-        LOGGER.info(request + " received from client at: " + login);
+        LOGGER.info(request + " received from client " + login);
     }
 
     private static void sendResult() throws IOException {
         if (Data.getCommands().containsKey(command)) {
-            result = processCommand(Data.getCommands().get(command));
+            Command commandToExecute = Data.getCommands().get(command);
+            if (commandToExecute instanceof NotCheckable) {
+                result = processCommand(commandToExecute);
+            } else if (pdb.checkLogin(login)) {
+                if (pdb.checkPassword(login, password)) {
+                    result = processCommand(Data.getCommands().get(command));
+                } else {
+                    result = "wrong password";
+                    LOGGER.warning("wrong password");
+                }
+            } else {
+                result = "unknown user: use 'register'";
+                LOGGER.warning("unknown user");
+            }
+            ByteBuffer resultBuffer = ByteBuffer.wrap(result.getBytes());
+            channel.send(resultBuffer, clientAddress);
+            LOGGER.fine("result sent to client at " + clientAddress);
         } else {
-            result = "unknown command, use 'help' ";
+            result = "unknown command, use 'help'";
             LOGGER.info("unknown command received");
         }
-        ByteBuffer resultBuffer = ByteBuffer.wrap(result.getBytes());
-        channel.send(resultBuffer, clientAddress);
-        LOGGER.fine("result sent to client at " + clientAddress);
-        lastClientAddress = clientAddress;
     }
 
     private static String processCommand(Command command) {

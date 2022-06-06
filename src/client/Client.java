@@ -9,12 +9,12 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Client {
 
     private static Scanner scanner = new Scanner(System.in);
+    private static Scanner loginScanner = new Scanner(System.in);
     private static DatagramSocket ds;
     private static InetAddress serverAddress;
     private static String clientName = "localhost";
@@ -32,19 +32,14 @@ public class Client {
         ds = new DatagramSocket(clientPort);
 
         login();
-
-        while (true) {
-            processInput();
-            sendRequest();
-            getResult();
-        }
+//        go();
     }
 
 
-
     private static void processInput() {
+        argument = null;
         inputArr = scanner.nextLine().split(" ");
-        command = (String)inputArr[0];
+        command = (String) inputArr[0];
         if (inputArr.length > 1) {
             argument = inputArr[1];
             if (command.equals("update")) {
@@ -53,9 +48,13 @@ public class Client {
                 argument = routeForUpdating;
             }
         }
-        if (command.equals("addElement")) {
+        if (command.equals("add")) {
             argument = new Route();
         }
+        if (command.equals("login")) {
+            login();
+        }
+        System.out.println("command is " + command);
     }
 
     private static void sendRequest() throws IOException {
@@ -79,13 +78,14 @@ public class Client {
         DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, 1234);
         //Отправка на сервер в порт 1234
         ds.send(dp);
+
         System.out.println(request + " sent to server at: " + serverAddress);
 
     }
 
     private static void getResult() throws IOException {
 
-        //Создание пакета для приема ответа от сервера
+        //Создание датаграммы для приема ответа от сервера
         byte[] resultArr = new byte[4096];
         DatagramPacket resultPacket = new DatagramPacket(resultArr, resultArr.length, InetAddress.getByName("localhost"), 0);
         ds.receive(resultPacket);
@@ -99,12 +99,43 @@ public class Client {
             System.exit(0);
         }
     }
-    private static void login(){
+
+    private static void login() {
+        System.out.println("login: ");
+        login = loginScanner.next();
+        System.out.println("password: ");
+        password = loginScanner.next();
+        System.out.println("login is " + login);
+        System.out.println("password is " + password);
+        go();
+    }
+
+    private static boolean register() {
         System.out.println("login: ");
         login = scanner.next();
         System.out.println("password: ");
         password = scanner.next();
-        System.out.println("login is " + login);
-        System.out.println("password is " + password);
+        System.out.println("repeat password: ");
+        String passwordRepeated = scanner.next();
+        while (!password.equals(passwordRepeated)) {
+            System.out.println("passwords don't match");
+            passwordRepeated = scanner.next();
+            if (passwordRepeated.equals("exit"))
+                return false;
+        }
+        return true;
+    }
+
+    private static void go() {
+        try {
+            while (true) {
+                processInput();
+                sendRequest();
+                getResult();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

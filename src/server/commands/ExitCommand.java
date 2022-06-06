@@ -5,7 +5,7 @@ import server.data.Data;
 /**
  * Команда для завершения работы приложения
  */
-public class ExitCommand extends Command {
+public class ExitCommand extends Command implements NotCheckable {
 
     public ExitCommand() {
         super("exit", "exits application");

@@ -4,7 +4,7 @@ import mid.route.Route;
 import server.data.Data;
 import server.jdbcServer;
 
-import static server.data.Data.pdb;
+import static server.jdbcServer.pdb;
 
 /**
  * Команда для добавления нового элемента в коллекцию через командную строку

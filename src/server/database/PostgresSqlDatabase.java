@@ -30,7 +30,7 @@ public class PostgresSqlDatabase implements Database {
             PreparedStatement usersStatement = connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS routes_users(" +
                             "user_id BIGSERIAL PRIMARY KEY, " +
-                            "login VARCHAR NOT NULL, " +
+                            "login VARCHAR UNIQUE NOT NULL, " +
                             "password VARCHAR NOT NULL)");
             usersStatement.executeUpdate();
             usersStatement.close();
@@ -92,13 +92,15 @@ public class PostgresSqlDatabase implements Database {
     public boolean registerUser(String email, String password) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             String hashedPassword = getHash(password);
-            PreparedStatement statement = connection.prepareStatement(
+
+            try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO routes_users(login, password) " +
-                            "VALUES(?, ?)");
-            statement.setString(1, email);
-            statement.setString(2, hashedPassword);
-            statement.executeUpdate();
-            statement.close();
+                            "VALUES(?, ?)")) {
+                ;
+                statement.setString(1, email);
+                statement.setString(2, hashedPassword);
+                return statement.executeUpdate() > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -149,6 +151,50 @@ public class PostgresSqlDatabase implements Database {
                 return statement.executeUpdate() > 0;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkPassword(String login, String password) {
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement("" +
+                    "SELECT * FROM routes_users " +
+                    "WHERE login = ? and password = ?")) {
+                statement.setString(1, login);
+                statement.setString(2, getHash(password));
+                return statement.executeQuery().next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkLogin(String login){
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement("" +
+                    "SELECT * FROM routes_users " +
+                    "WHERE login = ?")) {
+                statement.setString(1, login);
+                return statement.executeQuery().next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkCreator(int userId, Route route){
+        try (Connection connection = DriverManager.getConnection(dbURL, info)){
+            try(PreparedStatement statement = connection.prepareStatement(
+                    ""
+            )){
+
+            }
+        }catch (SQLException e){
             e.printStackTrace();
         }
         return false;

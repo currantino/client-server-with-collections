@@ -1,9 +1,8 @@
 package server.data;
 
-import org.json.JSONArray;
 import mid.route.Route;
+import org.json.JSONArray;
 import server.commands.*;
-import server.database.PostgresSqlDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -16,7 +15,11 @@ import java.util.TreeMap;
 
 public class Data {
 
+    public static boolean isSaved = false;
     private static int idForNewRoutes;
+    private static String autoSavePath = "resources/autoSave.json";
+    private static TreeMap<String, Command> commands = new TreeMap();
+    private static LinkedList<Route> routes = new LinkedList();
 
     public static String getAutoSavePath() {
         return autoSavePath;
@@ -26,21 +29,15 @@ public class Data {
         Data.autoSavePath = autoSavePath;
     }
 
-    private static String autoSavePath = "resources/autoSave.json";
-
-    private static TreeMap<String, Command> commands = new TreeMap();
-    private static LinkedList<Route> routes = new LinkedList();
-    public static boolean isSaved = false;
-    public static PostgresSqlDatabase pdb = new PostgresSqlDatabase("jdbc:postgresql://localhost:5432/studs");
-
     public static TreeMap<String, Command> getCommands() {
         return commands;
     }
+
     public static void setCommands() {
         commands.put("exit", new ExitCommand());
         commands.put("help", new HelpCommand());
         commands.put("show", new ShowCommand());
-        commands.put("addElement", new AddCommand());
+        commands.put("add", new AddCommand());
         commands.put("average_of_distance", new AvgDistanceCommand());
         commands.put("info", new InfoCommand());
         commands.put("clear", new ClearCommand());

@@ -9,4 +9,6 @@ public interface Database {
 
     int getUserId(String email, String password);
     boolean updateElement(Route routeToUpdate);
+    boolean checkLogin(String login);
+    boolean checkPassword(String login, String password);
 }
