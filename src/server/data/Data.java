@@ -54,6 +54,7 @@ public class Data {
         commands.put("remove_lower", new RemoveLowerCommand());
         commands.put("load_auto_save", new LoadAutoSaveCommand());
         commands.put("register", new RegisterCommand());
+        commands.put("suicide", new RemoveUserCommand());
     }
 
     public static Route generateAndSetId(Route route) {

@@ -44,7 +44,11 @@ public class Client {
             argument = inputArr[1];
             if (command.equals("update")) {
                 Route routeForUpdating = new Route();
-                routeForUpdating.setId(Integer.parseInt((String) inputArr[1]));
+                try {
+                    routeForUpdating.setId(Integer.parseInt((String) inputArr[1]));
+                } catch (NumberFormatException e){
+                    System.out.println("invalid id");
+                }
                 argument = routeForUpdating;
             }
         }
@@ -99,6 +103,11 @@ public class Client {
         if (resultString.equals("exit")) {
             ds.close();
             System.exit(0);
+        }
+
+        if (resultString.equals("bye-bye")) {
+            login = null;
+            password = null;
         }
     }
 

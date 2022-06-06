@@ -7,6 +7,7 @@ import server.data.Data;
 import server.database.RoutePostgresSqlDatabase;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
@@ -38,11 +39,13 @@ public class jdbcServer {
     private static ServerRequest request;
     private static String result;
     private static String dbURL = "jdbc:postgresql://localhost:5432/studs";
-    private static Properties info;
+    private static Properties info = new Properties();
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-
-        pdb = new RoutePostgresSqlDatabase(dbURL);
+        info.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/db.cfg"));
+        System.out.println(info.getProperty("user"));
+        System.out.println(info.getProperty("password"));
+        pdb = new RoutePostgresSqlDatabase(dbURL, info);
         Data.setRoutes(pdb.getElements());
         Handler handlerObj = new ConsoleHandler();
         handlerObj.setLevel(Level.ALL);

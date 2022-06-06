@@ -3,8 +3,6 @@ package server.database;
 import mid.route.Route;
 import server.jdbcServer;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -18,16 +16,11 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
     private final String SALT = "pepper";
     private String dbURL;
     private String propertiesPath = "/Users/boi/Desktop/client-server-with-collections/config/db.cfg";
-    private Properties info = new Properties();
+    private Properties info;
 
-    public RoutePostgresSqlDatabase(String dbURL) {
+    public RoutePostgresSqlDatabase(String dbURL, Properties info) {
         this.dbURL = dbURL;
-        try {
-            info.load(new FileInputStream(propertiesPath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        this.info = info;
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
 
             //users table
@@ -83,14 +76,14 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
     }
 
     @Override
-    public boolean registerUser(String email, String password) {
+    public boolean registerUser(String login, String password) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             String hashedPassword = getHash(password);
 
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO routes_users(login, password) " +
                             "VALUES(?, ?)")) {
-                statement.setString(1, email);
+                statement.setString(1, login);
                 statement.setString(2, hashedPassword);
                 return statement.executeUpdate() > 0;
             }
@@ -101,12 +94,16 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
     }
 
     @Override
-    public boolean removeUser(String email, String password) {
-//        for
+    public boolean removeUser(String login, String password) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    ""
-            )) {
+                    "DELETE  FROM routes_users " +
+                            "WHERE login = ? " +
+                            "AND " +
+                            "password = ?")) {
+                statement.setString(1, login);
+                statement.setString(2, getHash(password));
+                return statement.executeUpdate() > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();

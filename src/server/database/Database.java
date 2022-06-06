@@ -8,9 +8,9 @@ public interface Database<T> {
     boolean removeElementById(int id);
 
 
-    boolean registerUser(String email, String password);
+    boolean registerUser(String login, String password);
 
-    boolean removeUser(String email, String password);
+    boolean removeUser(String login, String password);
 
     int getUserId(String email, String password);
 
