@@ -97,13 +97,13 @@ public class jdbcServer {
                 result = "unknown user: use 'register'";
                 LOGGER.warning("unknown user");
             }
-            ByteBuffer resultBuffer = ByteBuffer.wrap(result.getBytes());
-            channel.send(resultBuffer, clientAddress);
-            LOGGER.fine("result sent to client at " + clientAddress);
         } else {
             result = "unknown command, use 'help'";
             LOGGER.info("unknown command received");
         }
+        ByteBuffer resultBuffer = ByteBuffer.wrap(result.getBytes());
+        channel.send(resultBuffer, clientAddress);
+        LOGGER.fine("result sent to client at " + clientAddress);
     }
 
     private static String processCommand(Command command) {

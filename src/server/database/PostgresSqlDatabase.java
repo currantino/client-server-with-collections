@@ -49,6 +49,7 @@ public class PostgresSqlDatabase implements Database {
                             "to_x BIGINT, " +
                             "to_y BIGINT, " +
                             "to_z BIGINT, " +
+                            "creation_datetime TIMESTAMP NOT NULL, " +
                             "user_id BIGINT NOT NULL REFERENCES routes_users)"
             );
             routesStatement.executeUpdate();
@@ -64,8 +65,8 @@ public class PostgresSqlDatabase implements Database {
         boolean result = false;
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO routes " +
-                    "(name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z, user_id)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "(name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z, creation_datetime, user_id)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
             statement.setString(1, newRoute.getName());
             statement.setFloat(2, newRoute.getDistance());
@@ -77,7 +78,8 @@ public class PostgresSqlDatabase implements Database {
             statement.setInt(8, newRoute.getTo().getX());
             statement.setInt(9, newRoute.getTo().getY());
             statement.setInt(10, newRoute.getTo().getZ());
-            statement.setInt(11, getUserId(jdbcServer.login, jdbcServer.password));
+            statement.setObject(11, newRoute.getCreationDate());
+            statement.setInt(12, getUserId(jdbcServer.login, jdbcServer.password));
             if (statement.executeUpdate() > 0) result = true;
             statement.close();
         } catch (SQLException e) {
