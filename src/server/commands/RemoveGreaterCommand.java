@@ -1,10 +1,15 @@
 package server.commands;
 
+import mid.route.Route;
 import server.data.Data;
 import server.jdbcServer;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static server.jdbcServer.*;
 
 public class RemoveGreaterCommand extends Command {
 
@@ -17,7 +22,9 @@ public class RemoveGreaterCommand extends Command {
         try {
             double dist = Double.parseDouble((String) jdbcServer.argument);
             if (!Data.getRoutes().isEmpty()) {
-                Data.setRoutes(Data.getRoutes().stream().filter(route -> route.getDistance() <= dist).collect(Collectors.toCollection(LinkedList::new)));
+                List<Route> routesToDelete = Data.getRoutes().stream().filter(route -> (route.getDistance() > dist) && pdb.checkCreator(route.getId(), login, password)).collect(Collectors.toCollection(LinkedList::new));
+                for (Route routeToDelete : routesToDelete) pdb.removeElementById(routeToDelete.getId());
+                Data.setRoutes(pdb.getElements());
                 return "routes with distance greater than " + dist + " have been removed";
             }
             return "collections is empty";

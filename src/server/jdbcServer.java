@@ -43,8 +43,6 @@ public class jdbcServer {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         info.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/db.cfg"));
-        System.out.println(info.getProperty("user"));
-        System.out.println(info.getProperty("password"));
         pdb = new RoutePostgresSqlDatabase(dbURL, info);
         Data.setRoutes(pdb.getElements());
         Handler handlerObj = new ConsoleHandler();
