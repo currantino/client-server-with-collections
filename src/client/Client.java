@@ -17,8 +17,8 @@ public class Client {
     private static Scanner loginScanner = new Scanner(System.in);
     private static DatagramSocket ds;
     private static InetAddress serverAddress;
-    private static String clientName = "localhost";
-    private static int clientPort = 4321;
+    private static String serverName = "localhost";
+    private static int clientPort = 0;
     private static Object[] inputArr;
     private static String command;
     private static Object argument;
@@ -27,12 +27,11 @@ public class Client {
 
 
     public static void main(String[] args) throws Exception {
-        serverAddress = InetAddress.getByName(clientName);
+        serverAddress = InetAddress.getByName(serverName);
         //Создание сокета для отправки команд
-        ds = new DatagramSocket(clientPort);
+        ds = new DatagramSocket();
 
         login();
-//        go();
     }
 
 
