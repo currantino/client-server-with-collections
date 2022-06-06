@@ -60,7 +60,7 @@ public class PostgresSqlDatabase implements Database {
 
 
     @Override
-    public boolean add(Route newRoute) {
+    public boolean addElement(Route newRoute) {
         boolean result = false;
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO routes " +
@@ -124,6 +124,34 @@ public class PostgresSqlDatabase implements Database {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    @Override
+    public boolean updateElement(Route routeToUpdate) {
+        try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE routes " +
+                            "SET (name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z) " +
+                            " = " +
+                            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
+                            "WHERE id = ?")) {
+                statement.setString(1, routeToUpdate.getName());
+                statement.setFloat(2, routeToUpdate.getDistance());
+                statement.setString(3, routeToUpdate.getFrom().getName());
+                statement.setInt(4, routeToUpdate.getFrom().getX());
+                statement.setInt(5, routeToUpdate.getFrom().getY());
+                statement.setInt(6, routeToUpdate.getFrom().getZ());
+                statement.setString(7, routeToUpdate.getTo().getName());
+                statement.setInt(8, routeToUpdate.getTo().getX());
+                statement.setInt(9, routeToUpdate.getTo().getY());
+                statement.setInt(10, routeToUpdate.getTo().getZ());
+                statement.setInt(11, routeToUpdate.getId());
+                return statement.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public String getHash(String sequence) {

@@ -40,7 +40,7 @@ public class Data {
         commands.put("exit", new ExitCommand());
         commands.put("help", new HelpCommand());
         commands.put("show", new ShowCommand());
-        commands.put("add", new AddCommand());
+        commands.put("addElement", new AddCommand());
         commands.put("average_of_distance", new AvgDistanceCommand());
         commands.put("info", new InfoCommand());
         commands.put("clear", new ClearCommand());
@@ -48,7 +48,7 @@ public class Data {
         commands.put("min_by_creation_date", new MinByCreationDateCommand());
         commands.put("print_unique_distance", new PrintUniqueDistanceCommand());
         commands.put("remove_by_id", new RemoveByIdCommand());
-//        commands.put("update", new UpdateCommand());
+        commands.put("update", new UpdateCommand());
         commands.put("sort_by_creation_date", new SortByDateTimeCommand());
         commands.put("head", new HeadCommand());
         commands.put("remove_greater", new RemoveGreaterCommand());

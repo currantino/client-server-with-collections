@@ -53,7 +53,7 @@ public class Client {
                 argument = routeForUpdating;
             }
         }
-        if (command.equals("add")) {
+        if (command.equals("addElement")) {
             argument = new Route();
         }
     }

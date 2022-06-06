@@ -19,7 +19,7 @@ public class AddCommand extends Command {
     public String execute() {
         if (jdbcServer.argument != null) {
             Route newRoute = (Route) jdbcServer.argument;
-            if (pdb.add(newRoute)) {
+            if (pdb.addElement(newRoute)) {
                 Data.getRoutes().add(newRoute);
                 Data.getCommands().get("sort_by_distance").execute();
                 return "new mid.route added successfully";
