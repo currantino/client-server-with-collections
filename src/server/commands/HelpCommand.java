@@ -1,6 +1,6 @@
 package server.commands;
 
-import server.NotCheckable;
+import server.commands.types.NotCheckable;
 import server.data.Data;
 
 public class HelpCommand extends Command implements NotCheckable {

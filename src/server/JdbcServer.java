@@ -2,6 +2,7 @@ package server;
 
 import mid.ServerRequest;
 import server.commands.Command;
+import server.commands.types.NotCheckable;
 import server.data.Data;
 import server.database.RoutePostgresSqlDatabase;
 
@@ -68,8 +69,6 @@ public class JdbcServer {
                     keys.remove(selectionKey);
                     if (key.isValid()) {
                         if (key.isReadable()) {
-//                            Thread thread = new Thread(new RequestProcessor());
-                            thread.start();
                             getRequest();
                             processRequest();
                             key.channel().register(selector, SelectionKey.OP_WRITE);

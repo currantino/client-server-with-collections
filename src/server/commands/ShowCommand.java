@@ -1,7 +1,7 @@
 package server.commands;
 
 import mid.route.Route;
-import server.Readable;
+import server.commands.types.Readable;
 import server.data.Data;
 
 public class ShowCommand extends Command implements Readable {

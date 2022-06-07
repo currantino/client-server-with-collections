@@ -1,7 +1,7 @@
 package server.commands;
 
 import server.JdbcServer;
-import server.NotCheckable;
+import server.commands.types.NotCheckable;
 
 import static server.JdbcServer.pdb;
 

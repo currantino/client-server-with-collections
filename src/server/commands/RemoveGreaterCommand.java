@@ -2,7 +2,7 @@ package server.commands;
 
 import mid.route.Route;
 import server.JdbcServer;
-import server.Writable;
+import server.commands.types.Writable;
 import server.data.Data;
 
 import java.util.LinkedList;

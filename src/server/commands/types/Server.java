@@ -1,4 +1,4 @@
-package server;
+package server.commands.types;
 
 import server.database.Database;
 

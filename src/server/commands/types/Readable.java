@@ -1,4 +1,4 @@
-package server;
+package server.commands.types;
 
 public interface Readable {
 }

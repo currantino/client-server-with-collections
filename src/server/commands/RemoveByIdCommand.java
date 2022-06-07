@@ -1,7 +1,7 @@
 package server.commands;
 
 import server.JdbcServer;
-import server.Writable;
+import server.commands.types.Writable;
 import server.data.Data;
 
 import static server.JdbcServer.*;

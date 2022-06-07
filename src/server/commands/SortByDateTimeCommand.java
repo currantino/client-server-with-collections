@@ -1,6 +1,6 @@
 package server.commands;
 
-import server.Writable;
+import server.commands.types.Writable;
 import server.data.Data;
 
 public class SortByDateTimeCommand extends Command implements Writable {

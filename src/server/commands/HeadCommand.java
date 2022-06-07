@@ -1,6 +1,6 @@
 package server.commands;
 
-import server.Readable;
+import server.commands.types.Readable;
 import server.data.Data;
 
 public class HeadCommand extends Command implements Readable {
