@@ -75,7 +75,7 @@ public class jdbcServer {
                         }
                         if (key.isWritable()) {
                             sendResult();
-                            key.channel().register(selector, SelectionKey.OP_WRITE);
+                            key.channel().register(selector, SelectionKey.OP_READ);
                         }
                     }
                 }
@@ -123,6 +123,7 @@ public class jdbcServer {
             } else if (pdb.checkLogin(login)) {
                 if (pdb.checkPassword(login, password)) {
                     result = processCommand(Data.getCommands().get(command));
+                    LOGGER.info("request processed");
                 } else {
                     result = "wrong password";
                     LOGGER.warning("wrong password");
