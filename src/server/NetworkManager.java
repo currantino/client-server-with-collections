@@ -9,60 +9,65 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class NetworkManager {
     public static RoutePostgresSqlDatabase pdb;
+    public static ExecutorService pool;
+    public static DatagramChannel channel;
+    public static Logger LOGGER;
     private static String dbURL = "jdbc:postgresql://localhost:5432/studs";
     private static String propertiesPath = "/Users/boi/Desktop/client-server-with-collections/config/db.cfg";
     private static Properties serverInfo = new Properties();
     private static Properties info = new Properties();
-    //    private static InetSocketAddress serverAdd = new InetSocketAddress(serverInfo.getProperty("name"), parseInt(serverInfo.getProperty("port")));
     private static InetSocketAddress serverAdd = new InetSocketAddress("localhost", 1234);
-    public static ExecutorService pool;
 
     public static void main(String[] args) throws IOException {
-//        serverInfo.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/server.cfg)"));
-        DatagramChannel channel = DatagramChannel.open();
+        LOGGER = Logger.getLogger("multithreading server");
+        channel = DatagramChannel.open();
         channel.configureBlocking(false);
         channel.bind(serverAdd);
+        Data.setCommands();
 
         info.load(new FileInputStream(propertiesPath));
         pdb = new RoutePostgresSqlDatabase(dbURL, info);
+        LOGGER.fine("db connection established");
         Data.setRoutes(pdb.getElements());
         SocketAddress clientAddress;
-        ByteBuffer buffer = ByteBuffer.allocate(4096);
+        ByteBuffer buffer;
         pool = Executors.newCachedThreadPool();
-        try (Selector selector = Selector.open()) {
-            SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
-            while (true) {
-                selector.select();
-                Set<SelectionKey> keys = selector.selectedKeys();
-                for (SelectionKey selectionKey : keys) {
-                    key = selectionKey;
-                    keys.remove(selectionKey);
-                    if (key.isValid()) {
-                        if (key.isReadable()) {
-                            clientAddress = channel.receive(buffer);
-                            Thread receiver = new Thread(new RequestReceiver(clientAddress, buffer));
-                            receiver.start();
-                            key.channel().register(selector, SelectionKey.OP_WRITE);
-                        }
-                        if (key.isWritable()) {
-//                            new Thread(resultSender(result)).start();
-                            key.channel().register(selector, SelectionKey.OP_READ);
-                        }
-                    }
-                }
-            }
+        channel.configureBlocking(true);
+        while (true) {
+            buffer = ByteBuffer.allocate(4096);
+            clientAddress = channel.receive(buffer);
+            new Thread(new RequestReceiver(clientAddress, buffer)).start();
         }
     }
 }
+//        try (Selector selector = Selector.open()) {
+//            SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
+//            while (true) {
+//                selector.select();
+//                Set<SelectionKey> keys = selector.selectedKeys();
+//                for (SelectionKey selectionKey : keys) {
+//                    key = selectionKey;
+//                    keys.remove(selectionKey);
+//                    if (key.isValid()) {
+//                        if (key.isReadable()) {
+//
+//                            key.channel().register(selector, SelectionKey.OP_WRITE);
+//                        }
+//                        if (key.isWritable()) {
+//                            key.channel().register(selector, SelectionKey.OP_READ);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
 //        try {
 //            ExecutorService pool = Executors.newCachedThreadPool();
 //            while (true) {

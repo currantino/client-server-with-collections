@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static server.NetworkManager.pdb;
 
-public class RemoveGreaterCommand extends Command implements Writable, Argumentable<ServerRequest> {
+public class RemoveGreaterCommand extends ArgumentableCommand implements Writable {
 
     public RemoveGreaterCommand() {
         super("remove_greater", "removes elements greater than required");

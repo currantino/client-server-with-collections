@@ -8,7 +8,7 @@ import server.data.Data;
 
 import static server.NetworkManager.pdb;
 
-public class UpdateCommand extends Command implements Writable, Argumentable<ServerRequest> {
+public class UpdateCommand extends ArgumentableCommand implements Writable {
 
     public UpdateCommand() {
         super("update", "updates the route with required id");

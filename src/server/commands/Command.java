@@ -15,20 +15,19 @@ public abstract class Command {
      * Описание команды
      */
     protected String desc;
+    /**
+     * Строка, которая вернется клиенту после исполнения команды
+     */
     protected String result = "";
-    protected String command;
-    protected Object argument;
-    protected String login;
-    protected String password;
+    String command;
+    String login;
+    String password;
 
     public Command(String name, String desc) {
         this.name = name;
         this.desc = desc;
     }
 
-    /**
-     * Строка, которая вернется клиенту после исполнения команды
-     */
 
     String getDesc() {
         return this.desc;
@@ -39,16 +38,15 @@ public abstract class Command {
     }
 
     /**
-     * Абстрактный метод для исполнения команды
+     * Метод для исполнения команды
      */
     public String execute() {
         return result;
     }
 
     public void unpackRequest(ServerRequest request) {
-        this.command = request.getCommand();
-        this.argument = request.getArgument();
-        this.login = request.getLogin();
-        this.password = request.getPassword();
+        command = request.getCommand();
+        login = request.getLogin();
+        password = request.getPassword();
     }
 }

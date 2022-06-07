@@ -7,7 +7,7 @@ import server.data.Data;
 
 import static server.NetworkManager.pdb;
 
-public class RemoveByIdCommand extends Command implements Writable, Argumentable<ServerRequest> {
+public class RemoveByIdCommand extends ArgumentableCommand implements Writable {
 
     public RemoveByIdCommand() {
         super("remove_by_id", "removes the element with the given id");

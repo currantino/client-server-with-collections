@@ -7,7 +7,7 @@ import server.commands.types.NotCheckable;
 import static server.NetworkManager.pdb;
 
 
-public class RegisterCommand extends Command implements NotCheckable, Argumentable<ServerRequest> {
+public class RegisterCommand extends ArgumentableCommand implements NotCheckable {
 
     public RegisterCommand() {
         super("register", "register a new user");

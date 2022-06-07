@@ -58,7 +58,7 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO routes " +
                     "(name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z, creation_datetime, user_id)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ")) {//TODO add returning (id)
                 setParams(newRoute, statement);
                 statement.setObject(11, newRoute.getCreationDate());
                 statement.setInt(12, getUserId(login, password));

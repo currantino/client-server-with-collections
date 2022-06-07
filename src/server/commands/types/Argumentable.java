@@ -1,5 +1,8 @@
 package server.commands.types;
 
-public interface Argumentable<T> {
-    String execute(T argument);
+import mid.ServerRequest;
+
+public interface Argumentable {
+    String execute(ServerRequest request);
+    void setArgument(ServerRequest request);
 }

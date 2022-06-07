@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static server.NetworkManager.pdb;
 
-public class RemoveLowerCommand extends Command implements Writable, Argumentable<ServerRequest> {
+public class RemoveLowerCommand extends ArgumentableCommand implements Writable {
 
     public RemoveLowerCommand() {
         super("remove_lower", "removes routes with distance lower than required");
