@@ -1,20 +1,20 @@
 package server;
 
-import mid.ServerRequest;
 import server.data.Data;
 import server.database.RoutePostgresSqlDatabase;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.nio.charset.StandardCharsets;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NetworkManager {
     public static RoutePostgresSqlDatabase pdb;
@@ -24,6 +24,7 @@ public class NetworkManager {
     private static Properties info = new Properties();
     //    private static InetSocketAddress serverAdd = new InetSocketAddress(serverInfo.getProperty("name"), parseInt(serverInfo.getProperty("port")));
     private static InetSocketAddress serverAdd = new InetSocketAddress("localhost", 1234);
+    public static ExecutorService pool;
 
     public static void main(String[] args) throws IOException {
 //        serverInfo.load(new FileInputStream("/Users/boi/Desktop/client-server-with-collections/config/server.cfg)"));
@@ -34,67 +35,73 @@ public class NetworkManager {
         info.load(new FileInputStream(propertiesPath));
         pdb = new RoutePostgresSqlDatabase(dbURL, info);
         Data.setRoutes(pdb.getElements());
-
-        try {
-            ExecutorService pool = Executors.newCachedThreadPool();
+        SocketAddress clientAddress;
+        ByteBuffer buffer = ByteBuffer.allocate(4096);
+        pool = Executors.newCachedThreadPool();
+        try (Selector selector = Selector.open()) {
+            SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
             while (true) {
-                Callable<ServerRequest> task = getTask(channel);
-                FutureTask<ServerRequest> futureTask = new FutureTask<>(task);
-                new Thread(futureTask).start();
-                ServerRequest request = futureTask.get();
-                Future<String> futureResult = pool.submit(new RequestProcessor(request));
-                String result = futureResult.get();
-                byte[] resultArr = result.getBytes(StandardCharsets.UTF_8);
-                SocketAddress clientAddress = request.getSenderAddress();
-                new Thread(new ResultSender(resultArr, clientAddress, channel)).start();
+                selector.select();
+                Set<SelectionKey> keys = selector.selectedKeys();
+                for (SelectionKey selectionKey : keys) {
+                    key = selectionKey;
+                    keys.remove(selectionKey);
+                    if (key.isValid()) {
+                        if (key.isReadable()) {
+                            clientAddress = channel.receive(buffer);
+                            Thread receiver = new Thread(new RequestReceiver(clientAddress, buffer));
+                            receiver.start();
+                            key.channel().register(selector, SelectionKey.OP_WRITE);
+                        }
+                        if (key.isWritable()) {
+//                            new Thread(resultSender(result)).start();
+                            key.channel().register(selector, SelectionKey.OP_READ);
+                        }
+                    }
+                }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-    }
-
-    private static Callable<ServerRequest> getTask(DatagramChannel channel) {
-        return () -> {
-            try {
-                ByteBuffer requestBuffer = ByteBuffer.allocate(4096);
-
-                //Получение датаграммы в байтбуффер и сохранение адрес клиента в clientAddress
-                SocketAddress clientAddress = channel.receive(requestBuffer);
-                byte[] arr = requestBuffer.array();
-
-                //Создаем поток ввода для считывания запроса
-                ByteArrayInputStream bais = new ByteArrayInputStream(arr);
-                ObjectInputStream ois = new ObjectInputStream(bais);
-                ServerRequest request = (ServerRequest) ois.readObject();
-                request.setSenderAddress(clientAddress);
-                return request;
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            }
-        };
     }
 }
-//        try (Selector selector = Selector.open()) {
-//            SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
+//        try {
+//            ExecutorService pool = Executors.newCachedThreadPool();
 //            while (true) {
-//                selector.select();
-//                Set<SelectionKey> keys = selector.selectedKeys();
-//                for (SelectionKey selectionKey : keys) {
-//                    key = selectionKey;
-//                    keys.remove(selectionKey);
-//                    if (key.isValid()) {
-//                        if (key.isReadable()) {
-//                            Thread receiver = new Thread();
-//                            key.channel().register(selector, SelectionKey.OP_WRITE);
-//                        }
-//                        if (key.isWritable()) {
-////                            new Thread(resultSender(result)).start();
-//                            key.channel().register(selector, SelectionKey.OP_READ);
-//                        }
-//                    }
-//                }
+//                Callable<ServerRequest> task = getTask(channel);
+//                FutureTask<ServerRequest> futureTask = new FutureTask<>(task);
+//                new Thread(futureTask).start();
+//                ServerRequest request = futureTask.get();
+//                Future<String> futureResult = pool.submit(new RequestProcessor(request));
+//                String result = futureResult.get();
+//                byte[] resultArr = result.getBytes(StandardCharsets.UTF_8);
+//                SocketAddress clientAddress = request.getSenderAddress();
+//                new Thread(new ResultSender(resultArr, clientAddress, channel)).start();
 //            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
 //        }
+//
+//    }
+//
+//    private static Callable<ServerRequest> getTask(DatagramChannel channel) {
+//        return () -> {
+//            try {
+//                ByteBuffer requestBuffer = ByteBuffer.allocate(4096);
+//
+//                //Получение датаграммы в байтбуффер и сохранение адрес клиента в clientAddress
+//                SocketAddress clientAddress = channel.receive(requestBuffer);
+//                byte[] arr = requestBuffer.array();
+//
+//                //Создаем поток ввода для считывания запроса
+//                ByteArrayInputStream bais = new ByteArrayInputStream(arr);
+//                ObjectInputStream ois = new ObjectInputStream(bais);
+//                ServerRequest request = (ServerRequest) ois.readObject();
+//                request.setSenderAddress(clientAddress);
+//                return request;
+//            } catch (IOException | ClassNotFoundException e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        };
+//    }
+//}
