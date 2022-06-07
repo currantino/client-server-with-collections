@@ -14,8 +14,10 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.sql.Connection;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -26,16 +28,14 @@ public class jdbcServer {
     private static final Logger LOGGER = Logger.getLogger("jdbcSever");
     public static String command;
     public static Object argument;
-    public static Connection conn;
     public static String login;
     public static String password;
     public static RoutePostgresSqlDatabase pdb;
+    public static DatagramChannel channel;
     private static String serverName = "localhost";
     private static int serverPort = 1234;
-    private static DatagramChannel channel;
+    static InetSocketAddress serverAdd = new InetSocketAddress(serverName, serverPort);
     private static SocketAddress clientAddress;
-    private static SocketAddress lastClientAddress;
-    private static InetSocketAddress serverAdd = new InetSocketAddress(serverName, serverPort);
     private static ServerRequest request;
     private static String result;
     private static String dbURL = "jdbc:postgresql://localhost:5432/studs";
@@ -55,12 +55,38 @@ public class jdbcServer {
 
         //Открытие канала, который слушает на заданном адресе serverAdd
         channel = DatagramChannel.open();
+        channel.configureBlocking(false);
         channel.bind(serverAdd);
         LOGGER.fine("channel server started at: " + serverAdd);
 
-        while (true) {
-            getRequest();
-            sendResult();
+        try (Selector selector = Selector.open()) {
+            SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
+            while (true) {
+                selector.select();
+                Set<SelectionKey> keys = selector.selectedKeys();
+                for (SelectionKey selectionKey : keys) {
+                    key = selectionKey;
+                    keys.remove(selectionKey);
+                    if (key.isValid()) {
+                        if (key.isReadable()) {
+                            getRequest();
+                            processRequest();
+                            key.channel().register(selector, SelectionKey.OP_WRITE);
+                        }
+                        if (key.isWritable()) {
+                            sendResult();
+                            key.channel().register(selector, SelectionKey.OP_WRITE);
+                        }
+                    }
+                }
+
+            }
+//            while (true) {
+//                getRequest();
+//                processRequest();
+//                sendResult();
+//            }
+//        }
         }
     }
 
@@ -84,8 +110,12 @@ public class jdbcServer {
     }
 
     private static void sendResult() throws IOException {
-        System.out.println(login);
-        System.out.println(password);
+        ByteBuffer resultBuffer = ByteBuffer.wrap(result.getBytes());
+        channel.send(resultBuffer, clientAddress);
+        LOGGER.fine("result sent to client at " + clientAddress);
+    }
+
+    private static void processRequest() {
         if (Data.getCommands().containsKey(command)) {
             Command commandToExecute = Data.getCommands().get(command);
             if (commandToExecute instanceof NotCheckable) {
@@ -105,9 +135,6 @@ public class jdbcServer {
             result = "unknown command, use 'help'";
             LOGGER.info("unknown command received");
         }
-        ByteBuffer resultBuffer = ByteBuffer.wrap(result.getBytes());
-        channel.send(resultBuffer, clientAddress);
-        LOGGER.fine("result sent to client at " + clientAddress);
     }
 
     private static String processCommand(Command command) {
