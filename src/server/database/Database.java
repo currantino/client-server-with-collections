@@ -3,7 +3,7 @@ package server.database;
 import java.util.List;
 
 public interface Database<T> {
-    boolean addElement(T newElement);
+    boolean addElement(T newElement, String login, String password);
 
     boolean removeElementById(int id);
 

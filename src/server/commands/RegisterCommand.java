@@ -4,7 +4,8 @@ import mid.ServerRequest;
 import server.commands.types.Argumentable;
 import server.commands.types.NotCheckable;
 
-import static server.JdbcServer.pdb;
+import static server.NetworkManager.pdb;
+
 
 public class RegisterCommand extends Command implements NotCheckable, Argumentable<ServerRequest> {
 

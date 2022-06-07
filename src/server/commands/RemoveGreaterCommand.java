@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static server.JdbcServer.pdb;
+import static server.NetworkManager.pdb;
 
 public class RemoveGreaterCommand extends Command implements Writable, Argumentable<ServerRequest> {
 

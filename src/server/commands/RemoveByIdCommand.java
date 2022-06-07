@@ -5,7 +5,7 @@ import server.commands.types.Argumentable;
 import server.commands.types.Writable;
 import server.data.Data;
 
-import static server.JdbcServer.pdb;
+import static server.NetworkManager.pdb;
 
 public class RemoveByIdCommand extends Command implements Writable, Argumentable<ServerRequest> {
 

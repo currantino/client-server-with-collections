@@ -4,7 +4,7 @@ import mid.route.Route;
 import server.commands.types.Writable;
 import server.data.Data;
 
-import static server.JdbcServer.*;
+import static server.NetworkManager.pdb;
 
 public class RemoveUserCommand extends Command implements Writable {
 

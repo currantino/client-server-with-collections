@@ -13,9 +13,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import static server.JdbcServer.pdb;
+import static server.NetworkManager.pdb;
 
-public class Handler implements Callable<String> {
+
+public class RequestProcessorHandler implements Callable<String> {
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock r = lock.readLock();
     private final Lock w = lock.writeLock();
@@ -23,7 +24,7 @@ public class Handler implements Callable<String> {
 
     ServerRequest request;
 
-    public Handler(ServerRequest request) {
+    public RequestProcessorHandler(ServerRequest request) {
         this.request = request;
     }
 

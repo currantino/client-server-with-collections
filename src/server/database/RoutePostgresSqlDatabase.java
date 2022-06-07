@@ -1,7 +1,6 @@
 package server.database;
 
 import mid.route.Route;
-import server.JdbcServer;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -55,14 +54,14 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
 
 
     @Override
-    public boolean addElement(Route newRoute) {
+    public boolean addElement(Route newRoute, String login, String password) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO routes " +
                     "(name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z, creation_datetime, user_id)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
                 setParams(newRoute, statement);
                 statement.setObject(11, newRoute.getCreationDate());
-                statement.setInt(12, getUserId(JdbcServer.login, JdbcServer.password));
+                statement.setInt(12, getUserId(login, password));
                 return statement.executeUpdate() > 0;
             }
         } catch (SQLException e) {

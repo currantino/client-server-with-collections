@@ -3,7 +3,8 @@ package server.commands;
 import server.commands.types.Writable;
 import server.data.Data;
 
-import static server.JdbcServer.*;
+import static server.NetworkManager.pdb;
+
 
 public class ClearCommand extends Command implements Writable {
     public ClearCommand() {

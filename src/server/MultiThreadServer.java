@@ -19,7 +19,7 @@
 //import java.util.Properties;
 //import java.util.Set;
 //import java.util.logging.ConsoleHandler;
-//import java.util.logging.Handler;
+//import java.util.logging.RequstProcessorHandler;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
 //
@@ -46,7 +46,7 @@
 //        info.load(new FileInputStream(propertiesPath));
 //        pdb = new RoutePostgresSqlDatabase(dbURL, info);
 //        Data.setRoutes(pdb.getElements());
-//        Handler handlerObj = new ConsoleHandler();
+//        RequstProcessorHandler handlerObj = new ConsoleHandler();
 //        handlerObj.setLevel(Level.ALL);
 //        LOGGER.addHandler(handlerObj);
 //        LOGGER.setLevel(Level.ALL);
