@@ -1,10 +1,12 @@
 package server;
 
+import java.nio.channels.Channel;
 import java.nio.channels.DatagramChannel;
 
-public class RequestReceiver implements Runnable{
+public class RequestReceiver implements Runnable {
     private DatagramChannel channel;
-    public RequestReceiver(DatagramChannel channel){
+
+    public RequestReceiver(DatagramChannel channel) {
         this.channel = channel;
     }
 
