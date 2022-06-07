@@ -18,6 +18,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -71,6 +72,7 @@ public class JdbcServer {
                         if (key.isReadable()) {
                             getRequest();
                             processRequest();
+//                            ExecutorService pool
                             key.channel().register(selector, SelectionKey.OP_WRITE);
                         }
                         if (key.isWritable()) {

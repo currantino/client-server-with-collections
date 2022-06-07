@@ -1,5 +1,7 @@
 package server.commands;
 
+import mid.ServerRequest;
+
 /**
  * Абстрактный класс-родитель всех классов команд
  */
@@ -13,11 +15,16 @@ public abstract class Command {
      * Описание команды
      */
     protected String desc;
-    public Command(String name, String desc){
+    protected String result = "";
+    protected String command;
+    protected Object argument;
+    protected String login;
+    protected String password;
+
+    public Command(String name, String desc) {
         this.name = name;
         this.desc = desc;
     }
-    protected String result = "";
 
     /**
      * Строка, которая вернется клиенту после исполнения команды
@@ -34,5 +41,14 @@ public abstract class Command {
     /**
      * Абстрактный метод для исполнения команды
      */
-    public abstract String execute();
+    public String execute() {
+        return result;
+    }
+
+    public void unpackRequest(ServerRequest request) {
+        this.command = request.getCommand();
+        this.argument = request.getArgument();
+        this.login = request.getLogin();
+        this.password = request.getPassword();
+    }
 }

@@ -1,7 +1,8 @@
 package server.commands;
 
+import mid.ServerRequest;
 import mid.route.Route;
-import server.JdbcServer;
+import server.commands.types.Argumentable;
 import server.commands.types.Writable;
 import server.data.Data;
 
@@ -9,18 +10,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static server.JdbcServer.*;
+import static server.JdbcServer.pdb;
 
-public class RemoveGreaterCommand extends Command implements Writable {
+public class RemoveGreaterCommand extends Command implements Writable, Argumentable<ServerRequest> {
 
     public RemoveGreaterCommand() {
         super("remove_greater", "removes elements greater than required");
     }
 
     @Override
-    public String execute() {
+    public String execute(ServerRequest request) {
+        unpackRequest(request);
         try {
-            double dist = Double.parseDouble((String) JdbcServer.argument);
+            double dist = Double.parseDouble((String) argument);
             if (!Data.getRoutes().isEmpty()) {
                 List<Route> routesToDelete = Data.getRoutes().stream().filter(route -> (route.getDistance() > dist) && pdb.checkCreator(route.getId(), login, password)).collect(Collectors.toCollection(LinkedList::new));
                 for (Route routeToDelete : routesToDelete) pdb.removeElementById(routeToDelete.getId());
