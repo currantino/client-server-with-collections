@@ -2,7 +2,6 @@ package server;
 
 import mid.ServerRequest;
 import server.commands.Command;
-import server.commands.NotCheckable;
 import server.data.Data;
 import server.database.RoutePostgresSqlDatabase;
 
@@ -23,7 +22,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class jdbcServer {
+public class JdbcServer {
 
     private static final Logger LOGGER = Logger.getLogger("jdbcSever");
     public static String command;
@@ -69,6 +68,8 @@ public class jdbcServer {
                     keys.remove(selectionKey);
                     if (key.isValid()) {
                         if (key.isReadable()) {
+//                            Thread thread = new Thread(new RequestProcessor());
+                            thread.start();
                             getRequest();
                             processRequest();
                             key.channel().register(selector, SelectionKey.OP_WRITE);
@@ -79,14 +80,7 @@ public class jdbcServer {
                         }
                     }
                 }
-
             }
-//            while (true) {
-//                getRequest();
-//                processRequest();
-//                sendResult();
-//            }
-//        }
         }
     }
 

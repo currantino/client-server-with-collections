@@ -1,11 +1,12 @@
 package server.commands;
 
 import mid.route.Route;
+import server.Readable;
 import server.data.Data;
 
 import java.util.Arrays;
 
-public class PrintUniqueDistanceCommand extends Command {
+public class PrintUniqueDistanceCommand extends Command implements Readable {
     public PrintUniqueDistanceCommand() {
         super("print_unique_distance", "prints unique distance values of all routes");
     }

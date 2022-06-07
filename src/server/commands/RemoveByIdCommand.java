@@ -1,11 +1,12 @@
 package server.commands;
 
+import server.JdbcServer;
+import server.Writable;
 import server.data.Data;
-import server.jdbcServer;
 
-import static server.jdbcServer.*;
+import static server.JdbcServer.*;
 
-public class RemoveByIdCommand extends Command {
+public class RemoveByIdCommand extends Command implements Writable {
 
     public RemoveByIdCommand() {
         super("remove_by_id", "removes the element with the given id");
@@ -15,7 +16,7 @@ public class RemoveByIdCommand extends Command {
     public String execute() {
         if (!Data.getRoutes().isEmpty()) {
             try {
-                int id = Integer.parseInt((String) jdbcServer.argument);
+                int id = Integer.parseInt((String) JdbcServer.argument);
                 if (pdb.checkExistence(id)) {
                     if (pdb.checkCreator(id, login, password)) {
                         if (pdb.removeElementById(id)) {

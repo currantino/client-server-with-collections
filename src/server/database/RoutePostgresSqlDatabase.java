@@ -1,7 +1,7 @@
 package server.database;
 
 import mid.route.Route;
-import server.jdbcServer;
+import server.JdbcServer;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -62,7 +62,7 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
                 setParams(newRoute, statement);
                 statement.setObject(11, newRoute.getCreationDate());
-                statement.setInt(12, getUserId(jdbcServer.login, jdbcServer.password));
+                statement.setInt(12, getUserId(JdbcServer.login, JdbcServer.password));
                 return statement.executeUpdate() > 0;
             }
         } catch (SQLException e) {

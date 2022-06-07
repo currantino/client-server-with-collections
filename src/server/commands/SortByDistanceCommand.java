@@ -1,8 +1,9 @@
 package server.commands;
 
+import server.Writable;
 import server.data.Data;
 
-public class SortByDistanceCommand extends Command {
+public class SortByDistanceCommand extends Command implements Writable {
 
     public SortByDistanceCommand() {
         super("sort_by_distance", "sorts the collection by distance");

@@ -1,12 +1,13 @@
 package server.commands;
 
+import server.Readable;
 import server.data.Data;
 
 /**
  * Команда для вывода основной информации о коллекуии
  */
 
-public class InfoCommand extends Command {
+public class InfoCommand extends Command implements Readable {
     public InfoCommand() {
         super("info", "gives key info about the collection");
     }

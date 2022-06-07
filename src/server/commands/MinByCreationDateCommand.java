@@ -1,11 +1,12 @@
 package server.commands;
 
 import mid.route.Route;
+import server.Readable;
 import server.data.Data;
 
 import java.util.LinkedList;
 
-public class MinByCreationDateCommand extends Command {
+public class MinByCreationDateCommand extends Command implements Readable {
     public MinByCreationDateCommand() {
         super("min_by_creation_date", "get the first element by creation date");
     }

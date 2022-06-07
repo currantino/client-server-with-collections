@@ -1,8 +1,9 @@
 package server.commands;
 
-import server.jdbcServer;
+import server.JdbcServer;
+import server.NotCheckable;
 
-import static server.jdbcServer.pdb;
+import static server.JdbcServer.pdb;
 
 public class RegisterCommand extends Command implements NotCheckable {
 
@@ -12,8 +13,8 @@ public class RegisterCommand extends Command implements NotCheckable {
 
     @Override
     public String execute() {
-        if (pdb.checkLogin(jdbcServer.login)) return "login already in use";
-        if (pdb.registerUser(jdbcServer.login, jdbcServer.password)) return "registration successful";
+        if (pdb.checkLogin(JdbcServer.login)) return "login already in use";
+        if (pdb.registerUser(JdbcServer.login, JdbcServer.password)) return "registration successful";
         else return "registration failed";
     }
 }

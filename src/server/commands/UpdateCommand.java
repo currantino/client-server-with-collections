@@ -1,11 +1,12 @@
 package server.commands;
 
 import mid.route.Route;
+import server.Writable;
 import server.data.Data;
 
-import static server.jdbcServer.*;
+import static server.JdbcServer.*;
 
-public class UpdateCommand extends Command {
+public class UpdateCommand extends Command implements Writable {
 
     public UpdateCommand() {
         super("update", "updates the route with required id");

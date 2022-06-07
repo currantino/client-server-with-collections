@@ -1,11 +1,12 @@
 package server.commands;
 
 import mid.route.Route;
+import server.Writable;
 import server.data.Data;
 
-import static server.jdbcServer.*;
+import static server.JdbcServer.*;
 
-public class RemoveUserCommand extends Command {
+public class RemoveUserCommand extends Command implements Writable {
 
     public RemoveUserCommand() {
         super("suicide", "removes your account and all your routes");

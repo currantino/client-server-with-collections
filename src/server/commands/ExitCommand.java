@@ -1,6 +1,6 @@
 package server.commands;
 
-import server.data.Data;
+import server.NotCheckable;
 
 /**
  * Команда для завершения работы приложения

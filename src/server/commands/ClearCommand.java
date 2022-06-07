@@ -1,10 +1,11 @@
 package server.commands;
 
+import server.Writable;
 import server.data.Data;
 
-import static server.jdbcServer.*;
+import static server.JdbcServer.*;
 
-public class ClearCommand extends Command {
+public class ClearCommand extends Command implements Writable {
     public ClearCommand() {
         super("clear", "clear the collection");
     }

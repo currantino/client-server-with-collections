@@ -1,8 +1,9 @@
 package server.commands;
 
+import server.Writable;
 import server.data.Data;
 
-public class SortByDateTimeCommand extends Command {
+public class SortByDateTimeCommand extends Command implements Writable {
 
     public SortByDateTimeCommand() {
         super("sort_by_creation_date", "sort routes by creation date");

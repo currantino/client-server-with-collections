@@ -1,16 +1,17 @@
 package server.commands;
 
 import mid.route.Route;
+import server.Writable;
 import server.data.Data;
-import server.jdbcServer;
+import server.JdbcServer;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static server.jdbcServer.*;
+import static server.JdbcServer.*;
 
-public class RemoveLowerCommand extends Command {
+public class RemoveLowerCommand extends Command implements Writable {
 
     public RemoveLowerCommand() {
         super("remove_lower", "removes routes with distance lower than required");
@@ -19,7 +20,7 @@ public class RemoveLowerCommand extends Command {
     @Override
     public String execute() {
         try {
-            double dist = Double.parseDouble((String) jdbcServer.argument);
+            double dist = Double.parseDouble((String) JdbcServer.argument);
             if (!Data.getRoutes().isEmpty()) {
                 List<Route> routesToDelete = Data.getRoutes().stream().filter(route -> (route.getDistance() < dist) && pdb.checkCreator(route.getId(), login, password)).collect(Collectors.toCollection(LinkedList::new));
                 for (Route routeToDelete : routesToDelete) pdb.removeElementById(routeToDelete.getId());

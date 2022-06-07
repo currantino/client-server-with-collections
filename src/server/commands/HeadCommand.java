@@ -1,8 +1,9 @@
 package server.commands;
 
+import server.Readable;
 import server.data.Data;
 
-public class HeadCommand extends Command {
+public class HeadCommand extends Command implements Readable {
     public HeadCommand() {
         super("head", "print out the first element in the collection");
     }
