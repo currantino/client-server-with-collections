@@ -2,7 +2,7 @@
 //
 //import java.nio.ByteBuffer;
 //
-//import static server.jdbcServer.channel;
+//import static server.JdbcServer.channel;
 //
 //public class SendResultThread implements Runnable {
 //
