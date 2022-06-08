@@ -18,9 +18,7 @@ public class NetworkManager {
     public static ExecutorService pool;
     public static DatagramChannel channel;
     public static Logger LOGGER;
-    private static String dbURL = "jdbc:postgresql://localhost:5432/studs";
-    private static String propertiesPath = "/Users/boi/Desktop/client-server-with-collections/config/db.cfg";
-    private static Properties serverInfo = new Properties();
+private static String propertiesPath = "config/db.properties";
     private static Properties info = new Properties();
     private static InetSocketAddress serverAdd = new InetSocketAddress("localhost", 1234);
 
@@ -37,7 +35,8 @@ public class NetworkManager {
 
 
         info.load(new FileInputStream(propertiesPath));
-        pdb = new RoutePostgresSqlDatabase(dbURL, info);
+        String dbUrl = info.getProperty("url", "jdbc\\:postgresql\\://pg\\:5432/studs");
+        pdb = new RoutePostgresSqlDatabase(dbUrl, info);
         Data.setRoutes(pdb.getElements());
         Data.setCommands();
         LOGGER.fine("db connection established");

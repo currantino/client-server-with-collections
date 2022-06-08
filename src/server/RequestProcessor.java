@@ -22,7 +22,6 @@ public class RequestProcessor implements Runnable {
     private final Lock w = lock.writeLock();
     Logger LOGGER = Logger.getLogger("processor");
     private byte[] resultArr;
-    private String result;
     private ServerRequest request;
 
     public RequestProcessor(ServerRequest request) {
@@ -37,14 +36,12 @@ public class RequestProcessor implements Runnable {
         LOGGER.info(request.toString());
         new Thread(new ResultSender(resultArr, request.getSenderAddress())).start();
         request = null;
-        result = null;
         resultArr = null;
         LOGGER.info(getClass().getSimpleName() + " thread completed");
     }
 
     private byte[] processRequest(ServerRequest request) {
         String command = request.getCommand();
-        Object argument = request.getArgument();
         String login = request.getLogin();
         String password = request.getPassword();
         LOGGER.info("executing :\n" + request);
