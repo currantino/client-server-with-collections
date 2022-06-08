@@ -6,9 +6,7 @@ import mid.route.Route;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.Scanner;
 
@@ -17,21 +15,33 @@ public class Client {
     private static Scanner scanner = new Scanner(System.in);
     private static Scanner loginScanner = new Scanner(System.in);
     private static DatagramSocket ds;
-    private static InetAddress serverAddress;
+//    private static InetAddress serverAddress;
     private static String serverName = "localhost";
     private static int serverPort = 1234;
+
     private static int clientPort = 0;
     private static Object[] inputArr;
     private static String command;
     private static Object argument;
     private static String login;
     private static String password;
+    private static InetSocketAddress serverAddress;
 
+    public static void main(String[] args) {
+        try {
+            serverAddress = new InetSocketAddress(serverName, serverPort);
+            if (serverAddress.isUnresolved()){
+                throw new RuntimeException("connection failed, check server name and server port");
+            }
 
-    public static void main(String[] args) throws Exception {
-        serverAddress = InetAddress.getByName(serverName);
-        //Создание сокета для отправки команд
-        ds = new DatagramSocket();
+            //Создание сокета для отправки команд
+            ds = new DatagramSocket();
+        } catch (SocketException e) {
+            System.out.println("connection failed, check serverName");
+            throw new RuntimeException(e);
+        }
+
+        //Запуск общения с сервером
         start();
         go();
     }
@@ -65,7 +75,6 @@ public class Client {
     private static void sendRequest() {
 
         byte[] requestArr;
-        byte[] requestSize;
 
         //Создание потока вывода
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -78,12 +87,10 @@ public class Client {
                 oos.flush();
                 requestArr = baos.toByteArray();
 
-                //Сначала отправляется размер буфера с запросом
-                requestSize = ByteBuffer.allocate(4).putInt(requestArr.length).array();
-                DatagramPacket requestSizePacket = new DatagramPacket(requestSize, requestSize.length, serverAddress, serverPort);
-                ds.send(requestSizePacket);
+                //Сначала отправляется размер запроса
+                sendRequestSize(requestArr);
                 //Теперь отправляется сам запрос
-                DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, serverPort);
+                DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress);
                 ds.send(dp);
 
                 System.out.println(request + " sent to server at: " + serverAddress);
@@ -96,12 +103,15 @@ public class Client {
     private static void getResult() {
 
         try {
-            //Создание датаграммы для приема ответа от сервера
-            byte[] resultArr = new byte[4096];
-            DatagramPacket resultPacket = new DatagramPacket(resultArr, resultArr.length, InetAddress.getByName("localhost"), clientPort);
+            //Считывание размера ответа от сервера
+            int resultSize = getResultSize();
+
+            //Прием датаграммы с результатом
+            byte[] resultArr = new byte[resultSize];
+            DatagramPacket resultPacket = new DatagramPacket(resultArr, resultArr.length, serverAddress);
             ds.receive(resultPacket);
             //Распаковка полученного ответа от сервера из датаграммы
-            String resultString = new String(resultPacket.getData(), 0, resultPacket.getLength());
+            String resultString = new String(resultPacket.getData());
             System.out.println(resultString);
 
             if (resultString.equals("exit")) {
@@ -115,6 +125,28 @@ public class Client {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static int getResultSize() {
+        try {
+            byte[] resultSizeArr = new byte[4];
+            DatagramPacket resultSizePacket = new DatagramPacket(resultSizeArr, resultSizeArr.length, serverAddress);
+            ds.receive(resultSizePacket);
+            return ByteBuffer.wrap(resultSizeArr).getInt();
+        } catch (IOException e) {
+            System.out.println("failed to get result size");
+        }
+        return -1;
+    }
+
+    private static void sendRequestSize(byte[] requestArr) {
+        try {
+            byte[] requestSize = ByteBuffer.allocate(4).putInt(requestArr.length).array();
+            DatagramPacket requestSizePacket = new DatagramPacket(requestSize, requestSize.length, serverAddress);
+            ds.send(requestSizePacket);
+        } catch (IOException e) {
+            System.out.println("failed to send result size");
         }
     }
 
@@ -154,7 +186,6 @@ public class Client {
                 login();
                 sendRequest();
                 getResult();
-                System.out.println("command is " + command);
             }
             case "register" -> {
                 register();
