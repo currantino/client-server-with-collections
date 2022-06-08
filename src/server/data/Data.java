@@ -40,6 +40,7 @@ public class Data {
         commands.put("remove_lower", new RemoveLowerCommand());
         commands.put("register", new RegisterCommand());
         commands.put("suicide", new RemoveUserCommand());
+        commands.put("login", new LoginCommand());
     }
 
     public static List<Route> getRoutes() {

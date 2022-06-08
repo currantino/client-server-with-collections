@@ -32,7 +32,8 @@ public class Client {
         serverAddress = InetAddress.getByName(serverName);
         //Создание сокета для отправки команд
         ds = new DatagramSocket();
-        login();
+        start();
+        go();
     }
 
 
@@ -54,16 +55,14 @@ public class Client {
         }
         if (command.equals("add")) {
             argument = new Route();
-        }
-        if (command.equals("login")) {
+        } else if (command.equals("login")) {
             login();
-        }
-        if (command.equals("register")) {
+        } else if (command.equals("register")) {
             register();
         }
     }
 
-    private static void sendRequest() throws IOException {
+    private static void sendRequest() {
 
         byte[] requestArr;
         byte[] requestSize;
@@ -89,28 +88,33 @@ public class Client {
 
                 System.out.println(request + " sent to server at: " + serverAddress);
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private static void getResult() throws IOException {
+    private static void getResult() {
 
-        //Создание датаграммы для приема ответа от сервера
-        byte[] resultArr = new byte[4096];
-        DatagramPacket resultPacket = new DatagramPacket(resultArr, resultArr.length, InetAddress.getByName("localhost"), 0);
-        ds.receive(resultPacket);
+        try {
+            //Создание датаграммы для приема ответа от сервера
+            byte[] resultArr = new byte[4096];
+            DatagramPacket resultPacket = new DatagramPacket(resultArr, resultArr.length, InetAddress.getByName("localhost"), clientPort);
+            ds.receive(resultPacket);
+            //Распаковка полученного ответа от сервера из датаграммы
+            String resultString = new String(resultPacket.getData(), 0, resultPacket.getLength());
+            System.out.println(resultString);
 
-        //Распаковка полученного ответа от сервера из датаграммы
-        String resultString = new String(resultPacket.getData(), 0, resultPacket.getLength());
-        System.out.println(resultString);
+            if (resultString.equals("exit")) {
+                ds.close();
+                System.exit(0);
+            }
 
-        if (resultString.equals("exit")) {
-            ds.close();
-            System.exit(0);
-        }
-
-        if (resultString.equals("bye-bye")) {
-            login = null;
-            password = null;
+            if (resultString.equals("bye-bye")) {
+                login = null;
+                password = null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -119,10 +123,9 @@ public class Client {
         login = loginScanner.next();
         System.out.println("password: ");
         password = loginScanner.next();
-        go();
     }
 
-    private static boolean register() {
+    private static void register() {
         System.out.println("login: ");
         login = loginScanner.next();
         System.out.println("password: ");
@@ -132,22 +135,33 @@ public class Client {
         while (!password.equals(passwordRepeated)) {
             System.out.println("passwords don't match");
             passwordRepeated = loginScanner.next();
-            if (passwordRepeated.equals("exit"))
-                return false;
         }
-        return true;
     }
 
     private static void go() {
-        try {
-            while (true) {
-                processInput();
+        while (true) {
+            processInput();
+            sendRequest();
+            getResult();
+        }
+    }
+
+    private static void start() {
+        System.out.println("login or register to start");
+        command = loginScanner.next();
+        switch (command) {
+            case "login" -> {
+                login();
+                sendRequest();
+                getResult();
+                System.out.println("command is " + command);
+            }
+            case "register" -> {
+                register();
                 sendRequest();
                 getResult();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            default -> start();
         }
     }
 }

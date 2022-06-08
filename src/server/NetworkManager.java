@@ -26,27 +26,32 @@ public class NetworkManager {
     private static InetSocketAddress serverAdd = new InetSocketAddress("localhost", 1234);
 
     public static void main(String[] args) throws IOException, InterruptedException {
+
+        ByteBuffer requestSize;
+
         LOGGER = Logger.getLogger("multithreading server");
+
         channel = DatagramChannel.open();
         channel.configureBlocking(false);
         channel.bind(serverAdd);
-        Data.setCommands();
+        pool = Executors.newCachedThreadPool();
+
 
         info.load(new FileInputStream(propertiesPath));
         pdb = new RoutePostgresSqlDatabase(dbURL, info);
-        LOGGER.fine("db connection established");
         Data.setRoutes(pdb.getElements());
-        SocketAddress clientAddress;
-        ByteBuffer requestSize;
-        ByteBuffer requestBuffer;
-        pool = Executors.newCachedThreadPool();
+        Data.setCommands();
+        LOGGER.fine("db connection established");
+
         channel.configureBlocking(true);
         while (true) {
-            requestSize = ByteBuffer.allocate(4);
-            channel.receive(requestSize);
-            LOGGER.info("main thread received " + requestSize);
-            new Thread(new RequestReceiver(requestSize)).start();
-            Thread.sleep(1000);
+            synchronized (channel) {
+                requestSize = ByteBuffer.allocate(4);
+                channel.receive(requestSize);
+                LOGGER.info("main thread received " + requestSize.flip().getInt());
+                new Thread(new RequestReceiver(requestSize)).start();
+                channel.wait();
+            }
         }
     }
 }

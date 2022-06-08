@@ -27,7 +27,11 @@ public class RequestReceiver implements Runnable {
         int size = sizeBuffer.getInt();
         requestBuffer = ByteBuffer.allocate(size);
         try {
-            clientAddress = channel.receive(requestBuffer);
+            synchronized (channel) {
+                clientAddress = channel.receive(requestBuffer);
+                channel.notify();
+            }
+
             byte[] arr = requestBuffer.array();
             try (ByteArrayInputStream bais = new ByteArrayInputStream(arr)) {
                 try (ObjectInputStream ois = new ObjectInputStream(bais)) {
