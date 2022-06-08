@@ -21,6 +21,7 @@ public class RemoveGreaterCommand extends ArgumentableCommand implements Writabl
     @Override
     public String execute(ServerRequest request) {
         unpackRequest(request);
+        setArgument(request);
         try {
             double dist = Double.parseDouble((String) argument);
             if (!Data.getRoutes().isEmpty()) {

@@ -16,6 +16,7 @@ public class RemoveByIdCommand extends ArgumentableCommand implements Writable {
     @Override
     public String execute(ServerRequest request) {
         unpackRequest(request);
+        setArgument(request);
         if (!Data.getRoutes().isEmpty()) {
             try {
                 int id = Integer.parseInt((String) argument);

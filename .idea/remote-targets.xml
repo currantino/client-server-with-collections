@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="s336982@se.ifmo.ru:2222" type="ssh/sftp" uuid="7018adc2-9e1f-4e25-88a5-85d4bd873eb5">
+        <config>
+          <option name="projectRootOnTarget" value="/home/s336982/client-server-with-collections" />
+          <option name="serverName" value="s336982@se.ifmo.ru:2222 password" />
+        </config>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config>
+            <option name="homePath" value="/usr/bin/java" />
+            <option name="javaVersionString" value="1.8.0_60" />
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

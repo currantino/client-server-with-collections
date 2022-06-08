@@ -2,7 +2,6 @@ package server.commands;
 
 import mid.ServerRequest;
 import mid.route.Route;
-import server.commands.types.Argumentable;
 import server.commands.types.Writable;
 import server.data.Data;
 
@@ -21,6 +20,7 @@ public class RemoveLowerCommand extends ArgumentableCommand implements Writable 
     @Override
     public String execute(ServerRequest request) {
         unpackRequest(request);
+        setArgument(request);
         try {
             double dist = Double.parseDouble((String) argument);
             if (!Data.getRoutes().isEmpty()) {

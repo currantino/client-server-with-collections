@@ -2,7 +2,6 @@ package server.commands;
 
 import mid.ServerRequest;
 import mid.route.Route;
-import server.commands.types.Argumentable;
 import server.commands.types.Writable;
 import server.data.Data;
 
@@ -17,6 +16,7 @@ public class UpdateCommand extends ArgumentableCommand implements Writable {
     @Override
     public String execute(ServerRequest request) {
         unpackRequest(request);
+        setArgument(request);
         if (argument != null) {
             Route routeToUpdate = (Route) argument;
             if (pdb.checkExistence(routeToUpdate.getId())) {

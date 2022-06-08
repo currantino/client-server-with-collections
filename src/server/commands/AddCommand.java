@@ -2,7 +2,6 @@ package server.commands;
 
 import mid.ServerRequest;
 import mid.route.Route;
-import server.commands.types.Argumentable;
 import server.commands.types.Writable;
 import server.data.Data;
 
