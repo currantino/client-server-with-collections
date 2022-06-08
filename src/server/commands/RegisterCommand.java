@@ -2,19 +2,19 @@ package server.commands;
 
 import mid.ServerRequest;
 import server.commands.types.NotCheckable;
+import server.commands.types.Writable;
 
 import static server.NetworkManager.LOGGER;
 import static server.NetworkManager.pdb;
 
 
-public class RegisterCommand extends Command implements NotCheckable {
+public class RegisterCommand extends ArgumentableCommand implements NotCheckable, Writable {
 
     public RegisterCommand() {
         super("register", "register a new user");
     }
 
     public String execute(ServerRequest request) {
-        System.out.println("NIGGA");
         unpackRequest(request);
         LOGGER.info("registering user " + login + " " + password);
         if (pdb.checkLogin(login)) {

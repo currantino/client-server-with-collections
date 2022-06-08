@@ -10,9 +10,10 @@ public class HeadCommand extends Command implements Readable {
 
     @Override
     public String execute() {
+        String result = "";
         if (!Data.getRoutes().isEmpty()) {
-            return Data.getRoutes().get(0).show();
-        }
-        return "collection is empty";
+            result = Data.getRoutes().get(0).show();
+        } else result = "collection is empty";
+        return result;
     }
 }

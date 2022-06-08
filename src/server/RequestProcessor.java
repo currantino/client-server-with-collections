@@ -53,7 +53,7 @@ public class RequestProcessor implements Runnable {
             LOGGER.info("executing command " + commandToExecute.getName());
             if (commandToExecute instanceof NotCheckable) {
                 LOGGER.info("command is NotCheckable");
-                return commandToExecute.execute().getBytes();
+                return processCommand(commandToExecute).getBytes();
             } else if (pdb.checkLogin(login)) {
                 LOGGER.info("user " + login + " exists");
                 if (pdb.checkPassword(login, password)) {
@@ -78,21 +78,21 @@ public class RequestProcessor implements Runnable {
 
     private String processCommand(Command command) {
         String result = "";
-        if (command instanceof Readable) {
-            r.lock();
-            try {
-                result = command.execute();
-            } finally {
-                LOGGER.info("command is Readable");
-                r.unlock();
-            }
-        } else if (command instanceof Writable) {
+        if (command instanceof Writable) {
             w.lock();
             try {
                 result = command.execute();
             } finally {
                 LOGGER.info("command is Writable");
                 w.unlock();
+            }
+        } else {
+            r.lock();
+            try {
+                result = command.execute();
+            } finally {
+                LOGGER.info("command is Readable");
+                r.unlock();
             }
         }
         return result;

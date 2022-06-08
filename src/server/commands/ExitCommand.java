@@ -8,7 +8,7 @@ import server.commands.types.NotCheckable;
 public class ExitCommand extends Command implements NotCheckable {
 
     public ExitCommand() {
-        super("exit", "exits application");
+        super("exit", "exit application");
     }
 
     public String execute() {
