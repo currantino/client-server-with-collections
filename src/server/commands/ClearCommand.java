@@ -1,18 +1,23 @@
 package server.commands;
 
+import mid.ServerRequest;
 import server.commands.types.Writable;
 import server.data.Data;
 
+import static server.NetworkManager.LOGGER;
 import static server.NetworkManager.pdb;
 
 
-public class ClearCommand extends Command implements Writable {
+public class ClearCommand extends ArgumentableCommand implements Writable {
     public ClearCommand() {
         super("clear", "clear the collection");
     }
 
-    public String execute() {
+    @Override
+    public String execute(ServerRequest request) {
+        unpackRequest(request);
         int executorId = pdb.getUserId(login, password);
+        LOGGER.info("user " + executorId + " trying to remove all his elements");
         if (pdb.removeAllElements(executorId)) {
             Data.setRoutes(pdb.getElements());
             return "collection has been was cleared";
