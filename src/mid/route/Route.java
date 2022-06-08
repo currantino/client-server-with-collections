@@ -37,27 +37,25 @@ public class Route implements Serializable {
     }
 
     /**
-     * Конструктор, используемый при добавлении нового элемента в коллекцию из файла
+     * конструктор, используемый при добавлении элемента, полученного от клиента
      */
-
+    public Route(String name, Float distance, int xCoordinate, Float yCoordinate, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ, LocalDateTime creationDate) {
+        this.name = name;
+        this.distance = distance;
+        this.from = new Location(fromName, fromX, fromY, fromZ);
+        this.to = new Location(toName, toX, toY, toZ);
+        this.coordinates = new Coordinates(xCoordinate, yCoordinate);
+        this.creationDate = creationDate;
+    }
+    /**
+     * конструктор, используемый при добавлении элемента, полученного из БД
+     */
     public Route(int id, String name, Float distance, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ, LocalDateTime creationDate) {
         this.id = id;
         this.name = name;
         this.distance = distance;
         this.from = new Location(fromName, fromX, fromY, fromZ);
         this.to = new Location(toName, toX, toY, toZ);
-//        this.creationDate = LocalDateTime.now().withNano(0);
-        this.creationDate = creationDate;
-//        this.coordinates = new Coordinates(xCoordinate, yCoordinate);
-    }
-
-    public Route(String name, Float distance, int xCoordinate, Float yCoordinate, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ, LocalDateTime creationDate) {
-        this.name = name;
-        this.distance = distance;
-        this.from = new Location(fromName, fromX, fromY, fromZ);
-        this.to = new Location(toName, toX, toY, toZ);
-        this.creationDate = LocalDateTime.now().withNano(0);
-        this.coordinates = new Coordinates(xCoordinate, yCoordinate);
         this.creationDate = creationDate;
     }
 
@@ -97,16 +95,8 @@ public class Route implements Serializable {
         return this.distance;
     }
 
-    public void setDistance(Float distance) {
-        this.distance = distance;
-    }
-
     public LocalDateTime getCreationDate() {
         return this.creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
     }
 
     public int getId() {
@@ -121,32 +111,12 @@ public class Route implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
-
     public Location getFrom() {
         return from;
     }
 
-    public void setFrom(Location from) {
-        this.from = from;
-    }
-
     public Location getTo() {
         return to;
-    }
-
-    public void setTo(Location to) {
-        this.to = to;
     }
 
 }

@@ -24,6 +24,7 @@ public class RequestProcessor implements Runnable {
     private byte[] resultArr;
     private String result;
     private ServerRequest request;
+    Logger LOGGER = Logger.getLogger("processor");
 
     public RequestProcessor(ServerRequest request) {
         this.request = request;

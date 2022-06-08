@@ -12,7 +12,8 @@ import static server.NetworkManager.LOGGER;
 public class ResultSender implements Runnable {
     private byte[] resultArr;
     private SocketAddress destinationAddress;
-    private DatagramChannel channel = NetworkManager.channel;
+    private final DatagramChannel channel = NetworkManager.channel;
+    Logger LOGGER = Logger.getLogger("sender");
 
     public ResultSender(byte[] resultArr, SocketAddress destinationAddress) {
         this.resultArr = resultArr;
