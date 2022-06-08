@@ -106,12 +106,12 @@ public class RequestProcessor implements Runnable {
         return result;
     }
 
-    private String processArgumentableCommand(Argumentable command, ServerRequest argument) {
+    private String processArgumentableCommand(Argumentable command, ServerRequest request) {
         String result = "fff";
         if (command instanceof Readable) {
             r.lock();
             try {
-                result = command.execute(argument);
+                result = command.execute(request);
             } finally {
                 LOGGER.info("command is Readable");
                 r.unlock();
@@ -119,7 +119,7 @@ public class RequestProcessor implements Runnable {
         } else if (command instanceof Writable) {
             w.lock();
             try {
-                result = command.execute(argument);
+                result = command.execute(request);
             } finally {
                 LOGGER.info("command is Writable");
                 w.unlock();
