@@ -9,29 +9,32 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 
 import static server.NetworkManager.LOGGER;
+import static server.NetworkManager.channel;
 
 public class RequestReceiver implements Runnable {
-    private SocketAddress address;
-    private ByteBuffer buffer;
+    SocketAddress clientAddress;
+    private ByteBuffer requestBuffer;
+    private ByteBuffer sizeBuffer;
 
-    public RequestReceiver(SocketAddress address, ByteBuffer buffer) {
-        this.address = address;
-        this.buffer = buffer;
+    public RequestReceiver(ByteBuffer sizeBuffer) {
+        this.sizeBuffer = sizeBuffer;
     }
 
     @Override
     public void run() {
         LOGGER.info(this.getClass().getSimpleName() + " thread started");
+        sizeBuffer.flip();
+        int size = sizeBuffer.getInt();
+        requestBuffer = ByteBuffer.allocate(size);
         try {
-            byte[] arr = buffer.array();
+            clientAddress = channel.receive(requestBuffer);
+            byte[] arr = requestBuffer.array();
             try (ByteArrayInputStream bais = new ByteArrayInputStream(arr)) {
                 try (ObjectInputStream ois = new ObjectInputStream(bais)) {
                     ServerRequest request = (ServerRequest) ois.readObject();//TODO Сначала получать датаграмму с длиной датаграммы запроса и создавать подходящий буфер
-                    request.setSenderAddress(address);
+                    request.setSenderAddress(clientAddress);
                     LOGGER.info(request + " received");
                     NetworkManager.pool.submit(new RequestProcessor(request));
-                    request = null;
-                    address = null;
                 }
             }
             LOGGER.info(this.getClass().getSimpleName() + " thread completed");

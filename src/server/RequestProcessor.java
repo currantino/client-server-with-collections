@@ -11,6 +11,7 @@ import server.data.Data;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Logger;
 
 import static server.NetworkManager.LOGGER;
 import static server.NetworkManager.pdb;
@@ -33,7 +34,8 @@ public class RequestProcessor implements Runnable {
         LOGGER.info(getClass().getSimpleName() + " thread started");
         resultArr = processRequest(request);
         LOGGER.info("result: \n" + new String(resultArr));
-        new Thread(new ResultSender(resultArr, request.getSenderAddress(), NetworkManager.channel)).start();
+        LOGGER.info(request.toString());
+        new Thread(new ResultSender(resultArr, request.getSenderAddress())).start();
         request = null;
         result = null;
         resultArr = null;

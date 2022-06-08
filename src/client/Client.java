@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.util.Scanner;
 
 public class Client {
@@ -18,6 +19,7 @@ public class Client {
     private static DatagramSocket ds;
     private static InetAddress serverAddress;
     private static String serverName = "localhost";
+    private static int serverPort = 1234;
     private static int clientPort = 0;
     private static Object[] inputArr;
     private static String command;
@@ -30,7 +32,6 @@ public class Client {
         serverAddress = InetAddress.getByName(serverName);
         //Создание сокета для отправки команд
         ds = new DatagramSocket();
-
         login();
     }
 
@@ -45,7 +46,7 @@ public class Client {
                 Route routeForUpdating = new Route();
                 try {
                     routeForUpdating.setId(Integer.parseInt((String) inputArr[1]));
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     System.out.println("invalid id");
                 }
                 argument = routeForUpdating;
@@ -65,27 +66,30 @@ public class Client {
     private static void sendRequest() throws IOException {
 
         byte[] requestArr;
+        byte[] requestSize;
 
         //Создание потока вывода
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        baos.flush();
-        oos.flush();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+                baos.flush();
+                oos.flush();
+                //Запись команды, аргумента и данных о пользователе в этот поток
+                ServerRequest request = new ServerRequest(command, argument, login, password);
+                oos.writeObject(request);
+                oos.flush();
+                requestArr = baos.toByteArray();
 
-        //Запись команды, аргумента и данных о пользователе в этот поток
-        ServerRequest request = new ServerRequest(command, argument, login, password);
-        oos.writeObject(request);
-        oos.flush();
-        oos.close();
-        requestArr = baos.toByteArray();
+                //Сначала отправляется размер буфера с запросом
+                requestSize = ByteBuffer.allocate(4).putInt(requestArr.length).array();
+                DatagramPacket requestSizePacket = new DatagramPacket(requestSize, requestSize.length, serverAddress, serverPort);
+                ds.send(requestSizePacket);
+                //Теперь отправляется сам запрос
+                DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, serverPort);
+                ds.send(dp);
 
-        //Упаковка команды в датаграмму
-        DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, 1234);
-        //Отправка на сервер в порт 1234
-        ds.send(dp);
-
-        System.out.println(request + " sent to server at: " + serverAddress);
-
+                System.out.println(request + " sent to server at: " + serverAddress);
+            }
+        }
     }
 
     private static void getResult() throws IOException {

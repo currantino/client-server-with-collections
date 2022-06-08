@@ -25,7 +25,7 @@ public class NetworkManager {
     private static Properties info = new Properties();
     private static InetSocketAddress serverAdd = new InetSocketAddress("localhost", 1234);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         LOGGER = Logger.getLogger("multithreading server");
         channel = DatagramChannel.open();
         channel.configureBlocking(false);
@@ -37,13 +37,16 @@ public class NetworkManager {
         LOGGER.fine("db connection established");
         Data.setRoutes(pdb.getElements());
         SocketAddress clientAddress;
-        ByteBuffer buffer;
+        ByteBuffer requestSize;
+        ByteBuffer requestBuffer;
         pool = Executors.newCachedThreadPool();
         channel.configureBlocking(true);
         while (true) {
-            buffer = ByteBuffer.allocate(4096);
-            clientAddress = channel.receive(buffer);
-            new Thread(new RequestReceiver(clientAddress, buffer)).start();
+            requestSize = ByteBuffer.allocate(4);
+            channel.receive(requestSize);
+            LOGGER.info("main thread received " + requestSize);
+            new Thread(new RequestReceiver(requestSize)).start();
+            Thread.sleep(1000);
         }
     }
 }

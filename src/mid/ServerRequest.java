@@ -30,8 +30,9 @@ public class ServerRequest implements Serializable {
         return "ServerRequest{" +
                 "command='" + command + '\'' +
                 ", argument=" + argument +
-                ", mail='" + login + '\'' +
+                ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", senderAddress=" + senderAddress +
                 '}';
     }
 
