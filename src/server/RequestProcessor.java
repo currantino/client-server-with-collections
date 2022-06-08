@@ -8,7 +8,6 @@ import server.commands.types.Readable;
 import server.commands.types.Writable;
 import server.data.Data;
 
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -41,7 +40,6 @@ public class RequestProcessor implements Runnable {
         LOGGER.info(getClass().getSimpleName() + " thread completed");
     }
 
-
     private byte[] processRequest(ServerRequest request) {
         String command = request.getCommand();
         Object argument = request.getArgument();
@@ -51,10 +49,21 @@ public class RequestProcessor implements Runnable {
         if (Data.getCommands().containsKey(command)) {
             Command commandToExecute = Data.getCommands().get(command);
             LOGGER.info("executing command " + commandToExecute.getName());
+
+            //NotCheckable
             if (commandToExecute instanceof NotCheckable) {
                 LOGGER.info("command is NotCheckable");
-                return processCommand(commandToExecute).getBytes();
-            } else if (pdb.checkLogin(login)) {
+                if (commandToExecute instanceof Argumentable) {
+                    LOGGER.info("command is Argumentable");
+                    return processArgumentableCommand((Argumentable) commandToExecute, request).getBytes();
+                } else {
+                    LOGGER.info("command is not Argumentable");
+                    return processCommand(commandToExecute).getBytes();
+                }
+            }
+
+            //Checkable
+            else if (pdb.checkLogin(login)) {
                 LOGGER.info("user " + login + " exists");
                 if (pdb.checkPassword(login, password)) {
                     LOGGER.info("password is correct");
@@ -67,13 +76,12 @@ public class RequestProcessor implements Runnable {
                     }
                 } else {
                     LOGGER.info("wrong password");
-                    return "wrong password".getBytes(StandardCharsets.UTF_8);
+                    return "wrong password".getBytes();
                 }
-            } else {
-                return "unknown user: use 'register'".getBytes(StandardCharsets.UTF_8);
             }
+            return "unknown user, use 'register'".getBytes();
         }
-        return "unknown command, use 'help'".getBytes(StandardCharsets.UTF_8);
+        return "unknown command, use 'help'".getBytes();
     }
 
     private String processCommand(Command command) {
@@ -99,10 +107,11 @@ public class RequestProcessor implements Runnable {
     }
 
     private String processArgumentableCommand(Argumentable command, ServerRequest argument) {
+        String result = "fff";
         if (command instanceof Readable) {
             r.lock();
             try {
-                return command.execute(argument);
+                result = command.execute(argument);
             } finally {
                 LOGGER.info("command is Readable");
                 r.unlock();
@@ -110,12 +119,12 @@ public class RequestProcessor implements Runnable {
         } else if (command instanceof Writable) {
             w.lock();
             try {
-                return command.execute(argument);
+                result = command.execute(argument);
             } finally {
                 LOGGER.info("command is Writable");
                 w.unlock();
             }
         }
-        return null;
+        return result;
     }
 }
