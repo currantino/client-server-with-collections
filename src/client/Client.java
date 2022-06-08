@@ -3,11 +3,10 @@ package client;
 import mid.ServerRequest;
 import mid.route.Route;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Client {
@@ -15,32 +14,37 @@ public class Client {
     private static Scanner scanner = new Scanner(System.in);
     private static Scanner loginScanner = new Scanner(System.in);
     private static DatagramSocket ds;
-//    private static InetAddress serverAddress;
     private static String serverName = "localhost";
-    private static int serverPort = 1234;
-
-    private static int clientPort = 0;
+    private static int serverPort;
     private static Object[] inputArr;
     private static String command;
     private static Object argument;
     private static String login;
     private static String password;
-    private static InetSocketAddress serverAddress;
+    private static InetAddress serverAddress;
 
     public static void main(String[] args) {
-        try {
-            serverAddress = new InetSocketAddress(serverName, serverPort);
-            if (serverAddress.isUnresolved()){
-                throw new RuntimeException("connection failed, check server name and server port");
-            }
+        //Загрузка конфигурации
+        try (InputStream input = new FileInputStream("config/server.properties")) {
+            Properties serverProp = new Properties();
+            serverProp.load(input);
+            serverPort = Integer.parseInt(serverProp.getProperty("server.port", "1234"));
+            serverName = serverProp.getProperty("server.IPv4", "127.0.0.1");
+            System.out.println("connection with server " + serverName + ':' + serverPort);
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
 
+        try {
+            serverAddress = InetAddress.getByName(serverName);
             //Создание сокета для отправки команд
             ds = new DatagramSocket();
         } catch (SocketException e) {
             System.out.println("connection failed, check serverName");
             throw new RuntimeException(e);
+        } catch (UnknownHostException ex) {
+            throw new RuntimeException("connection failed, check server name and server port");
         }
-
         //Запуск общения с сервером
         start();
         go();
@@ -90,10 +94,8 @@ public class Client {
                 //Сначала отправляется размер запроса
                 sendRequestSize(requestArr);
                 //Теперь отправляется сам запрос
-                DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress);
+                DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, serverPort);
                 ds.send(dp);
-
-                System.out.println(request + " sent to server at: " + serverAddress);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -108,7 +110,7 @@ public class Client {
 
             //Прием датаграммы с результатом
             byte[] resultArr = new byte[resultSize];
-            DatagramPacket resultPacket = new DatagramPacket(resultArr, resultArr.length, serverAddress);
+            DatagramPacket resultPacket = new DatagramPacket(resultArr, resultArr.length, serverAddress, serverPort);
             ds.receive(resultPacket);
             //Распаковка полученного ответа от сервера из датаграммы
             String resultString = new String(resultPacket.getData());
@@ -131,7 +133,7 @@ public class Client {
     private static int getResultSize() {
         try {
             byte[] resultSizeArr = new byte[4];
-            DatagramPacket resultSizePacket = new DatagramPacket(resultSizeArr, resultSizeArr.length, serverAddress);
+            DatagramPacket resultSizePacket = new DatagramPacket(resultSizeArr, resultSizeArr.length, serverAddress, serverPort);
             ds.receive(resultSizePacket);
             return ByteBuffer.wrap(resultSizeArr).getInt();
         } catch (IOException e) {
@@ -143,7 +145,7 @@ public class Client {
     private static void sendRequestSize(byte[] requestArr) {
         try {
             byte[] requestSize = ByteBuffer.allocate(4).putInt(requestArr.length).array();
-            DatagramPacket requestSizePacket = new DatagramPacket(requestSize, requestSize.length, serverAddress);
+            DatagramPacket requestSizePacket = new DatagramPacket(requestSize, requestSize.length, serverAddress, serverPort);
             ds.send(requestSizePacket);
         } catch (IOException e) {
             System.out.println("failed to send result size");
