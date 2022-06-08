@@ -9,14 +9,13 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
-import static server.NetworkManager.LOGGER;
 import static server.NetworkManager.channel;
 
 public class RequestReceiver implements Runnable {
     SocketAddress clientAddress;
+    Logger LOGGER = Logger.getLogger("receiver");
     private ByteBuffer requestBuffer;
     private ByteBuffer sizeBuffer;
-    Logger LOGGER = Logger.getLogger("receiver");
 
     public RequestReceiver(ByteBuffer sizeBuffer) {
         this.sizeBuffer = sizeBuffer;

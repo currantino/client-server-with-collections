@@ -13,7 +13,6 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
 
-import static server.NetworkManager.LOGGER;
 import static server.NetworkManager.pdb;
 
 
@@ -21,10 +20,10 @@ public class RequestProcessor implements Runnable {
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock r = lock.readLock();
     private final Lock w = lock.writeLock();
+    Logger LOGGER = Logger.getLogger("processor");
     private byte[] resultArr;
     private String result;
     private ServerRequest request;
-    Logger LOGGER = Logger.getLogger("processor");
 
     public RequestProcessor(ServerRequest request) {
         this.request = request;
