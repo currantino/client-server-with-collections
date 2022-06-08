@@ -54,20 +54,27 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
 
 
     @Override
-    public boolean addElement(Route newRoute, String login, String password) {
+    public int addElement(Route newRoute, String login, String password) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO routes " +
                     "(name, distance, from_name, from_x, from_y, from_z, to_name, to_x, to_y, to_z, creation_datetime, user_id)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ")) {//TODO add returning (id)
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "RETURNING id")) {
                 setParams(newRoute, statement);
                 statement.setObject(11, newRoute.getCreationDate());
                 statement.setInt(12, getUserId(login, password));
-                return statement.executeUpdate() > 0;
+                try (ResultSet resultSet = statement.executeQuery();) {
+                    while (resultSet.next()) {
+                        return resultSet.getInt(1);
+                    }
+                }
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
+        return -1;
     }
 
     @Override

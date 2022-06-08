@@ -22,11 +22,14 @@ public class AddCommand extends ArgumentableCommand implements Writable {
         setArgument(request);
         if (argument != null) {
             Route newRoute = (Route) argument;
-            if (pdb.addElement(newRoute, login, password)) {
-                Data.setRoutes(pdb.getElements());
+            int newRouteId = pdb.addElement(newRoute, login, password);
+            if (newRouteId != -1) {
+                newRoute.setId(newRouteId);
+                Data.getRoutes().add(newRoute);
                 return "new route added successfully";
             }
-        } else return "route is null";
-        return ":(";
+            return "route adding failed :(";
+        }
+        return "route is null";
     }
 }
