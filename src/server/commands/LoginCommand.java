@@ -4,7 +4,7 @@ import mid.ServerRequest;
 import server.commands.types.NotCheckable;
 import server.commands.types.Readable;
 
-import static server.NetworkManager.pdb;
+import static server.Server.pdb;
 
 public class LoginCommand extends ArgumentableCommand implements Readable, NotCheckable {
 

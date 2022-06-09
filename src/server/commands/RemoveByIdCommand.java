@@ -1,11 +1,10 @@
 package server.commands;
 
 import mid.ServerRequest;
-import server.commands.types.Argumentable;
 import server.commands.types.Writable;
 import server.data.Data;
 
-import static server.NetworkManager.pdb;
+import static server.Server.pdb;
 
 public class RemoveByIdCommand extends ArgumentableCommand implements Writable {
 

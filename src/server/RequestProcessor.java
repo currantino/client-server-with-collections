@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
 
-import static server.NetworkManager.pdb;
+import static server.Server.pdb;
 
 
 public class RequestProcessor implements Runnable {

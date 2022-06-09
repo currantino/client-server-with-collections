@@ -4,8 +4,8 @@ import mid.ServerRequest;
 import server.commands.types.Writable;
 import server.data.Data;
 
-import static server.NetworkManager.LOGGER;
-import static server.NetworkManager.pdb;
+import static server.Server.LOGGER;
+import static server.Server.pdb;
 
 
 public class ClearCommand extends ArgumentableCommand implements Writable {

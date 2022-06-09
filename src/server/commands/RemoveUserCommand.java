@@ -6,7 +6,7 @@ import server.commands.types.NotCheckable;
 import server.commands.types.Writable;
 import server.data.Data;
 
-import static server.NetworkManager.pdb;
+import static server.Server.pdb;
 
 public class RemoveUserCommand extends ArgumentableCommand implements Writable, NotCheckable {
 

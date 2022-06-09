@@ -2,7 +2,6 @@ package server.commands;
 
 import mid.ServerRequest;
 import mid.route.Route;
-import server.commands.types.Argumentable;
 import server.commands.types.Writable;
 import server.data.Data;
 
@@ -10,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static server.NetworkManager.pdb;
+import static server.Server.pdb;
 
 public class RemoveGreaterCommand extends ArgumentableCommand implements Writable {
 

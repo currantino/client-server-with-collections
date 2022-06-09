@@ -13,14 +13,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-public class NetworkManager {
+public class Server {
     public static RoutePostgresSqlDatabase pdb;
     public static ExecutorService pool;
     public static DatagramChannel channel;
     public static Logger LOGGER;
-private static String propertiesPath = "config/db.properties";
-    private static Properties info = new Properties();
-    private static InetSocketAddress serverAdd = new InetSocketAddress("localhost", 1234);
+
+    private static String serverName;
+    private static int serverPort;
+    private static String dbPropertiesPath = "config/db.properties";
+    private static String serverPropertiesPath = "config/server.properties";
+    private static Properties dbProperties = new Properties();
+    private static Properties serverProperties = new Properties();
+    private static InetSocketAddress serverAdd;
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -28,20 +33,21 @@ private static String propertiesPath = "config/db.properties";
 
         LOGGER = Logger.getLogger("multithreading server");
 
+        serverProperties.load(new FileInputStream(serverPropertiesPath));
+        serverName = serverProperties.getProperty("server.name", "localhost");
+        serverPort = Integer.parseInt(serverProperties.getProperty("server.port", "1234"));
+        serverAdd = new InetSocketAddress(serverName, serverPort);
         channel = DatagramChannel.open();
-        channel.configureBlocking(false);
         channel.bind(serverAdd);
-        pool = Executors.newCachedThreadPool();
+        LOGGER.info("server is listening at: " + serverAdd);
 
-
-        info.load(new FileInputStream(propertiesPath));
-        String dbUrl = info.getProperty("url", "jdbc\\:postgresql\\://pg\\:5432/studs");
-        pdb = new RoutePostgresSqlDatabase(dbUrl, info);
+        dbProperties.load(new FileInputStream(dbPropertiesPath));
+        String dbUrl = dbProperties.getProperty("url", "jdbc\\:postgresql\\://pg\\:5432/studs");
+        pdb = new RoutePostgresSqlDatabase(dbUrl, dbProperties);
         Data.setRoutes(pdb.getElements());
         Data.setCommands();
-        LOGGER.fine("db connection established");
-
-        channel.configureBlocking(true);
+        LOGGER.info("db connection established\n\n");
+        pool = Executors.newCachedThreadPool();
         while (true) {
             synchronized (channel) {
                 requestSize = ByteBuffer.allocate(4);

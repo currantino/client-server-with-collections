@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static server.NetworkManager.pdb;
+import static server.Server.pdb;
 
 public class RemoveLowerCommand extends ArgumentableCommand implements Writable {
 

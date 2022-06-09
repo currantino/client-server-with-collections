@@ -4,8 +4,8 @@ import mid.ServerRequest;
 import server.commands.types.NotCheckable;
 import server.commands.types.Writable;
 
-import static server.NetworkManager.LOGGER;
-import static server.NetworkManager.pdb;
+import static server.Server.LOGGER;
+import static server.Server.pdb;
 
 
 public class RegisterCommand extends ArgumentableCommand implements NotCheckable, Writable {

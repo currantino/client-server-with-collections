@@ -14,7 +14,7 @@ public class Client {
     private static Scanner scanner = new Scanner(System.in);
     private static Scanner loginScanner = new Scanner(System.in);
     private static DatagramSocket ds;
-    private static String serverName = "localhost";
+    private static String serverName;
     private static int serverPort;
     private static Object[] inputArr;
     private static String command;
@@ -25,7 +25,7 @@ public class Client {
 
     public static void main(String[] args) {
         //Загрузка конфигурации
-        try (InputStream input = new FileInputStream("config/server.properties")) {
+        try (InputStream input = new FileInputStream("config/client.properties")) {
             Properties serverProp = new Properties();
             serverProp.load(input);
             serverPort = Integer.parseInt(serverProp.getProperty("server.port", "1234"));

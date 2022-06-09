@@ -5,7 +5,7 @@ import mid.route.Route;
 import server.commands.types.Writable;
 import server.data.Data;
 
-import static server.NetworkManager.pdb;
+import static server.Server.pdb;
 
 public class UpdateCommand extends ArgumentableCommand implements Writable {
 

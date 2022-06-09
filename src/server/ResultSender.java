@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 
 public class ResultSender implements Runnable {
-    private final DatagramChannel channel = NetworkManager.channel;
+    private final DatagramChannel channel = Server.channel;
     ByteBuffer resultBuffer;
     Logger LOGGER = Logger.getLogger("sender");
     private byte[] resultArr;

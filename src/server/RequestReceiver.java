@@ -9,7 +9,7 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
-import static server.NetworkManager.channel;
+import static server.Server.channel;
 
 public class RequestReceiver implements Runnable {
     SocketAddress clientAddress;
@@ -39,7 +39,7 @@ public class RequestReceiver implements Runnable {
                     ServerRequest request = (ServerRequest) ois.readObject();//TODO Сначала получать датаграмму с длиной датаграммы запроса и создавать подходящий буфер
                     request.setSenderAddress(clientAddress);
                     LOGGER.info(request + " received");
-                    NetworkManager.pool.submit(new RequestProcessor(request));
+                    Server.pool.submit(new RequestProcessor(request));
                 }
             }
             LOGGER.info(this.getClass().getSimpleName() + " thread completed");
