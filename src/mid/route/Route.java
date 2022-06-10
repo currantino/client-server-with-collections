@@ -2,12 +2,14 @@ package mid.route;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Route implements Serializable {
 
-    transient Scanner sc;
+    transient Scanner sc = new Scanner(System.in);
+
     private int id;
     private String name;
     private Coordinates coordinates;
@@ -21,19 +23,22 @@ public class Route implements Serializable {
      * конструктор, используемый при добавлении нового элемента в коллекцию через командную строку
      */
     public Route() {
-        sc = new Scanner(System.in);
-        while (this.name == null || this.name.equals("")) {
-            System.out.println("enter new route name: ");
-            this.name = sc.nextLine();
+        while (true) {
+            try {
+                System.out.println("enter new route name: ");
+                this.name = sc.nextLine();
+                if (name == null || name.isBlank() || name.length() > 80) throw new InputMismatchException();
+                System.out.println("enter new route distance:");
+                this.distance = sc.nextFloat();
+                if (distance <= 0) throw new InputMismatchException();
+                this.from = new Location();
+                this.to = new Location();
+                this.creationDate = LocalDateTime.now().withNano(0);
+                return;
+            } catch (InputMismatchException e) {
+                System.out.println("invalid input");
+            }
         }
-        while (this.distance == null || this.distance <= 0) {
-            System.out.println("enter new route distance:");
-            this.distance = sc.nextFloat();
-        }
-//        this.coordinates = new Coordinates();
-        this.from = new Location();
-        this.to = new Location();
-        this.creationDate = LocalDateTime.now().withNano(0);
     }
 
     /**
@@ -47,6 +52,7 @@ public class Route implements Serializable {
         this.coordinates = new Coordinates(xCoordinate, yCoordinate);
         this.creationDate = creationDate;
     }
+
     /**
      * конструктор, используемый при добавлении элемента, полученного из БД
      */

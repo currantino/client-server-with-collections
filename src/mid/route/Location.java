@@ -1,11 +1,12 @@
 package mid.route;
 
 import java.io.Serializable;
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Location implements Serializable {
-    transient Scanner sc;
+    transient Scanner sc = new Scanner(System.in);
     private String name;
     private int x;
     private int y;
@@ -13,17 +14,22 @@ public class Location implements Serializable {
 
 
     public Location() {
-        sc = new Scanner(System.in);
-        System.out.println("enter new location name:");
-        while (name == null || name.length() > 830 || name.length() < 1) {
-            this.name = sc.next();
+        while (true) {
+            try {
+                System.out.println("enter new location name:");
+                this.name = sc.nextLine();
+                if (name == null || name.length() > 80 || name.isBlank()) throw new InputMismatchException();
+                System.out.println("x coordinate:");
+                this.x = this.sc.nextInt();
+                System.out.println("y coordinate:");
+                this.y = this.sc.nextInt();
+                System.out.println("z coordinate:");
+                this.z = this.sc.nextInt();
+                return;
+            } catch (InputMismatchException e) {
+                System.out.println("invalid input");
+            }
         }
-        System.out.println("x coordinate:");
-        this.x = this.sc.nextInt();
-        System.out.println("y coordinate:");
-        this.y = this.sc.nextInt();
-        System.out.println("z coordinate:");
-        this.z = this.sc.nextInt();
     }
 
     public Location(String name, int x, int y, int z) {
