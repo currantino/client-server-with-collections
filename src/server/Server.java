@@ -5,6 +5,7 @@ import server.database.RoutePostgresSqlDatabase;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -34,9 +35,9 @@ public class Server {
         LOGGER = Logger.getLogger("multithreading server");
 
         serverProperties.load(new FileInputStream(serverPropertiesPath));
-        serverName = serverProperties.getProperty("server.name", "localhost");
+        serverName = serverProperties.getProperty("server.hostname", "localhost");
         serverPort = Integer.parseInt(serverProperties.getProperty("server.port", "1234"));
-        serverAdd = new InetSocketAddress(serverName, serverPort);
+        serverAdd = new InetSocketAddress(InetAddress.getByName(serverName), serverPort);
         channel = DatagramChannel.open();
         channel.bind(serverAdd);
         LOGGER.info("server is listening at: " + serverAdd);
