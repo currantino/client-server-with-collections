@@ -19,6 +19,11 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
     public RoutePostgresSqlDatabase(String dbURL, Properties info) {
         this.dbURL = dbURL;
         this.info = info;
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
 
             PreparedStatement usersStatement = connection.prepareStatement(
@@ -63,7 +68,7 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
                 setParams(newRoute, statement);
                 statement.setObject(11, newRoute.getCreationDate());
                 statement.setInt(12, getUserId(login, password));
-                try (ResultSet resultSet = statement.executeQuery();) {
+                try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         return resultSet.getInt(1);
                     }

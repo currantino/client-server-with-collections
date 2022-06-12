@@ -36,7 +36,7 @@ public class RequestReceiver implements Runnable {
             byte[] arr = requestBuffer.array();
             try (ByteArrayInputStream bais = new ByteArrayInputStream(arr)) {
                 try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                    ServerRequest request = (ServerRequest) ois.readObject();//TODO Сначала получать датаграмму с длиной датаграммы запроса и создавать подходящий буфер
+                    ServerRequest request = (ServerRequest) ois.readObject();
                     request.setSenderAddress(clientAddress);
                     LOGGER.info(request + " received");
                     Server.pool.submit(new RequestProcessor(request));
