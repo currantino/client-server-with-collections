@@ -34,7 +34,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>client.Client</mainClass>
+                                    <mainClass>server.Server</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>jar-with-dependencies</descriptorRefs>
