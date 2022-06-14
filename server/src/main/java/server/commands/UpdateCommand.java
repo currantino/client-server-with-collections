@@ -1,0 +1,33 @@
+package server.commands;
+
+import common.ServerRequest;
+import common.route.Route;
+import server.commands.types.Writable;
+import server.data.Data;
+
+import static server.Server.pdb;
+
+public class UpdateCommand extends ArgumentableCommand implements Writable {
+
+    public UpdateCommand() {
+        super("update", "updates the route with required id");
+    }
+
+    @Override
+    public String execute(ServerRequest request) {
+        unpackRequest(request);
+        setArgument(request);
+        if (argument != null) {
+            Route routeToUpdate = (Route) argument;
+            if (pdb.checkExistence(routeToUpdate.getId())) {
+                if (pdb.checkCreator(routeToUpdate.getId(), login, password)) {
+                    if (pdb.updateElement(routeToUpdate)) {
+                        Data.getRoutes().removeIf(route -> route.getId() == routeToUpdate.getId());
+                        Data.getRoutes().add(routeToUpdate);
+                        return "route with id = " + routeToUpdate.getId() + " updated successfully";
+                    } else return "updating failed";
+                } else return "you cannot change elements created by other users";
+            } else return "route with id = " + routeToUpdate.getId() + " not found";
+        } else return "route provided for updating is null";
+    }
+}
