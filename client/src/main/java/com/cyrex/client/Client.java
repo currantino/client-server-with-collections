@@ -1,4 +1,4 @@
-package client;
+package com.cyrex.client;
 
 import common.ServerRequest;
 import common.route.Route;
