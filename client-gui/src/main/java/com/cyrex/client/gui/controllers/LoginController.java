@@ -1,9 +1,9 @@
 package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
-import com.cyrex.client.gui.views.RegisterView;
-import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -18,6 +18,10 @@ public class LoginController {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private Button loginBtn;
+    @FXML
+    private Button registerBtn;
 
     @FXML
     protected void handleLoginButtonAction() {
@@ -28,7 +32,13 @@ public class LoginController {
     }
 
     @FXML
-    protected void handleRegisterButtonAction(){
-        ViewController.switchToRegisterView();
+    protected void handleRegisterButtonAction() {
+        ViewController.switchToRegisterView(registerBtn);
+    }
+
+    @FXML
+    public void handleExitButtonAction() {
+        Platform.exit();
+        System.exit(0);
     }
 }

@@ -1,38 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<GridPane fx:controller="com.cyrex.client.gui.controllers.LoginController"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10" prefHeight="600" prefWidth="800"
-          style="-fx-font-family: Helvetica;  -fx-font-size: 18.0;  -fx-background-color: #ADD8E6;">
+<BorderPane fx:controller="com.cyrex.client.gui.controllers.LoginController"
+             xmlns:fx="http://javafx.com/fxml"
+             style="-fx-font-family: Helvetica;  -fx-font-size: 18.0;  -fx-background-color: #a3ae9f;">
     <padding>
-        <Insets top="25" right="25" bottom="10" left="25"/>
+        <Insets bottom="25" left="25" right="25" top="25"/>
     </padding>
+    <center>
+        <GridPane alignment="center" hgap="10" vgap="10">
 
-    <Text text="Welcome"
-          GridPane.columnIndex="0" GridPane.rowIndex="0"
-          GridPane.columnSpan="2"/>
+            <Text text="welcome!" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                <font>
+                    <Font size="24.0"/>
+                </font>
+            </Text>
 
-    <Label text="Username:"
-           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="usernameField" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <Label text="username" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-cursor: text"/>
 
-    <Label text="Password:"
-           GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <PasswordField fx:id="passwordField"
-                   GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <Label text="password" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                           style="-fx-cursor: text"/>
 
-    <HBox spacing="10" alignment="bottom_right"
-          GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <HBox alignment="bottom_right" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
 
-        <Button fx:id="loginBtn" text="Log In" style="-fx-cursor: hand;"
-                onAction="#handleLoginButtonAction"/>
+                <Button fx:id="loginBtn" onAction="#handleLoginButtonAction" text="log In" style="-fx-cursor: hand;"/>
 
-        <Button fx:id="registerBtn" text="Register"
-                onAction="#handleRegisterButtonAction"/>
-    </HBox>
+                <Button fx:id="registerBtn" onAction="#handleRegisterButtonAction" text="register"
+                        style="-fx-cursor: hand;"/>
+            </HBox>
 
-    <Text fx:id="actionTarget"
-          GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+            <Text fx:id="actionTarget" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        </GridPane>
+    </center>
+    <bottom>
+        <GridPane>
+            <padding><Insets topRightBottomLeft="25"/> </padding>
+            <Button fx:id="exitBtn" text="exit" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                    onAction="#handleExitButtonAction"/>
+        </GridPane>
+    </bottom>
 
-</GridPane>
+</BorderPane>
