@@ -37,7 +37,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.cyrex.client.Client</mainClass>
+                                    <mainClass>client.Client</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>jar-with-dependencies</descriptorRefs>
