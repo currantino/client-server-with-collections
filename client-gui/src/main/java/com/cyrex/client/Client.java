@@ -1,6 +1,6 @@
 package com.cyrex.client;
 
-import com.cyrex.client.gui.LoginView;
+import com.cyrex.client.gui.views.LoginView;
 import common.ServerRequest;
 import common.route.Route;
 import javafx.application.Application;
@@ -73,9 +73,9 @@ public class Client {
         if (command.equals("add")) {
             argument = new Route();
         } else if (command.equals("login")) {
-            login();
+            login(login, password);
         } else if (command.equals("register")) {
-            register();
+            register(login, password);
         }
     }
 
@@ -156,24 +156,20 @@ public class Client {
         }
     }
 
-    private static void login() {
-        System.out.println("login: ");
-        login = loginScanner.next();
-        System.out.println("password: ");
-        password = loginScanner.next();
+    public static String login(String username, String password) {
+        command = "login";
+        setLogin(username);
+        setPassword(password);
+        sendRequest();
+        return getResult();
     }
 
-    private static void register() {
-        System.out.println("login: ");
-        login = loginScanner.next();
-        System.out.println("password: ");
-        password = loginScanner.next();
-        System.out.println("repeat password: ");
-        String passwordRepeated = loginScanner.next();
-        while (!password.equals(passwordRepeated)) {
-            System.out.println("passwords don't match");
-            passwordRepeated = loginScanner.next();
-        }
+    public static String register(String username, String password) {
+        command = "register";
+        setLogin(username);
+        setPassword(password);
+        sendRequest();
+        return getResult();
     }
 
     private static void go() {
@@ -189,12 +185,12 @@ public class Client {
         command = loginScanner.next();
         switch (command) {
             case "login" -> {
-                login();
+//                login();
                 sendRequest();
                 getResult();
             }
             case "register" -> {
-                register();
+//                register();
                 sendRequest();
                 getResult();
             }

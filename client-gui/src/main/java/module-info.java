@@ -11,7 +11,9 @@ module com.cyrex.client {
     requires common;
     requires java.desktop;
 
-    opens com.cyrex.client.gui to javafx.fxml;
     exports com.cyrex.client;
-    exports com.cyrex.client.gui;
+    exports com.cyrex.client.gui.controllers;
+    opens com.cyrex.client.gui.controllers to javafx.fxml;
+    exports com.cyrex.client.gui.views;
+    opens com.cyrex.client.gui.views to javafx.fxml;
 }

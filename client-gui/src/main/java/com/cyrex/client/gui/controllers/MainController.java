@@ -1,4 +1,4 @@
-package com.cyrex.client.gui;
+package com.cyrex.client.gui.controllers;
 
 import javafx.event.ActionEvent;
 
