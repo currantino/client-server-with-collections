@@ -9,6 +9,7 @@ module com.cyrex.client {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires common;
+    requires java.desktop;
 
     opens com.cyrex.client.gui to javafx.fxml;
     exports com.cyrex.client;

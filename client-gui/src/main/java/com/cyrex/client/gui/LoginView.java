@@ -5,12 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class LoginApplication extends Application {
+public class LoginView extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginApplication.class.getResource("/com.cyrex.client.gui/login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("/com.cyrex.client.gui/login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
     }

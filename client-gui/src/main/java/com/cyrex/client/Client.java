@@ -1,7 +1,9 @@
 package com.cyrex.client;
 
+import com.cyrex.client.gui.LoginView;
 import common.ServerRequest;
 import common.route.Route;
+import javafx.application.Application;
 
 import java.io.*;
 import java.net.*;
@@ -45,6 +47,7 @@ public class Client {
         } catch (UnknownHostException ex) {
             throw new RuntimeException("connection failed, check server name and server port");
         }
+        Application.launch(LoginView.class);
         //Запуск общения с сервером
         start();
         go();
@@ -76,7 +79,7 @@ public class Client {
         }
     }
 
-    private static void sendRequest() {
+    public static void sendRequest() {
 
         byte[] requestArr;
 
@@ -102,7 +105,7 @@ public class Client {
         }
     }
 
-    private static void getResult() {
+    public static String getResult() {
 
         try {
             //Считывание размера ответа от сервера
@@ -125,6 +128,7 @@ public class Client {
                 login = null;
                 password = null;
             }
+            return resultString;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -196,5 +200,37 @@ public class Client {
             }
             default -> start();
         }
+    }
+
+    public static String getCommand() {
+        return command;
+    }
+
+    public static void setCommand(String command) {
+        Client.command = command;
+    }
+
+    public static Object getArgument() {
+        return argument;
+    }
+
+    public static void setArgument(Object argument) {
+        Client.argument = argument;
+    }
+
+    public static String getLogin() {
+        return login;
+    }
+
+    public static void setLogin(String login) {
+        Client.login = login;
+    }
+
+    public static String getPassword() {
+        return password;
+    }
+
+    public static void setPassword(String password) {
+        Client.password = password;
     }
 }
