@@ -2,9 +2,10 @@ package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
 import common.route.Route;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,15 +21,17 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
-    public TableView<Route> routesTable;
+    private TableView<Route> routesTable;
     @FXML
-    public TableColumn<Route, Integer> routeId;
+    private TableColumn<Route, Integer> routeId;
     @FXML
-    public TableColumn<Route, String> routeName;
+    private TableColumn<Route, String> routeName;
     @FXML
-    public TableColumn<Route, Double> routeDistance;
+    private TableColumn<Route, Double> routeDistance;
     @FXML
-    public TableColumn<Route, LocalDateTime> routeCreationDate;
+    private TableColumn<Route, LocalDateTime> routeCreationDate;
+    @FXML
+    private Button removeBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,7 +69,17 @@ public class MainController implements Initializable {
             Route newRoute = new Route(id, routeName, routeDistance, fromName, fromX, fromY, fromZ, toName, toX, toY, toZ, creationDate);
             routesFromServer.add(newRoute);
         }
-        System.out.println(routesFromServer);
         return routesFromServer;
+    }
+
+    public void handleRemoveButtonAction(ActionEvent actionEvent) {
+        int idToRemove = routesTable.getSelectionModel().getSelectedItems().get(0).getId();
+        Client.setCommand("remove_by_id");
+        Client.setArgument(idToRemove);
+        Client.sendRequest();
+        String result = Client.getResult();
+        removeBtn.setText(result);
+        if (result.equals("route with id = " + idToRemove + " has been removed"))
+            routesTable.getItems().removeAll(routesTable.getSelectionModel().getSelectedItems());
     }
 }

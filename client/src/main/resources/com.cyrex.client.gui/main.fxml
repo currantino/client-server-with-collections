@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.cyrex.client.gui.controllers.MainController"
-            prefHeight="900" prefWidth="1200">
+<?import javafx.scene.layout.VBox?>
+<BorderPane prefHeight="900" prefWidth="1200" xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.MainController">
     <center>
-        <TableView fx:id="routesTable">
+        <TableView fx:id="routesTable" style="-fx-alignment: CENTER;">
             <columns>
-                <TableColumn fx:id="routeId" text="id" prefWidth="50"/>
-                <TableColumn fx:id="routeName" text="name" prefWidth="300"/>
-                <TableColumn fx:id="routeDistance" text="distance" prefWidth="100"/>
-                <TableColumn fx:id="routeCreationDate" text="created" prefWidth="200"/>
+                <TableColumn fx:id="routeId" prefWidth="50" text="id" style="-fx-alignment: CENTER"/>
+                <TableColumn fx:id="routeName" prefWidth="300" text="name" style="-fx-alignment: CENTER"/>
+                <TableColumn fx:id="routeDistance" prefWidth="100" text="distance" style="-fx-alignment: CENTER"/>
+                <TableColumn fx:id="routeCreationDate" prefWidth="200" text="created" style="-fx-alignment: CENTER"/>
             </columns>
         </TableView>
     </center>
+    <right>
+        <VBox>
+            <Button fx:id="removeBtn" prefWidth="100" text="remove" onAction="#handleRemoveButtonAction"/>
+        </VBox>
+    </right>
 
 </BorderPane>
