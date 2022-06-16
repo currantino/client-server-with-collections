@@ -5,7 +5,10 @@ import common.ServerRequest;
 import common.route.Route;
 import javafx.application.Application;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.Properties;
@@ -24,18 +27,17 @@ public class Client {
     private static String login;
     private static String password;
     private static InetAddress serverAddress;
+    private static Properties serverProp = new Properties();
+    private static String serverPropPath = "config/client.properties";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //Загрузка конфигурации
-        try (InputStream input = new FileInputStream("config/client.properties")) {
-            Properties serverProp = new Properties();
-            serverProp.load(input);
-            serverPort = Integer.parseInt(serverProp.getProperty("server.port", "1234"));
-            serverName = serverProp.getProperty("server.IPv4", "127.0.0.1");
-            System.out.println("connection with server " + serverName + ':' + serverPort);
-        } catch (IOException io) {
-            io.printStackTrace();
+        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(serverPropPath)) {
+            serverProp.load(inputStream);
         }
+        serverPort = Integer.parseInt(serverProp.getProperty("server.port", "1234"));
+        serverName = serverProp.getProperty("server.IPv4", "127.0.0.1");
+        System.out.println("connection with server " + serverName + ':' + serverPort);
 
         try {
             serverAddress = InetAddress.getByName(serverName);
@@ -49,8 +51,8 @@ public class Client {
         }
         Application.launch(LoginView.class);
         //Запуск общения с сервером
-        start();
-        go();
+//        start();
+//        go();
     }
 
 

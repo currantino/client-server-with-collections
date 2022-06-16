@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.cyrex.client.gui.controllers.MainController"
+            prefHeight="900" prefWidth="1200">
+    <center>
+        <TableView fx:id="routesTable">
+            <columns>
+                <TableColumn fx:id="routeId" text="id" prefWidth="50"/>
+                <TableColumn fx:id="routeName" text="name" prefWidth="300"/>
+                <TableColumn fx:id="routeDistance" text="distance" prefWidth="100"/>
+                <TableColumn fx:id="routeCreationDate" text="created" prefWidth="200"/>
+            </columns>
+        </TableView>
+    </center>
+
+</BorderPane>

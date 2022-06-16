@@ -7,14 +7,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ViewController{
+public class ViewController {
     public static void switchToRegisterView(Node node) {
-        ((Stage)node.getScene().getWindow()).close();
+        ((Stage) node.getScene().getWindow()).close();
         try {
             Parent root = FXMLLoader.load(RegisterView.class.getResource("/com.cyrex.client.gui/register.fxml"));
             Stage stage = new Stage();
@@ -23,40 +22,37 @@ public class ViewController{
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void switchToLoginView(Node node) {
-        ((Stage)node.getScene().getWindow()).close();
+        ((Stage) node.getScene().getWindow()).close();
         try {
-            Parent root = FXMLLoader.load(RegisterView.class.getResource("/com.cyrex.client.gui/login.fxml"));
+            Parent root = FXMLLoader.load(LoginView.class.getResource("/com.cyrex.client.gui/login.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
             stage.setTitle("Login");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void switchToMainView(Node node) {
-        ((Stage)node.getScene().getWindow()).close();
+        ((Stage) node.getScene().getWindow()).close();
         try {
             Parent root = FXMLLoader.load(MainView.class.getResource("/com.cyrex.client.gui/main.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(root, 600, 400);
-            stage.setTitle("Login");
+            Scene scene = new Scene(root, 1200, 900);
+            stage.setTitle("routes manager");
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.show();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

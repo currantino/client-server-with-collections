@@ -28,7 +28,9 @@ public class LoginController {
         username = usernameField.getText().trim();
         password = passwordField.getText().trim();
         actionTarget.setText("Logging in...");
-        actionTarget.setText(Client.login(username, password));
+        String result = Client.login(username, password);
+        if (result.equals("you are welcome!")) ViewController.switchToMainView(loginBtn);
+        actionTarget.setText(result);
     }
 
     @FXML

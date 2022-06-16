@@ -10,6 +10,7 @@ module com.cyrex.client {
     requires com.almasb.fxgl.all;
     requires common;
     requires java.desktop;
+    requires org.json;
 
     exports com.cyrex.client;
     exports com.cyrex.client.gui.controllers;

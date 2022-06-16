@@ -34,8 +34,10 @@ public class RegisterController {
             actionTarget.setText("Passwords don't match, try again.");
             return;
         }
+        String result = Client.register(username, password);
         actionTarget.setText("Registering...");
-        actionTarget.setText(Client.register(username, password));
+        if (result.equals("registration successful")) ViewController.switchToMainView(registerBtn);
+        actionTarget.setText(result);
     }
 
     public void handleBackButtonAction(ActionEvent actionEvent) {
