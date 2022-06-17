@@ -6,17 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="common" />
         <module name="server" />
         <module name="client" />
-        <module name="common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="client" target="18" />
-      <module name="client-gui" target="18" />
       <module name="common" target="18" />
-      <module name="gui" target="18" />
-      <module name="javaFX-gui" target="11" />
       <module name="routes-manager" target="18" />
       <module name="server" target="18" />
     </bytecodeTargetLevel>

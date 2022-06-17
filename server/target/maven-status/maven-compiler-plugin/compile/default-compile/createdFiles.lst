@@ -7,6 +7,7 @@ server/commands/DistanceComparator.class
 server/Server.class
 server/data/Data.class
 server/commands/RemoveLowerCommand.class
+server/commands/RefreshCommand.class
 server/database/RoutePostgresSqlDatabase.class
 server/commands/types/Argumentable.class
 server/commands/ClearCommand.class
@@ -14,7 +15,6 @@ server/commands/HeadCommand.class
 server/commands/RemoveByIdCommand.class
 server/commands/LoginCommand.class
 server/commands/AddCommand.class
-server/commands/ShowCommand.class
 server/commands/types/Readable.class
 server/commands/ArgumentableCommand.class
 server/commands/types/NotCheckable.class

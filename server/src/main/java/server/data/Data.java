@@ -24,7 +24,7 @@ public class Data {
     public static void setCommands() {
         commands.put("exit", new ExitCommand());
         commands.put("help", new HelpCommand());
-        commands.put("show", new ShowCommand());
+        commands.put("refresh", new RefreshCommand());
         commands.put("add", new AddCommand());
         commands.put("average_of_distance", new AvgDistanceCommand());
         commands.put("info", new InfoCommand());

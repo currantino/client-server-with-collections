@@ -25,10 +25,10 @@
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/RequestProcessor.java
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/ResultSender.java
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/commands/AddCommand.java
+/Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/commands/RefreshCommand.java
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/database/RoutePostgresSqlDatabase.java
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/commands/types/Writable.java
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/commands/Command.java
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/commands/HelpCommand.java
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/commands/InfoCommand.java
 /Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/commands/PrintUniqueDistanceCommand.java
-/Users/boi/IdeaProjects/routes-manager/server/src/main/java/server/commands/ShowCommand.java

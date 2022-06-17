@@ -2,7 +2,6 @@ package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
 import common.route.Route;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -42,8 +41,9 @@ public class MainController implements Initializable {
         routesTable.getItems().setAll(getRoutesFromServer());
     }
 
+    @FXML
     private List<Route> getRoutesFromServer() {
-        Client.setCommand("show");
+        Client.setCommand("refresh");
         Client.sendRequest();
         String routesJson = Client.getResult();
         LinkedList<Route> routesFromServer = new LinkedList<>();
@@ -72,8 +72,10 @@ public class MainController implements Initializable {
         return routesFromServer;
     }
 
-    public void handleRemoveButtonAction(ActionEvent actionEvent) {
+    @FXML
+    public void handleRemoveButtonAction() {
         int idToRemove = routesTable.getSelectionModel().getSelectedItems().get(0).getId();
+        removeBtn.setText(String.valueOf(idToRemove));
         Client.setCommand("remove_by_id");
         Client.setArgument(idToRemove);
         Client.sendRequest();

@@ -187,12 +187,12 @@ public class Client {
         command = loginScanner.next();
         switch (command) {
             case "login" -> {
-//                login();
+//                login(login, password);
                 sendRequest();
                 getResult();
             }
             case "register" -> {
-//                register();
+//                register(login, password);
                 sendRequest();
                 getResult();
             }
