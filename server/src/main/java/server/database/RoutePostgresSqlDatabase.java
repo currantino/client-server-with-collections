@@ -274,6 +274,7 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
     @Override
     public boolean removeElementById(int id) {
         try (Connection connection = DriverManager.getConnection(dbURL, info)) {
+            System.out.printf("deleteting route with id = %d", id);
             try (PreparedStatement statement = connection.prepareStatement(
                     "DELETE FROM routes " +
                             "WHERE id = ?")

@@ -16,8 +16,9 @@
         </TableView>
     </center>
     <right>
-        <VBox>
-            <Button fx:id="removeBtn" prefWidth="100" text="remove" onAction="#handleRemoveButtonAction"/>
+        <VBox prefWidth="100">
+            <Button fx:id="refreshBtn" text = "refresh" onAction="#refresh"/>
+            <Button fx:id="removeBtn"  text="remove" onAction="#handleRemoveButtonAction"/>
         </VBox>
     </right>
 

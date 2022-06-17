@@ -81,7 +81,15 @@ public class MainController implements Initializable {
         Client.sendRequest();
         String result = Client.getResult();
         removeBtn.setText(result);
-        if (result.equals("route with id = " + idToRemove + " has been removed"))
+        if (result.equals("route with id = " + idToRemove + " has been removed")) {
             routesTable.getItems().removeAll(routesTable.getSelectionModel().getSelectedItems());
+            routesTable.getItems().setAll(getRoutesFromServer());
+        }
+    }
+
+    @FXML
+    public void refresh() {
+        routesTable.getItems().clear();
+        routesTable.getItems().setAll(getRoutesFromServer());
     }
 }

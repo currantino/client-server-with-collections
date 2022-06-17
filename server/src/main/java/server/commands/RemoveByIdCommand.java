@@ -18,7 +18,7 @@ public class RemoveByIdCommand extends ArgumentableCommand implements Writable {
         setArgument(request);
         if (!Data.getRoutes().isEmpty()) {
             try {
-                int id = Integer.parseInt((String) argument);
+                int id = Integer.parseInt(argument.toString());
                 if (pdb.checkExistence(id)) {
                     if (pdb.checkCreator(id, login, password)) {
                         if (pdb.removeElementById(id)) {

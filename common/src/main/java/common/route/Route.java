@@ -12,7 +12,6 @@ public class Route implements Serializable {
 
     private int id;
     private String name;
-    private Coordinates coordinates;
     private LocalDateTime creationDate;
     private Location from;
     private Location to;
@@ -44,12 +43,11 @@ public class Route implements Serializable {
     /**
      * конструктор, используемый при добавлении элемента, полученного от клиента
      */
-    public Route(String name, Float distance, int xCoordinate, Float yCoordinate, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ, LocalDateTime creationDate) {
+    public Route(String name, Float distance, String fromName, int fromX, int fromY, int fromZ, String toName, int toX, int toY, int toZ, LocalDateTime creationDate) {
         this.name = name;
         this.distance = distance;
         this.from = new Location(fromName, fromX, fromY, fromZ);
         this.to = new Location(toName, toX, toY, toZ);
-        this.coordinates = new Coordinates(xCoordinate, yCoordinate);
         this.creationDate = creationDate;
     }
 
@@ -71,7 +69,6 @@ public class Route implements Serializable {
         return "Route{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", coordinates=" + coordinates +
                 ", creationDate=" + creationDate +
                 ", from=" + from +
                 ", to=" + to +
@@ -84,12 +81,12 @@ public class Route implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return id == route.id && name.equals(route.name) && coordinates.equals(route.coordinates) && Objects.equals(creationDate, route.creationDate) && from.equals(route.from) && to.equals(route.to) && distance.equals(route.distance);
+        return id == route.id && name.equals(route.name) && Objects.equals(creationDate, route.creationDate) && from.equals(route.from) && to.equals(route.to) && distance.equals(route.distance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, coordinates, creationDate, from, to, distance);
+        return Objects.hash(id, name, creationDate, from, to, distance);
     }
 
     public String show() {

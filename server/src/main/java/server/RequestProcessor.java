@@ -106,7 +106,7 @@ public class RequestProcessor implements Runnable {
     }
 
     private String processArgumentableCommand(Argumentable command, ServerRequest request) {
-        String result = "fff";
+        String result = "";
         if (command instanceof Readable) {
             r.lock();
             try {
