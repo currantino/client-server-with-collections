@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,6 +21,8 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
+    private Button addBtn;
+    @FXML
     private TableView<Route> routesTable;
     @FXML
     private TableColumn<Route, Integer> routeId;
@@ -31,6 +34,8 @@ public class MainController implements Initializable {
     private TableColumn<Route, LocalDateTime> routeCreationDate;
     @FXML
     private Button removeBtn;
+    @FXML
+    private TextArea resultArea;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,14 +78,13 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void handleRemoveButtonAction() {
+    public void remove() {
         int idToRemove = routesTable.getSelectionModel().getSelectedItems().get(0).getId();
-        removeBtn.setText(String.valueOf(idToRemove));
         Client.setCommand("remove_by_id");
         Client.setArgument(idToRemove);
         Client.sendRequest();
         String result = Client.getResult();
-        removeBtn.setText(result);
+        resultArea.setText(result);
         if (result.equals("route with id = " + idToRemove + " has been removed")) {
             routesTable.getItems().removeAll(routesTable.getSelectionModel().getSelectedItems());
             routesTable.getItems().setAll(getRoutesFromServer());
@@ -91,5 +95,12 @@ public class MainController implements Initializable {
     public void refresh() {
         routesTable.getItems().clear();
         routesTable.getItems().setAll(getRoutesFromServer());
+    }
+
+    @FXML
+    public void add() {
+        ViewController.switchToAddView(addBtn);
+        resultArea.setText(Client.getResult());
+        refresh();
     }
 }

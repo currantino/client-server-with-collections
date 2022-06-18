@@ -16,10 +16,15 @@
         </TableView>
     </center>
     <right>
-        <VBox prefWidth="100">
-            <Button fx:id="refreshBtn" text = "refresh" onAction="#refresh"/>
-            <Button fx:id="removeBtn"  text="remove" onAction="#handleRemoveButtonAction"/>
+        <VBox>
+            <Button fx:id="refreshBtn" text="refresh" onAction="#refresh"/>
+            <Button fx:id="addBtn" text="add" onAction="#add"/>
+            <Button fx:id="removeBtn" text="remove" onAction="#remove"/>
         </VBox>
     </right>
+    <bottom>
+        <TextArea fx:id="resultArea" prefWidth="300" prefHeight="200"
+                  editable="false"/>
+    </bottom>
 
 </BorderPane>

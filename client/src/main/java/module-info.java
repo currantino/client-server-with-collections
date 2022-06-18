@@ -4,10 +4,6 @@ module com.cyrex.client {
     requires javafx.web;
 
     requires org.controlsfx.controls;
-    requires com.dlsc.formsfx;
-    requires org.kordamp.bootstrapfx.core;
-    requires eu.hansolo.tilesfx;
-    requires com.almasb.fxgl.all;
     requires common;
     requires java.desktop;
     requires org.json;

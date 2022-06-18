@@ -16,7 +16,7 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
     private String dbURL;
     private Properties info;
 
-    public RoutePostgresSqlDatabase(String dbURL, Properties info) {
+    public RoutePostgresSqlDatabase(String dbURL, Properties info) throws SQLException {
         this.dbURL = dbURL;
         this.info = info;
         try {
@@ -52,8 +52,6 @@ public class RoutePostgresSqlDatabase implements Database<Route> {
             );
             routesStatement.executeUpdate();
             routesStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

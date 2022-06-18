@@ -1,0 +1,18 @@
+.root{
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 20;
+}
+.button{
+    -fx-min-width: 100;
+    -fx-pref-width: 150;
+}
+
+.vbox.button{
+    -fx-min-width: 100;
+    -fx-pref-width: 150;
+    -fx-border-color: red;
+}
+
+.text{
+
+}

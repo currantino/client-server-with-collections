@@ -1,0 +1,35 @@
+.root {
+    -fx-background-color: #a3ae9f;
+    -fx-alignment: center;
+    -fx-pref-height: 400.0;
+    -fx-pref-width:600.0;
+    -fx-vgap: 20;
+}
+
+.label {
+    -fx-pref-width: 600;
+    -fx-alignment: center;
+}
+
+.text-field {
+    -fx-pref-width: 300;
+    -fx-max-width: 300;
+    -fx-alignment: center;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 20;
+}
+
+.grid-pane {
+    -fx-background-color: #a3ae9f;
+    -fx-alignment: center;
+    -fx-vgap: 2.5;
+    -fx-hgap: 5;
+}
+
+#confirmBtn {
+    -fx-min-width: 200;
+}
+.text{
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 20;
+}

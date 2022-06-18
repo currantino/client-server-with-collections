@@ -21,7 +21,7 @@ public class Data {
         return commands;
     }
 
-    public static void setCommands() {
+    public static void initCommands() {
         commands.put("exit", new ExitCommand());
         commands.put("help", new HelpCommand());
         commands.put("refresh", new RefreshCommand());

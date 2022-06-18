@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,22 +36,30 @@ public class Server {
         LOGGER = Logger.getLogger("multithreading server");
         try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(serverPropertiesPath)) {
             serverProperties.load(inputStream);
+            serverName = serverProperties.getProperty("server.hostname", "localhost");
+            serverPort = Integer.parseInt(serverProperties.getProperty("server.port", "1234"));
+            serverAdd = new InetSocketAddress(InetAddress.getByName(serverName), serverPort);
+            channel = DatagramChannel.open();
+            channel.bind(serverAdd);
+            LOGGER.info("server is listening at: " + serverAdd);
+        } catch (IOException e) {
+            LOGGER.severe("config file with ip adress and port not found");
         }
-        serverName = serverProperties.getProperty("server.hostname", "localhost");
-        serverPort = Integer.parseInt(serverProperties.getProperty("server.port", "1234"));
-        serverAdd = new InetSocketAddress(InetAddress.getByName(serverName), serverPort);
-        channel = DatagramChannel.open();
-        channel.bind(serverAdd);
-        LOGGER.info("server is listening at: " + serverAdd);
+
 
         try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(dbPropertiesPath)) {
             dbProperties.load(inputStream);
+            String dbUrl = dbProperties.getProperty("url", "jdbc\\:postgresql\\://pg\\:5432/studs");
+            pdb = new RoutePostgresSqlDatabase(dbUrl, dbProperties);
+            Data.setRoutes(pdb.getElements());
+            LOGGER.info("db connection established\n\n");
+        } catch (IOException e) {
+            LOGGER.severe("config file with database url, username and password not found");
+        } catch (SQLException e) {
+            LOGGER.severe("sql error occured");
         }
-        String dbUrl = dbProperties.getProperty("url", "jdbc\\:postgresql\\://pg\\:5432/studs");
-        pdb = new RoutePostgresSqlDatabase(dbUrl, dbProperties);
-        Data.setRoutes(pdb.getElements());
-        Data.setCommands();
-        LOGGER.info("db connection established\n\n");
+
+        Data.initCommands();
         pool = Executors.newCachedThreadPool();
         while (true) {
             synchronized (channel) {
