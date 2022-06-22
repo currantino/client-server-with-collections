@@ -3,12 +3,10 @@ package com.cyrex.client.gui.controllers;
 import com.cyrex.client.Client;
 import common.route.Route;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +19,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    @FXML
+    private Button removeGreaterBtn;
+    @FXML
+    private TextField removeGreaterTextField;
     @FXML
     private Button addBtn;
     @FXML
@@ -35,6 +37,8 @@ public class MainController implements Initializable {
     private TableColumn<Route, LocalDateTime> routeCreationDate;
     @FXML
     private Button removeBtn;
+    @FXML
+    private Button helpBtn;
     @FXML
     private TextArea resultArea;
     @FXML
@@ -123,6 +127,21 @@ public class MainController implements Initializable {
     @FXML
     public void update() {
         ViewController.switchToUpdateView(updateBtn);
+        resultArea.setText(Client.getResult());
+        refresh();
+    }
+
+    @FXML
+    public void help() {
+        ViewController.switchToHelpView(helpBtn);
+    }
+
+    @FXML
+    public void removeGreater() {
+        int maxDistance = Integer.parseInt(removeGreaterTextField.getText());
+        Client.setCommand("remove_greater");
+        Client.setArgument(maxDistance);
+        Client.sendRequest();
         resultArea.setText(Client.getResult());
         refresh();
     }

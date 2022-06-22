@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <BorderPane prefHeight="900" prefWidth="1200" xmlns="http://javafx.com/javafx/11.0.14-internal"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.MainController">
     <center>
@@ -16,12 +17,17 @@
         </TableView>
     </center>
     <right>
-        <VBox spacing="10">
+        <VBox spacing="10" >
             <Button fx:id="refreshBtn" text="refresh" onAction="#refresh"/>
             <Button fx:id="addBtn" text="add" onAction="#add"/>
             <Button fx:id="removeBtn" text="remove" onAction="#remove"/>
             <Button fx:id="clearBtn" text="clear" onAction="#clear"/>
             <Button fx:id="updateBtn" text="update" onAction="#update"/>
+            <Button fx:id="helpBtn" text="help" onAction="#help"/>
+            <HBox spacing="5">
+                <Button fx:id="removeGreaterBtn" text="remove greater than" onAction="#removeGreater"/>
+                <TextField fx:id="removeGreaterTextField"/>
+            </HBox>
             <Button fx:id="exitBtn" text="exit" onAction="#exit"/>
         </VBox>
     </right>

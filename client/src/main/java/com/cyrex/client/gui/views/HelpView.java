@@ -6,14 +6,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class AddView extends Application {
+public class HelpView extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelpView.class.getResource("/com.cyrex.client.gui/add.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelpView.class.getResource("/com.cyrex.client.gui/help.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 600, 400);
-        scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/add.css").toExternalForm());
-        stage.setTitle("add");
+//        scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/help.css").toExternalForm());
+        stage.setTitle("help");
         stage.setScene(scene);
         stage.show();
     }
