@@ -1,4 +1,4 @@
-package com.cyrex.client.gui;
+package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
 import common.route.Route;

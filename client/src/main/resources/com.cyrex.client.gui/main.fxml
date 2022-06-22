@@ -28,6 +28,10 @@
                 <Button fx:id="removeGreaterBtn" text="remove greater than" onAction="#removeGreater"/>
                 <TextField fx:id="removeGreaterTextField"/>
             </HBox>
+            <HBox spacing="5">
+                <Button fx:id="removeLowerBtn" text="remove lower than" onAction="#removeLower"/>
+                <TextField fx:id="removeLowerTextField"/>
+            </HBox>
             <Button fx:id="exitBtn" text="exit" onAction="#exit"/>
         </VBox>
     </right>

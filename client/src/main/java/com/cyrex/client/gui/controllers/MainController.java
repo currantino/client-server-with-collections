@@ -3,7 +3,6 @@ package com.cyrex.client.gui.controllers;
 import com.cyrex.client.Client;
 import common.route.Route;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -19,6 +18,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    @FXML
+    private TextField removeLowerTextField;
     @FXML
     private Button removeGreaterBtn;
     @FXML
@@ -138,9 +139,17 @@ public class MainController implements Initializable {
 
     @FXML
     public void removeGreater() {
-        int maxDistance = Integer.parseInt(removeGreaterTextField.getText());
         Client.setCommand("remove_greater");
-        Client.setArgument(maxDistance);
+        Client.setArgument(removeGreaterTextField.getText());
+        Client.sendRequest();
+        resultArea.setText(Client.getResult());
+        refresh();
+    }
+
+    @FXML
+    public void removeLower() {
+        Client.setCommand("remove_lower");
+        Client.setArgument(removeLowerTextField.getText());
         Client.sendRequest();
         resultArea.setText(Client.getResult());
         refresh();

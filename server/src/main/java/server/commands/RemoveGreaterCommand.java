@@ -29,7 +29,7 @@ public class RemoveGreaterCommand extends ArgumentableCommand implements Writabl
                 Data.setRoutes(pdb.getElements());
                 return "routes with distance greater than " + dist + " have been removed";
             }
-            return "collections is empty";
+            return "collection is empty";
         } catch (NumberFormatException e) {
             return "invalid argument";
         }

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.cyrex.client.gui.HelpController"
+            fx:controller="com.cyrex.client.gui.controllers.HelpController"
             prefHeight="400.0" prefWidth="600.0">
     <center>
         <TextArea fx:id="helpArea" editable="false"/>

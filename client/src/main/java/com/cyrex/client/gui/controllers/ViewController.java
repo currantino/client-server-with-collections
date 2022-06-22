@@ -1,7 +1,6 @@
 package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
-import com.cyrex.client.gui.HelpController;
 import com.cyrex.client.gui.views.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

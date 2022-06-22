@@ -101,6 +101,8 @@ public class Client {
                 //Теперь отправляется сам запрос
                 DatagramPacket dp = new DatagramPacket(requestArr, requestArr.length, serverAddress, serverPort);
                 ds.send(dp);
+
+                setArgument(null);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
