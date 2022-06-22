@@ -2,6 +2,7 @@ package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
 import common.route.Route;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -36,6 +37,8 @@ public class MainController implements Initializable {
     private Button removeBtn;
     @FXML
     private TextArea resultArea;
+    @FXML
+    private Button updateBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -100,6 +103,26 @@ public class MainController implements Initializable {
     @FXML
     public void add() {
         ViewController.switchToAddView(addBtn);
+        resultArea.setText(Client.getResult());
+        refresh();
+    }
+
+    @FXML
+    public void clear() {
+        Client.setCommand("clear");
+        Client.sendRequest();
+        resultArea.setText(Client.getResult());
+        refresh();
+    }
+
+    @FXML
+    public void exit() {
+        Platform.exit();
+    }
+
+    @FXML
+    public void update() {
+        ViewController.switchToUpdateView(updateBtn);
         resultArea.setText(Client.getResult());
         refresh();
     }

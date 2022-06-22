@@ -1,9 +1,6 @@
 package com.cyrex.client.gui.controllers;
 
-import com.cyrex.client.gui.views.AddView;
-import com.cyrex.client.gui.views.LoginView;
-import com.cyrex.client.gui.views.MainView;
-import com.cyrex.client.gui.views.RegisterView;
+import com.cyrex.client.gui.views.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -36,7 +33,7 @@ public class ViewController {
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
             scene.getStylesheets().add(AddView.class.getResource("/com.cyrex.client.gui/styles/login.css").toExternalForm());
-            stage.setTitle("Login");
+            stage.setTitle("login");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
@@ -67,7 +64,22 @@ public class ViewController {
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
             scene.getStylesheets().add(AddView.class.getResource("/com.cyrex.client.gui/styles/add.css").toExternalForm());
-            stage.setTitle("add a new route");
+            stage.setTitle("add");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void switchToUpdateView(Node node){
+        try {
+            Parent root = FXMLLoader.load(UpdateView.class.getResource("/com.cyrex.client.gui/update.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(root, 600, 400);
+            scene.getStylesheets().add(UpdateView.class.getResource("/com.cyrex.client.gui/styles/add.css").toExternalForm());
+            stage.setTitle("update");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.showAndWait();

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.cyrex.client.gui.UpdateController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <Label text="id"/>
+    <TextField fx:id="idTextField"/>
+
+    <Label text="route name"/>
+    <TextField fx:id="nameTextField"/>
+
+    <Label text="route distance"/>
+    <TextField fx:id="distanceTextField"/>
+
+    <GridPane>
+        <Label text="departure" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3"/>
+        <TextField fx:id="departureNameTextField" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                   GridPane.columnSpan="3"/>
+        <Label text="x" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="departureXTextField" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Label text="y" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <TextField fx:id="departureYTextField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <Label text="z" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+        <TextField fx:id="departureZTextField" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+
+        <Label text="destination" GridPane.columnIndex="5" GridPane.rowIndex="0" GridPane.columnSpan="3"/>
+        <TextField fx:id="destinationNameTextField" GridPane.columnIndex="5" GridPane.rowIndex="1"
+                   GridPane.columnSpan="3"/>
+        <Label text="x" GridPane.columnIndex="5" GridPane.rowIndex="2"/>
+        <TextField fx:id="destinationXTextField" GridPane.columnIndex="5" GridPane.rowIndex="3"/>
+        <Label text="y" GridPane.columnIndex="6" GridPane.rowIndex="2"/>
+        <TextField fx:id="destinationYTextField" GridPane.columnIndex="6" GridPane.rowIndex="3"/>
+        <Label text="z" GridPane.columnIndex="7" GridPane.rowIndex="2"/>
+        <TextField fx:id="destinationZTextField" GridPane.columnIndex="7" GridPane.rowIndex="3"/>
+    </GridPane>
+    <Button fx:id="confirmBtn" text="confirm" onAction="#confirm"/>
+
+</VBox>

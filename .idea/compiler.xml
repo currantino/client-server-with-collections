@@ -8,12 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="common" />
         <module name="server" />
-        <module name="client1" />
+        <module name="client" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="client" target="18" />
-      <module name="client1" target="18" />
       <module name="common" target="18" />
       <module name="routes-manager" target="18" />
       <module name="server" target="18" />
