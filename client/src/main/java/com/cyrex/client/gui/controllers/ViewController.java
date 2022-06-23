@@ -11,14 +11,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ViewController {
-    public static void switchToRegisterView(Node node) {
+    public static void switchToSignUpView(Node node) {
         ((Stage) node.getScene().getWindow()).close();
         try {
-            Parent root = FXMLLoader.load(RegisterView.class.getResource("/com.cyrex.client.gui/register.fxml"));
+            Parent root = FXMLLoader.load(SignUpView.class.getResource("/com.cyrex.client.gui/signUp.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/login.css").toExternalForm());
-            stage.setTitle("Register");
+            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
+            stage.setTitle("sign up");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
@@ -33,7 +33,7 @@ public class ViewController {
             Parent root = FXMLLoader.load(LoginView.class.getResource("/com.cyrex.client.gui/login.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/login.css").toExternalForm());
+            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("login");
             stage.setScene(scene);
             stage.setResizable(false);
@@ -49,7 +49,7 @@ public class ViewController {
             Parent root = FXMLLoader.load(MainView.class.getResource("/com.cyrex.client.gui/main.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 1200, 900);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/add.css").toExternalForm());
+            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("routes manager");
             stage.setScene(scene);
             stage.setResizable(true);
@@ -64,7 +64,7 @@ public class ViewController {
             Parent root = FXMLLoader.load(HelpView.class.getResource("/com.cyrex.client.gui/add.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/add.css").toExternalForm());
+            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("add");
             stage.setScene(scene);
             stage.setResizable(false);
@@ -79,7 +79,7 @@ public class ViewController {
             Parent root = FXMLLoader.load(UpdateView.class.getResource("/com.cyrex.client.gui/update.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-            scene.getStylesheets().add(UpdateView.class.getResource("/com.cyrex.client.gui/styles/add.css").toExternalForm());
+            scene.getStylesheets().add(UpdateView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("update");
             stage.setScene(scene);
             stage.setResizable(false);
@@ -100,7 +100,7 @@ public class ViewController {
 
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-//            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/help.css").toExternalForm());
+            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("help");
             stage.setScene(scene);
             stage.setResizable(false);

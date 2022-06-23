@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<BorderPane fx:controller="com.cyrex.client.gui.controllers.LoginController"
-             xmlns:fx="http://javafx.com/fxml"
-             style="-fx-font-family: Helvetica;  -fx-font-size: 18.0;  -fx-background-color: #a3ae9f;">
-    <padding>
-        <Insets bottom="25" left="25" right="25" top="25"/>
-    </padding>
+
+<BorderPane nodeOrientation="LEFT_TO_RIGHT" stylesheets="@styles/application.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.LoginController">
     <center>
-        <GridPane alignment="center" hgap="10" vgap="10">
-
-            <Text text="welcome!" GridPane.columnIndex="1" GridPane.columnSpan="2">
-                <font>
-                    <Font size="24.0"/>
-                </font>
-            </Text>
-
-            <Label text="username" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-cursor: text"/>
-
-            <Label text="password" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="2"
-                           style="-fx-cursor: text"/>
-
-            <HBox alignment="bottom_right" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
-
-                <Button fx:id="loginBtn" onAction="#handleLoginButtonAction" text="log In" style="-fx-cursor: hand;"/>
-
-                <Button fx:id="registerBtn" onAction="#handleRegisterButtonAction" text="register"
-                        style="-fx-cursor: hand;"/>
+        <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200" minWidth="300.0" prefHeight="300.0" prefWidth="400.0" spacing="5.0" stylesheets="@styles/application.css">
+            <Text fx:id="welcomeText" text="welcome!" textAlignment="CENTER" wrappingWidth="350" VBox.vgrow="NEVER" />
+            <TextField id="userNameText" fx:id="usernameField" prefHeight="45.0" prefWidth="554.0" promptText="username" />
+            <PasswordField fx:id="passwordField" prefHeight="45.0" prefWidth="574.0" promptText="password" />
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="489.0" spacing="20" VBox.vgrow="NEVER">
+                <Button fx:id="loginBtn" onMouseClicked="#login" text="login" />
+                <Button fx:id="signUpBtn" onMouseClicked="#signUp" text="sign up" />
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
             </HBox>
 
-            <Text fx:id="actionTarget" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-        </GridPane>
+            <Text fx:id="actionTarget" textAlignment="CENTER" wrappingWidth="350.0">
+            <VBox.margin>
+               <Insets top="20.0" />
+            </VBox.margin></Text>
+
+            <BorderPane.margin>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+        </VBox>
     </center>
     <bottom>
-        <GridPane>
-            <padding><Insets topRightBottomLeft="25"/> </padding>
-            <Button fx:id="exitBtn" text="exit" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                    onAction="#handleExitButtonAction"/>
-        </GridPane>
+        <Button fx:id="exitBtn" onMouseClicked="#exit" text="exit">
+            <BorderPane.margin>
+                <Insets bottom="35" left="30" />
+            </BorderPane.margin>
+        </Button>
     </bottom>
+
+    <opaqueInsets>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </opaqueInsets>
 
 </BorderPane>

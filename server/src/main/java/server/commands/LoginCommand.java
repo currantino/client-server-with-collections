@@ -16,7 +16,7 @@ public class LoginCommand extends ArgumentableCommand implements Readable, NotCh
     public String execute(ServerRequest request) {
         unpackRequest(request);
         if (!pdb.checkLogin(login)) {
-            return "no account with such username, use 'register'";
+            return "unknown user";
         }
         if (!pdb.checkPassword(login, password)) {
             return "incorrect password";

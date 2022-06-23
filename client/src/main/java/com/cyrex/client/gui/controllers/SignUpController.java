@@ -1,14 +1,13 @@
 package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class RegisterController {
+public class SignUpController {
     private String password;
     private String username;
     private String repeatedPassword;
@@ -21,26 +20,26 @@ public class RegisterController {
     @FXML
     private PasswordField repeatPasswordField;
     @FXML
-    private Button registerBtn;
+    private Button signUpBtn;
     @FXML
     private Button backBtn;
 
     @FXML
-    private void handleRegisterButtonAction() {
+    private void signUp() {
         username = usernameField.getText().trim();
         password = passwordField.getText().trim();
         repeatedPassword = repeatPasswordField.getText().trim();
         if (!password.equals(repeatedPassword)) {
-            actionTarget.setText("Passwords don't match, try again.");
+            actionTarget.setText("passwords don't match, try again.");
             return;
         }
         String result = Client.register(username, password);
-        actionTarget.setText("Registering...");
-        if (result.equals("registration successful")) ViewController.switchToMainView(registerBtn);
+        actionTarget.setText("registering...");
+        if (result.equals("registration successful")) ViewController.switchToMainView(signUpBtn);
         actionTarget.setText(result);
     }
 
-    public void handleBackButtonAction(ActionEvent actionEvent) {
+    public void goBack() {
         ViewController.switchToLoginView(backBtn);
     }
 }

@@ -123,6 +123,7 @@ public class MainController implements Initializable {
     @FXML
     public void exit() {
         Platform.exit();
+        System.exit(0);
     }
 
     @FXML

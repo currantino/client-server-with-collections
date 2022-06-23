@@ -1,0 +1,56 @@
+.root {
+    -fx-font-family: Montserrat;
+    -fx-background-color: rgba(0, 0, 255, 0.24);
+    -fx-max-width: 600;
+    -fx-max-height: 400;
+    -fx-min-width: 600;
+    -fx-min-height: 400;
+}
+
+.text {
+    -fx-font-family: Montserrat;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}
+
+.text-field {
+    -fx-min-width: 200;
+    -fx-font-family: Montserrat;
+    -fx-font-size: 24;
+}
+
+.password-field {
+    -fx-min-width: 200;
+    -fx-font-family: Montserrat;
+    -fx-font-size: 24;
+}
+
+#welcomeText {
+    -fx-font-size: 48;
+    -fx-font-weight: bold;
+}
+
+.vbox{
+    -fx-min-width: 200;
+    -fx-alignment: center;
+}
+
+.vbox>.text{
+
+}
+
+.button{
+    -fx-min-width: 80;
+    -fx-max-height: 40;
+}
+
+.button>.text{
+    -fx-font-size: 16
+}
+
+#actionTarget{
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+    -fx-min-width: 300;
+    -fx-min-height: 100;
+}

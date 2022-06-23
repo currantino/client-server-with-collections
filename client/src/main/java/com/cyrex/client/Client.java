@@ -50,36 +50,36 @@ public class Client {
             throw new RuntimeException("connection failed, check server name and server port");
         }
         Application.launch(LoginView.class);
-        //Запуск общения с сервером
+//        Запуск общения с сервером
 //        start();
 //        go();
     }
 
 
-    private static void processInput() {
-        argument = null;
-        inputArr = scanner.nextLine().split(" ");
-        command = (String) inputArr[0];
-        if (inputArr.length > 1) {
-            argument = inputArr[1];
-            if (command.equals("update")) {
-                Route routeForUpdating = new Route();
-                try {
-                    routeForUpdating.setId(Integer.parseInt((String) inputArr[1]));
-                } catch (NumberFormatException e) {
-                    System.out.println("invalid id");
-                }
-                argument = routeForUpdating;
-            }
-        }
-        if (command.equals("add")) {
-            argument = new Route();
-        } else if (command.equals("login")) {
-            login(login, password);
-        } else if (command.equals("register")) {
-            register(login, password);
-        }
-    }
+//    private static void processInput() {
+//        argument = null;
+//        inputArr = scanner.nextLine().split(" ");
+//        command = (String) inputArr[0];
+//        if (inputArr.length > 1) {
+//            argument = inputArr[1];
+//            if (command.equals("update")) {
+//                Route routeForUpdating = new Route();
+//                try {
+//                    routeForUpdating.setId(Integer.parseInt((String) inputArr[1]));
+//                } catch (NumberFormatException e) {
+//                    System.out.println("invalid id");
+//                }
+//                argument = routeForUpdating;
+//            }
+//        }
+//        if (command.equals("add")) {
+//            argument = new Route();
+//        } else if (command.equals("login")) {
+//            login(login, password);
+//        } else if (command.equals("register")) {
+//            register(login, password);
+//        }
+//    }
 
     public static void sendRequest() {
 
@@ -176,31 +176,31 @@ public class Client {
         return getResult();
     }
 
-    private static void go() {
-        while (true) {
-            processInput();
-            sendRequest();
-            getResult();
-        }
-    }
+//    private static void go() {
+//        while (true) {
+//            processInput();
+//            sendRequest();
+//            getResult();
+//        }
+//    }
 
-    private static void start() {
-        System.out.println("login or register to start");
-        command = loginScanner.next();
-        switch (command) {
-            case "login" -> {
+//    private static void start() {
+//        System.out.println("login or register to start");
+//        command = loginScanner.next();
+//        switch (command) {
+//            case "login" -> {
 //                login(login, password);
-                sendRequest();
-                getResult();
-            }
-            case "register" -> {
+//                sendRequest();
+//                getResult();
+//            }
+//            case "register" -> {
 //                register(login, password);
-                sendRequest();
-                getResult();
-            }
-            default -> start();
-        }
-    }
+//                sendRequest();
+//                getResult();
+//            }
+//            default -> start();
+//        }
+//    }
 
     public static String getCommand() {
         return command;

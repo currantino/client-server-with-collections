@@ -11,8 +11,10 @@ import javafx.scene.text.Text;
 
 public class LoginController {
     @FXML
-    Text actionTarget;
+    private Text actionTarget;
+    @FXML
     private String username;
+    @FXML
     private String password;
     @FXML
     private TextField usernameField;
@@ -21,10 +23,10 @@ public class LoginController {
     @FXML
     private Button loginBtn;
     @FXML
-    private Button registerBtn;
+    private Button signUpBtn;
 
     @FXML
-    protected void handleLoginButtonAction() {
+    protected void login() {
         username = usernameField.getText().trim();
         password = passwordField.getText().trim();
         actionTarget.setText("Logging in...");
@@ -34,12 +36,13 @@ public class LoginController {
     }
 
     @FXML
-    protected void handleRegisterButtonAction() {
-        ViewController.switchToRegisterView(registerBtn);
+    protected void signUp() {
+        ViewController.switchToSignUpView(signUpBtn);
     }
 
     @FXML
-    public void handleExitButtonAction() {
+    public void exit() {
         Platform.exit();
+        System.exit(0);
     }
 }

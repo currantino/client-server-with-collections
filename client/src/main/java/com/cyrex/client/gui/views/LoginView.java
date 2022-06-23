@@ -10,8 +10,10 @@ public class LoginView extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("/com.cyrex.client.gui/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setTitle("Login");
+        scene.getStylesheets().add(LoginView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
+        stage.setTitle("login");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 }
