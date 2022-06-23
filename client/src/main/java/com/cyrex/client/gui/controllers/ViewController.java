@@ -99,10 +99,9 @@ public class ViewController {
 
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
+//            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("help");
             stage.setScene(scene);
-            stage.setResizable(false);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();

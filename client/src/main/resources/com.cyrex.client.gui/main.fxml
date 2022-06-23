@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
-<BorderPane prefHeight="900" prefWidth="1200" xmlns="http://javafx.com/javafx/11.0.14-internal"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.MainController">
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="900" prefWidth="1200" style="-fx-background-insets: 25;" stylesheets="@styles/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.MainController">
     <center>
-        <TableView fx:id="routesTable" style="-fx-alignment: CENTER;">
+        <TableView fx:id="routesTable" prefWidth="137.0" style="-fx-alignment: CENTER;">
             <columns>
-                <TableColumn fx:id="routeId" prefWidth="50" text="id" style="-fx-alignment: CENTER"/>
-                <TableColumn fx:id="routeName" prefWidth="300" text="name" style="-fx-alignment: CENTER"/>
-                <TableColumn fx:id="routeDistance" prefWidth="100" text="distance" style="-fx-alignment: CENTER"/>
-                <TableColumn fx:id="routeCreationDate" prefWidth="200" text="created" style="-fx-alignment: CENTER"/>
+                <TableColumn fx:id="routeId" prefWidth="50" style="-fx-alignment: CENTER" text="id" />
+                <TableColumn fx:id="routeName" prefWidth="300" style="-fx-alignment: CENTER" text="name" />
+                <TableColumn fx:id="routeDistance" prefWidth="148.0" style="-fx-alignment: CENTER" text="distance" />
+            <TableColumn prefWidth="75.0" text="departure" />
+            <TableColumn prefWidth="75.0" text="destination" />
+                <TableColumn fx:id="routeCreationDate" prefWidth="152.0" style="-fx-alignment: CENTER" text="created" />
             </columns>
         </TableView>
     </center>
     <right>
-        <VBox spacing="10" >
-            <Button fx:id="refreshBtn" text="refresh" onAction="#refresh"/>
-            <Button fx:id="addBtn" text="add" onAction="#add"/>
-            <Button fx:id="removeBtn" text="remove" onAction="#remove"/>
-            <Button fx:id="clearBtn" text="clear" onAction="#clear"/>
-            <Button fx:id="updateBtn" text="update" onAction="#update"/>
-            <Button fx:id="helpBtn" text="help" onAction="#help"/>
+        <VBox spacing="10">
+            <Button fx:id="refreshBtn" onAction="#refresh" text="refresh" />
+            <Button fx:id="addBtn" onAction="#add" text="add" />
+            <Button fx:id="removeBtn" onAction="#remove" text="remove" />
+            <Button fx:id="clearBtn" onAction="#clear" text="clear" />
+            <Button fx:id="updateBtn" onAction="#update" text="update" />
+            <Button fx:id="helpBtn" onAction="#help" text="help" />
             <HBox spacing="5">
-                <Button fx:id="removeGreaterBtn" text="remove greater than" onAction="#removeGreater"/>
-                <TextField fx:id="removeGreaterTextField"/>
+                <Button fx:id="removeGreaterBtn" onAction="#removeGreater" text="remove &gt;" textAlignment="CENTER" />
+                <TextField fx:id="removeGreaterTextField" />
             </HBox>
             <HBox spacing="5">
-                <Button fx:id="removeLowerBtn" text="remove lower than" onAction="#removeLower"/>
-                <TextField fx:id="removeLowerTextField"/>
+                <Button fx:id="removeLowerBtn" onAction="#removeLower" text="remove &lt;" />
+                <TextField fx:id="removeLowerTextField" />
             </HBox>
-            <Button fx:id="exitBtn" text="exit" onAction="#exit"/>
+            <Button fx:id="exitBtn" onAction="#exit" text="exit" />
         </VBox>
     </right>
     <bottom>
-        <TextArea fx:id="resultArea" prefWidth="300" prefHeight="200"
-                  editable="false"/>
+        <TextArea fx:id="resultArea" editable="false" prefHeight="200" prefWidth="300" />
     </bottom>
+   <opaqueInsets>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </opaqueInsets>
 
 </BorderPane>

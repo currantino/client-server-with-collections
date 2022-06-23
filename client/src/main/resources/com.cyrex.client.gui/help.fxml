@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.cyrex.client.gui.controllers.HelpController"
-            prefHeight="400.0" prefWidth="600.0">
-    <center>
-        <TextArea fx:id="helpArea" editable="false"/>
-    </center>
-    <bottom>
-        <BorderPane>
-            <left>
-                <Button fx:id="exitBtn" text="exit" onAction="#exit"/>
-            </left>
-        </BorderPane>
-    </bottom>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
+<BorderPane stylesheets="@styles/help.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.HelpController">
+    <center>
+        <TextArea fx:id="helpArea" editable="false" minHeight="350" minWidth="550">
+            <padding>
+                <Insets topRightBottomLeft="25" />
+            </padding>
+        </TextArea>
+    </center>
 </BorderPane>
