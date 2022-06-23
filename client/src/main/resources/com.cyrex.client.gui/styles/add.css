@@ -1,35 +1,44 @@
 .root {
-    -fx-background-color: #a3ae9f;
-    -fx-alignment: center;
-    -fx-pref-height: 400.0;
-    -fx-pref-width:600.0;
+    -fx-font-family: Montserrat;
+    -fx-background-color: radial-gradient(radius 100%, rgba(230, 100, 101, 0.65), rgba(145, 152, 229, 0.6));
+    -fx-min-width: 600;
+    -fx-min-height: 400;
     -fx-vgap: 20;
 }
 
 .label {
-    -fx-pref-width: 600;
+    -fx-max-width: 300;
     -fx-alignment: center;
 }
 
 .text-field {
-    -fx-pref-width: 300;
+    -fx-font-family: Montserrat;
+    -fx-font-size: 24;
+    -fx-opacity: .3;
+    -fx-background-color: oldlace;
+    -fx-background-radius: 5em;
     -fx-max-width: 300;
-    -fx-alignment: center;
-    -fx-font-family: "Comic Sans MS";
-    -fx-font-size: 20;
 }
 
 .grid-pane {
-    -fx-background-color: #a3ae9f;
     -fx-alignment: center;
-    -fx-vgap: 2.5;
-    -fx-hgap: 5;
 }
 
 #confirmBtn {
     -fx-min-width: 200;
 }
-.text{
-    -fx-font-family: "Comic Sans MS";
-    -fx-font-size: 20;
+
+.text {
+    -fx-font-family: Montserrat;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}
+
+.button {
+    -fx-background-radius: 5em;
+    -fx-base: oldlace;
+}
+
+.button>.text{
+    -fx-font-size: 24;
 }

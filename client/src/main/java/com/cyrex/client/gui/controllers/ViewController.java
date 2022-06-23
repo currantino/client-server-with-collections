@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,7 +18,6 @@ public class ViewController {
             Parent root = FXMLLoader.load(SignUpView.class.getResource("/com.cyrex.client.gui/signUp.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("sign up");
             stage.setScene(scene);
             stage.setResizable(false);
@@ -33,7 +33,6 @@ public class ViewController {
             Parent root = FXMLLoader.load(LoginView.class.getResource("/com.cyrex.client.gui/login.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("login");
             stage.setScene(scene);
             stage.setResizable(false);
@@ -61,13 +60,13 @@ public class ViewController {
 
     public static void switchToAddView(Node node) {
         try {
-            Parent root = FXMLLoader.load(HelpView.class.getResource("/com.cyrex.client.gui/add.fxml"));
+            Parent root = FXMLLoader.load(AddView.class.getResource("/com.cyrex.client.gui/add.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("add");
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();

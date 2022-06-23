@@ -12,7 +12,6 @@ public class AddView extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelpView.class.getResource("/com.cyrex.client.gui/add.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 600, 400);
-        scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
         stage.setTitle("add");
         stage.setScene(scene);
         stage.show();

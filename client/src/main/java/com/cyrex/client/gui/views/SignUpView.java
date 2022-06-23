@@ -10,7 +10,7 @@ public class SignUpView extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("/com.cyrex.client.gui/signUp.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setTitle("Register");
+        stage.setTitle("register");
         stage.setScene(scene);
         stage.show();
     }
