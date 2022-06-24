@@ -45,10 +45,9 @@ public class ViewController {
     public static void switchToMainView(Node node) {
         ((Stage) node.getScene().getWindow()).close();
         try {
-            Parent root = FXMLLoader.load(MainView.class.getResource("/com.cyrex.client.gui/main.fxml"));
+            Parent root = FXMLLoader.load(MainView.class.getResource("/com.cyrex.client.gui/main2.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root, 1200, 900);
-            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("routes manager");
             stage.setScene(scene);
             stage.setResizable(true);
@@ -99,8 +98,8 @@ public class ViewController {
 
             Stage stage = new Stage();
             Scene scene = new Scene(root, 600, 400);
-//            scene.getStylesheets().add(HelpView.class.getResource("/com.cyrex.client.gui/styles/application.css").toExternalForm());
             stage.setTitle("help");
+            stage.setAlwaysOnTop(true);
             stage.setScene(scene);
             stage.showAndWait();
         } catch (IOException e) {

@@ -161,7 +161,6 @@
 
                 <configuration>
                     <executable>java</executable>
-
                     <arguments>
                         <argument>-jar</argument>
                         <argument>target/client-1.0-SNAPSHOT-jar-with-dependencies.jar</argument>

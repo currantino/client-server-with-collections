@@ -1,11 +1,15 @@
 package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
+import common.route.Location;
 import common.route.Route;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,29 +33,42 @@ public class MainController implements Initializable {
     @FXML
     private TableView<Route> routesTable;
     @FXML
-    private TableColumn<Route, Integer> routeId;
+    private TableColumn<Route, Integer> routeIdCln;
     @FXML
-    private TableColumn<Route, String> routeName;
+    private TableColumn<Route, String> routeNameCln;
     @FXML
-    private TableColumn<Route, Double> routeDistance;
+    private TableColumn<Route, Double> routeDistanceCln;
     @FXML
-    private TableColumn<Route, LocalDateTime> routeCreationDate;
+    private TableColumn<Route, LocalDateTime> routeCreationDateCln;
+    @FXML
+    private TableColumn<Route, String> departureCln;
+    @FXML
+    private TableColumn<Route, String> destinationCln;
     @FXML
     private Button removeBtn;
     @FXML
     private Button helpBtn;
     @FXML
-    private TextArea resultArea;
+    private TextField resultField;
     @FXML
     private Button updateBtn;
 
+    @FXML
+    private Button refreshBtn;
+    @FXML
+    private List<Route> routesData;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        routeId.setCellValueFactory(new PropertyValueFactory<Route, Integer>("id"));
-        routeName.setCellValueFactory(new PropertyValueFactory<Route, String>("name"));
-        routeDistance.setCellValueFactory(new PropertyValueFactory<Route, Double>("distance"));
-        routeCreationDate.setCellValueFactory(new PropertyValueFactory<Route, LocalDateTime>("creationDate"));
-        routesTable.getItems().setAll(getRoutesFromServer());
+        routesData = getRoutesFromServer();
+        routeIdCln.setCellValueFactory(new PropertyValueFactory<Route, Integer>("id"));
+        routeNameCln.setCellValueFactory(new PropertyValueFactory<Route, String>("name"));
+        routeDistanceCln.setCellValueFactory(new PropertyValueFactory<Route, Double>("distance"));
+        routeCreationDateCln.setCellValueFactory(new PropertyValueFactory<Route, LocalDateTime>("creationDate"));
+        departureCln.setCellValueFactory(new PropertyValueFactory<Route, String>("fromName"));
+        destinationCln.setCellValueFactory(new PropertyValueFactory<Route, String>("toName"));
+        routesTable.getItems().setAll(routesData);
     }
 
     @FXML
@@ -80,6 +97,8 @@ public class MainController implements Initializable {
             String strCreationDate = jo.getString("creationDate");
             LocalDateTime creationDate = LocalDateTime.parse(strCreationDate, formatter);
             Route newRoute = new Route(id, routeName, routeDistance, fromName, fromX, fromY, fromZ, toName, toX, toY, toZ, creationDate);
+            System.out.println(newRoute.getFromName());
+            System.out.println(newRoute.getToName());
             routesFromServer.add(newRoute);
         }
         return routesFromServer;
@@ -92,7 +111,7 @@ public class MainController implements Initializable {
         Client.setArgument(idToRemove);
         Client.sendRequest();
         String result = Client.getResult();
-        resultArea.setText(result);
+        resultField.setText(result);
         if (result.equals("route with id = " + idToRemove + " has been removed")) {
             routesTable.getItems().removeAll(routesTable.getSelectionModel().getSelectedItems());
             routesTable.getItems().setAll(getRoutesFromServer());
@@ -108,7 +127,7 @@ public class MainController implements Initializable {
     @FXML
     public void add() {
         ViewController.switchToAddView(addBtn);
-        resultArea.setText(Client.getResult());
+        resultField.setText(Client.getResult());
         refresh();
     }
 
@@ -116,7 +135,7 @@ public class MainController implements Initializable {
     public void clear() {
         Client.setCommand("clear");
         Client.sendRequest();
-        resultArea.setText(Client.getResult());
+        resultField.setText(Client.getResult());
         refresh();
     }
 
@@ -129,7 +148,7 @@ public class MainController implements Initializable {
     @FXML
     public void update() {
         ViewController.switchToUpdateView(updateBtn);
-        resultArea.setText(Client.getResult());
+        resultField.setText(Client.getResult());
         refresh();
     }
 
@@ -143,7 +162,7 @@ public class MainController implements Initializable {
         Client.setCommand("remove_greater");
         Client.setArgument(removeGreaterTextField.getText());
         Client.sendRequest();
-        resultArea.setText(Client.getResult());
+        resultField.setText(Client.getResult());
         refresh();
     }
 
@@ -152,7 +171,7 @@ public class MainController implements Initializable {
         Client.setCommand("remove_lower");
         Client.setArgument(removeLowerTextField.getText());
         Client.sendRequest();
-        resultArea.setText(Client.getResult());
+        resultField.setText(Client.getResult());
         refresh();
     }
 }

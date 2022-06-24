@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@styles/main.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.MainController">
+    <top>
+        <HBox styleClass="hbox">
+            <Button fx:id="helpBtn" onMouseClicked="#help" text="help">
+                <BorderPane.margin>
+                    <Insets bottom="25.0" />
+                </BorderPane.margin>
+            </Button>
+
+            <TextField fx:id="resultField" editable="false" HBox.hgrow="NEVER">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding>
+            </TextField>
+         <ChoiceBox fx:id="languageChoice" translateX="100.0">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </ChoiceBox>
+            <BorderPane.margin>
+                <Insets bottom="25.0" />
+            </BorderPane.margin>
+         <opaqueInsets>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </opaqueInsets>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="routesTable">
+            <columns>
+                <TableColumn fx:id="routeIdCln" text="id" />
+                <TableColumn fx:id="routeNameCln" text="name" />
+                <TableColumn fx:id="routeDistanceCln" text="distance" />
+                <TableColumn fx:id="departureCln" text="departure" />
+                <TableColumn fx:id="destinationCln" text="destination" />
+                <TableColumn fx:id="routeCreationDateCln" text="created" />
+            </columns>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </TableView>
+    </center>
+
+    <right>
+        <VBox styleClass="vbox" BorderPane.alignment="CENTER">
+            <Button fx:id="refreshBtn" onMouseClicked="#refresh" text="refresh" />
+
+            <Button fx:id="addBtn" onMouseClicked="#add" text="add" />
+
+            <Button fx:id="updateBtn" onMouseClicked="#update" text="update" />
+
+            <Button fx:id="removeBtn" onMouseClicked="#remove" text="remove" />
+
+            <Button fx:id="clearBtn" onMouseClicked="#clear" text="clear" />
+
+            <Button fx:id="exitBtn" onMouseClicked="#exit" text="exit" />
+            <BorderPane.margin>
+                <Insets left="25.0" />
+            </BorderPane.margin>
+
+        </VBox>
+    </right>
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
+
+</BorderPane>

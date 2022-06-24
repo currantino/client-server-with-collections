@@ -36,10 +36,6 @@
     -fx-alignment: center;
 }
 
-.vbox > .text {
-
-}
-
 .button {
     -fx-min-width: 80;
     -fx-max-height: 40;

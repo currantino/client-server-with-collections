@@ -16,7 +16,8 @@ public class Route implements Serializable {
     private Location from;
     private Location to;
     private Float distance;
-
+    private String fromName;
+    private String toName;
 
     /**
      * конструктор, используемый при добавлении нового элемента в коллекцию через командную строку
@@ -31,7 +32,9 @@ public class Route implements Serializable {
                 this.distance = sc.nextFloat();
                 if (distance <= 0) throw new InputMismatchException();
                 this.from = new Location();
+                this.fromName = from.getName();
                 this.to = new Location();
+                this.toName = to.getName();
                 this.creationDate = LocalDateTime.now().withNano(0);
                 return;
             } catch (InputMismatchException e) {
@@ -59,7 +62,9 @@ public class Route implements Serializable {
         this.name = name;
         this.distance = distance;
         this.from = new Location(fromName, fromX, fromY, fromZ);
+        this.fromName = from.getName();
         this.to = new Location(toName, toX, toY, toZ);
+        this.toName = to.getName();
         this.creationDate = creationDate;
     }
 
@@ -93,13 +98,20 @@ public class Route implements Serializable {
         return "Route" + "(" + id + ")" + " from " + from.show() + " to " + to.show() + " created: " + this.creationDate;
     }
 
-
     public Float getDistance() {
         return this.distance;
     }
 
+    public void setDistance(Float distance) {
+        this.distance = distance;
+    }
+
     public LocalDateTime getCreationDate() {
         return this.creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     public int getId() {
@@ -114,12 +126,40 @@ public class Route implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Location getFrom() {
         return from;
     }
 
+    public void setFrom(Location from) {
+        this.from = from;
+    }
+
     public Location getTo() {
         return to;
+    }
+
+    public void setTo(Location to) {
+        this.to = to;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getToName() {
+        return toName;
+    }
+
+    public void setToName(String toName) {
+        this.toName = toName;
     }
 
 }

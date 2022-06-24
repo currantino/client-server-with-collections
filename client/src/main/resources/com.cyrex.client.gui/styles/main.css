@@ -5,17 +5,72 @@
     -fx-min-height: 400;
     -fx-spacing: 25;
 }
-.button{
+
+.vbox {
+    -fx-spacing: 20;
+}
+
+.hbox {
+    -fx-spacing: 20;
+    -fx-pref-height: 26;
+    -fx-pref-width: 250;
+}
+
+.table-view {
+    -fx-text-alignment: center;
+    -fx-background-radius: 7px 7px 0px 0px;
+    -fx-max-width: 800;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-radius: 7px 7px 0px 0px;
+    -fx-background-insets: 0 11px 0 0;
+    -fx-padding: 0 0 5px 0;
+}
+
+.table-view .table-cell {
+    -fx-text-alignment: center;
+    -fx-border-color: transparent;
+    -fx-padding: 2 0 2 10px;
+}
+
+.button {
+    -fx-font-size: 20;
     -fx-min-width: 100;
+    -fx-max-height: 40;
+    -fx-background-radius: 5em;
+    -fx-base: oldlace;
+    -fx-font-weight: bold;
+}
+
+#routeIdCln {
+    -fx-pref-width: 75;
+}
+
+#routeNameCln {
+    -fx-pref-width: 200;
+}
+
+#routeDistanceCln {
+    -fx-pref-width: 75;
+}
+
+#departureCln {
     -fx-pref-width: 150;
 }
 
-.vbox.button{
-    -fx-min-width: 100;
+#destinationCln {
     -fx-pref-width: 150;
-    -fx-border-color: red;
 }
 
-.text{
-
+#routeCreationDateCln {
+    -fx-pref-width: 150;
 }

@@ -2,7 +2,6 @@ package com.cyrex.client;
 
 import com.cyrex.client.gui.views.LoginView;
 import common.ServerRequest;
-import common.route.Route;
 import javafx.application.Application;
 
 import java.io.ByteArrayOutputStream;
