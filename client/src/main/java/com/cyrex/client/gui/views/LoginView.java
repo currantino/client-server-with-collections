@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class LoginView extends Application {
     @Override
     public void start(Stage stage) throws Exception {

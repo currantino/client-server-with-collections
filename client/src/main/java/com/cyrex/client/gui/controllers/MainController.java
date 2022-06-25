@@ -1,15 +1,11 @@
 package com.cyrex.client.gui.controllers;
 
 import com.cyrex.client.Client;
-import common.route.Location;
 import common.route.Route;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,9 +15,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    @FXML
+    private ChoiceBox<String> languageChoiceBox;
+    @FXML
+    private ChoiceBox<String> countryChoiceBox;
+    private void chooseLanguage(){
+        String choice = languageChoiceBox.getValue();
+        String country = countryChoiceBox.getValue();
+        Locale locale = new Locale(choice, country);
+    }
     @FXML
     private TextField removeLowerTextField;
     @FXML

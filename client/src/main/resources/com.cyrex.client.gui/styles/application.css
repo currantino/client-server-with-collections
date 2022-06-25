@@ -3,12 +3,9 @@
     -fx-background-color: radial-gradient(radius 100%, rgba(230, 100, 101, 0.65), rgba(145, 152, 229, 0.6));
     -fx-min-width: 600;
     -fx-min-height: 400;
-}
-
-.text {
-    -fx-font-family: Montserrat;
     -fx-font-weight: bold;
     -fx-font-size: 24;
+    -fx-alignment: left;
 }
 
 .text-field {
@@ -52,4 +49,21 @@
     -fx-font-size: 16;
     -fx-min-width: 300;
     -fx-min-height: 100;
+}
+
+.choice-box{
+    -fx-max-width: 50;
+    -fx-max-height: 60;
+    -fx-background-radius: 5em;
+    -fx-base: oldlace;
+    -fx-font-size: 14;
+}
+
+.choice-box>.text{
+    -fx-font-size: 14;
+}
+
+.hbox{
+    -fx-alignment: left;
+    -fx-spacing: 20;
 }

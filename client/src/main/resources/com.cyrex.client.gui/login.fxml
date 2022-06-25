@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane nodeOrientation="LEFT_TO_RIGHT" stylesheets="@styles/application.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.LoginController">
+<BorderPane nodeOrientation="LEFT_TO_RIGHT" stylesheets="@styles/application.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyrex.client.gui.controllers.LoginController">
+    <top>
+        <HBox styleClass="hbox">
+            <ChoiceBox fx:id="languageChoiceBox" translateX="100.0" value="RU">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="RU" />
+                        <String fx:value="EN" />
+                        <String fx:value="HR" />
+                        <String fx:value="NL" />
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+            <ChoiceBox fx:id="countryChoiceBox" translateX="100.0" value="RU">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="RU" />
+                        <String fx:value="NZ" />
+                        <String fx:value="HR" />
+                        <String fx:value="NL" />
+                    </FXCollections>
+                </items>
+                <BorderPane.margin>
+                    <Insets topRightBottomLeft="25" />
+                </BorderPane.margin>
+            </ChoiceBox>
+        </HBox>
+    </top>
     <center>
         <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200" minWidth="300.0" prefHeight="300.0" prefWidth="400.0" spacing="5.0" stylesheets="@styles/application.css">
             <Text fx:id="welcomeText" text="welcome!" textAlignment="CENTER" wrappingWidth="350" VBox.vgrow="NEVER" />
@@ -24,9 +49,10 @@
             </HBox>
 
             <Text fx:id="actionTarget" textAlignment="CENTER" wrappingWidth="350.0">
-            <VBox.margin>
-               <Insets top="20.0" />
-            </VBox.margin></Text>
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+            </Text>
 
             <BorderPane.margin>
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -37,15 +63,14 @@
         </VBox>
     </center>
     <bottom>
-        <Button fx:id="exitBtn" onMouseClicked="#exit" text="exit">
-            <BorderPane.margin>
-                <Insets bottom="35" left="30" />
-            </BorderPane.margin>
-        </Button>
+        <Button fx:id="exitBtn" onMouseClicked="#exit" text="exit" />
     </bottom>
 
     <opaqueInsets>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
     </opaqueInsets>
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
 
 </BorderPane>
