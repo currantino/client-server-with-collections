@@ -34,30 +34,10 @@ public class Server {
         ByteBuffer requestSize;
 
         LOGGER = Logger.getLogger("multithreading server");
-        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(serverPropertiesPath)) {
-            serverProperties.load(inputStream);
-            serverName = serverProperties.getProperty("server.hostname", "localhost");
-            serverPort = Integer.parseInt(serverProperties.getProperty("server.port", "1234"));
-            serverAdd = new InetSocketAddress(InetAddress.getByName(serverName), serverPort);
-            channel = DatagramChannel.open();
-            channel.bind(serverAdd);
-            LOGGER.info("server is listening at: " + serverAdd);
-        } catch (IOException e) {
-            LOGGER.severe("config file with ip adress and port not found");
-        }
+        loadServerConfig();
 
 
-        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(dbPropertiesPath)) {
-            dbProperties.load(inputStream);
-            String dbUrl = dbProperties.getProperty("url", "jdbc\\:postgresql\\://pg\\:5432/studs");
-            pdb = new RoutePostgresSqlDatabase(dbUrl, dbProperties);
-            Data.setRoutes(pdb.getElements());
-            LOGGER.info("db connection established\n\n");
-        } catch (IOException e) {
-            LOGGER.severe("config file with database url, username and password not found");
-        } catch (SQLException e) {
-            LOGGER.severe("sql error occured");
-        }
+        loadDatabaseConfig();
 
         Data.initCommands();
         pool = Executors.newCachedThreadPool();
@@ -69,6 +49,34 @@ public class Server {
                 new Thread(new RequestReceiver(requestSize)).start();
                 channel.wait();
             }
+        }
+    }
+
+    private static void loadDatabaseConfig() {
+        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(dbPropertiesPath)) {
+            dbProperties.load(inputStream);
+            String dbUrl = dbProperties.getProperty("url", "jdbc\\:postgresql\\://pg\\:5432/studs");
+            pdb = new RoutePostgresSqlDatabase(dbUrl, dbProperties);
+            Data.setRoutes(pdb.getElements());
+            LOGGER.info("db connection established\n\n");
+        } catch (IOException e) {
+            LOGGER.severe("config file with database url, username and password not found");
+        } catch (SQLException e) {
+            LOGGER.severe("sql error occured");
+        }
+    }
+
+    private static void loadServerConfig() {
+        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(serverPropertiesPath)) {
+            serverProperties.load(inputStream);
+            serverName = serverProperties.getProperty("server.hostname", "localhost");
+            serverPort = Integer.parseInt(serverProperties.getProperty("server.port", "1234"));
+            serverAdd = new InetSocketAddress(InetAddress.getByName(serverName), serverPort);
+            channel = DatagramChannel.open();
+            channel.bind(serverAdd);
+            LOGGER.info("server is listening at: " + serverAdd);
+        } catch (IOException e) {
+            LOGGER.severe("config file with ip adress and port not found");
         }
     }
 }
